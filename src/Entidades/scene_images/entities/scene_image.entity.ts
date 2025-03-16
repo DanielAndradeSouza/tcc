@@ -1,6 +1,6 @@
 import { Scene } from "src/Entidades/scene/entities/scene.entity";
 import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
-@Entity()
+@Entity("scene_images")
 export class SceneImage {
       @PrimaryGeneratedColumn()
       image_id: number;

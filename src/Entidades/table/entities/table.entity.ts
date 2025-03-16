@@ -3,7 +3,7 @@ import { Scene } from "src/Entidades/scene/entities/scene.entity";
 import { UserTable } from "src/Entidades/user_table/entities/user_table.entity";
 import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 
-@Entity()
+@Entity("table")
 export class Table {
     @PrimaryGeneratedColumn()
     id:number;

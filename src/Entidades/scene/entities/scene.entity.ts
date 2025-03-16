@@ -2,7 +2,7 @@ import { SceneImage } from "src/Entidades/scene_images/entities/scene_image.enti
 import { Table } from "src/Entidades/table/entities/table.entity";
 import { Column, Entity, ManyToOne, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 
-@Entity()
+@Entity("scene")
 export class Scene {
       @PrimaryGeneratedColumn()
       scene_id: number;
