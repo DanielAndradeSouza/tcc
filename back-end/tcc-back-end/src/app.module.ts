@@ -15,7 +15,7 @@ import { SceneImage } from './Entidades/scene_images/entities/scene_image.entity
       host: "localhost",
       port: 3306,  
       username: "root", 
-      password: "Poney2507@!", 
+      password: "Poney", 
       database: "VTT_RPG", 
       entities:[User,Table,UserTable,ChatMessage,Scene,SceneImage],
       synchronize: true, 
