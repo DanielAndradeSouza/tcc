@@ -1,6 +1,10 @@
-export const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000';
+const API_URL = 'http://localhost:3050'; // ou use variável de ambiente
 
-export async function fetchData(endpoint: string, options:RequestInit = {}) {
-  const res = await fetch(`${API_URL}${endpoint}`);
+export async function fetchData(endpoint: string, options: RequestInit = {}) {
+  const url = `${API_URL}${endpoint.startsWith("/") ? endpoint : "/" + endpoint}`;
+  const res = await fetch(url, options);
+  if (!res.ok) {
+    throw new Error(`Erro na requisição: ${res.status}`);
+  }
   return res.json();
 }

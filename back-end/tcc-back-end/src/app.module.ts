@@ -8,6 +8,9 @@ import { UserTable } from './Entidades/user_table/entities/user_table.entity';
 import { ChatMessage } from './Entidades/chat_messages/entities/chat_message.entity';
 import { Scene } from './Entidades/scene/entities/scene.entity';
 import { SceneImage } from './Entidades/scene_images/entities/scene_image.entity';
+import { UserModule } from './Entidades/user/user.module';
+import { TableModule } from './Entidades/table/table.module';
+import { UserTableModule } from './Entidades/user_table/user_table.module';
 
 @Module({
   imports: [TypeOrmModule.forRoot({
@@ -20,7 +23,12 @@ import { SceneImage } from './Entidades/scene_images/entities/scene_image.entity
       entities:[User,Table,UserTable,ChatMessage,Scene,SceneImage],
       synchronize: true, 
       logging: true
-  })],
+  }),
+  UserModule,
+  TableModule,
+  UserTableModule
+  ],
+  
   controllers: [AppController],
   providers: [AppService],
 })
