@@ -1,3 +1,5 @@
+'use client'
+
 // components/ButtonRequest.tsx
 import { useState } from "react";
 import { fetchData } from "../services/api";
