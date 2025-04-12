@@ -15,7 +15,7 @@ export class CreateUserDto {
 
     @Transform(({ value }) => new Date(value))
     @IsDate()
-    creation_date: Date;
+    creation_date?: Date;
 
     @IsBoolean()
     active: boolean;

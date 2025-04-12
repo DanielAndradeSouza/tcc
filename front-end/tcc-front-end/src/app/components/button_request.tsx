@@ -6,15 +6,16 @@ import { fetchData } from "../services/api";
 
 type ButtonRequestProps = {
   show_text: string;
-  type_req: string;
+  url: string;
+  header:RequestInit;
 };
 
-export default function ButtonRequest({ show_text, type_req }: ButtonRequestProps) {
+export default function ButtonRequest({ show_text, url, header }: ButtonRequestProps) {
   const [usuarios, setUsuarios] = useState<any[]>([]);
 
   const handleClick = async () => {
     try {
-      const data = await fetchData(type_req);
+      const data = await fetchData(url,header);
       setUsuarios(data);
     } catch (err: any) {
       console.error(err);
@@ -25,16 +26,11 @@ export default function ButtonRequest({ show_text, type_req }: ButtonRequestProp
     <div>
       <button
         onClick={handleClick}
-        className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 cursor-pointer"
-      >
+        className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 cursor-pointer">
         {show_text}
       </button>
 
-      <ul className="mt-4">
-        {usuarios.map((usuario, index) => (
-          <li key={index}>{JSON.stringify(usuario)}</li>
-        ))}
-      </ul>
+      
     </div>
   );
 }
