@@ -18,7 +18,7 @@ export class AuthController {
       httpOnly: true,
       secure: process.env.NODE_ENV === 'production', // usa https em produção
       sameSite: 'strict',
-      maxAge: 1000 * 60 * 60 * 24, // 1 dia
+      maxAge: 1000 * 60 * 60 * 8, // 1 dia
     });
 
     return { message: 'Login realizado com sucesso' };
