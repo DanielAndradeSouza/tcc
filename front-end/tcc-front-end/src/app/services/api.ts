@@ -19,7 +19,7 @@ export async function fetchData(endpoint: string, options: RequestInit = {}) {
       console.warn("Resposta não é JSON válido.");
       return raw; // retorna como texto se não for JSON
     }
-
+    
   } catch (err) {
     console.error("Erro na requisição:", err);
     return null;

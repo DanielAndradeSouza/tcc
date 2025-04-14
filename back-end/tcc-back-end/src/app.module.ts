@@ -11,7 +11,7 @@ import { SceneImage } from './Entidades/scene_images/entities/scene_image.entity
 import { UserModule } from './Entidades/user/user.module';
 import { TableModule } from './Entidades/table/table.module';
 import { UserTableModule } from './Entidades/user_table/user_table.module';
-import { LoginModule } from './login/login.module';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [TypeOrmModule.forRoot({
@@ -28,9 +28,8 @@ import { LoginModule } from './login/login.module';
   UserModule,
   TableModule,
   UserTableModule,
-  LoginModule
+  AuthModule,
   ],
-  
   controllers: [AppController],
   providers: [AppService],
 })

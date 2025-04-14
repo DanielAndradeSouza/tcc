@@ -24,9 +24,10 @@ export default function CadastroPage() {
         <input type="password" name="password" onChange={(e) => setPassword(e.target.value)}/>
         </div>
         <div className="p-4">
-        <ButtonRequest show_text="Buscar Usuários" url="/user" 
+        <ButtonRequest show_text="Criar Conta" url="/user" 
             header={{
             method: 'POST',
+            credentials: 'include',
             headers: {
               'Content-Type': 'application/json'
             },
