@@ -3,18 +3,12 @@
 import { useState } from "react";
 import ButtonRequest from "../../components/button_request";
 
-export default function CreateUserPage() {
-  const [name, setName] = useState('');
+export default function LoginPage() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   return (
     <div>
-        <h1>Criar Conta</h1>
-
-        <div>
-        <label htmlFor="username">Nome de Usuário</label>
-        <input type="text" name="username" onChange={(e) => setName(e.target.value)}/>
-        </div>
+        <h1>Login</h1>
         <div>
         <label htmlFor="email">Email</label>
         <input type="email" name="email" onChange={(e) => setEmail(e.target.value)}/>
@@ -26,11 +20,11 @@ export default function CreateUserPage() {
         <div className="p-4">
         <ButtonRequest show_text="Buscar Usuários" url="/user" 
             header={{
-            method: 'POST',
+            method: 'GET',
             headers: {
               'Content-Type': 'application/json'
             },
-            body: JSON.stringify({name,email,password})
+            body: JSON.stringify({email,password})
           }} 
         />
 
