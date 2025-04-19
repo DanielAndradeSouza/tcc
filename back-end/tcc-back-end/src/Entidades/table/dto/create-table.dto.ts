@@ -4,7 +4,6 @@ export class CreateTableDto {
     @IsNotEmpty()
     @IsString()
     tableName: string;
-
     @IsOptional()
     @IsString()
     description?: string;

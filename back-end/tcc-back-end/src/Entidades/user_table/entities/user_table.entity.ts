@@ -1,12 +1,12 @@
-import { Table } from "src/Entidades/table/entities/table.entity";
-import { User } from "src/Entidades/user/entities/user.entity";
 import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
+import { User } from "src/Entidades/user/entities/user.entity";
+import { Table } from "src/Entidades/table/entities/table.entity";
 
 @Entity()  
 export class UserTable {
     @PrimaryGeneratedColumn()
     id: number;
-    
+
     @ManyToOne(() => User, (user) => user.usersTable)
     user: User;
 

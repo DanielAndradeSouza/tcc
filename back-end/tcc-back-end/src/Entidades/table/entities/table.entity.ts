@@ -1,3 +1,4 @@
+import { Transform } from "class-transformer";
 import { ChatMessage } from "src/Entidades/chat_messages/entities/chat_message.entity";
 import { Scene } from "src/Entidades/scene/entities/scene.entity";
 import { UserTable } from "src/Entidades/user_table/entities/user_table.entity";
@@ -8,12 +9,15 @@ export class Table {
     @PrimaryGeneratedColumn()
     id:number;
 
-    @Column()
+    @Column({nullable:false})
     table_name: string;
 
     @Column({nullable:true})
     description: string;
 
+    @Transform(({ value }) => new Date(value)) 
+    @Column('text')
+    creation_date: Date;
     @Column({default:true})
     active:boolean;
 

@@ -1,15 +1,19 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards } from '@nestjs/common';
 import { TableService } from './table.service';
 import { CreateTableDto } from './dto/create-table.dto';
 import { UpdateTableDto } from './dto/update-table.dto';
+import { UserTableController } from '../user_table/user_table.controller';
+import { CurrentUser } from 'src/auth/current-user.decorator';
 
 @Controller('table')
 export class TableController {
-  constructor(private readonly tableService: TableService) {}
+  constructor(private readonly tableService: TableService, private userTableController: UserTableController) {}
 
-  @Post()
-  create(@Body() createTableDto: CreateTableDto) {
-    return this.tableService.create(createTableDto);
+  @UseGuards(JwtAuthGuard)
+  @Post('create')
+  createTable(@Body() dto: CreateTableDto, @CurrentUser() user: any) {
+    console.log(user.id); // aqui você acessa direto o ID do usuário autenticado
+    return this.tableService.create(dto, user.id);
   }
 
   @Get()
