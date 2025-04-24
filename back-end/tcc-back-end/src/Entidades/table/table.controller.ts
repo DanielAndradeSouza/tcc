@@ -11,9 +11,9 @@ export class TableController {
   //JwtAuthGuard é uma função sendo exportada e que extende a AuthGuard do nest.js/passport
   @UseGuards(CustomJwtGuard)
   @Post('create')
-  createTable(@Body() dto: CreateTableDto, @CurrentUser() user: any) {
+  async createTable(@Body() dto: CreateTableDto, @CurrentUser() user: any) {
   console.log('Usuário autenticado:', user);
-  return this.tableService.create(dto, user.id);
+  return await this.tableService.create(dto, user.id);
 }
 
   @Get()
