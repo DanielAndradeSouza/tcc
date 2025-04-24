@@ -4,7 +4,6 @@ export async function fetchData(endpoint: string, options: RequestInit = {}) {
 
   try {
     const res = await fetch(url, options);
-    console.log(options)
     const raw = await res.text(); // Lê o corpo apenas uma vez
     console.log("Resposta bruta:", raw);
 
