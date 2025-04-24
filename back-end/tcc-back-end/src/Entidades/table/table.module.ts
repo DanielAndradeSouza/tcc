@@ -1,8 +1,16 @@
 import { Module } from '@nestjs/common';
 import { TableService } from './table.service';
 import { TableController } from './table.controller';
+import { UserTableService } from '../user_table/user_table.service';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { Table } from './entities/table.entity';
+import { UserTable } from '../user_table/entities/user_table.entity';
+import { User } from '../user/entities/user.entity';
 
 @Module({
+  imports: [
+    TypeOrmModule.forFeature([Table, UserTable, User]), 
+  ],
   controllers: [TableController],
   providers: [TableService],
 })

@@ -18,9 +18,10 @@ export default function LoginPage() {
         <input type="password" name="password" onChange={(e) => setPassword(e.target.value)}/>
         </div>
         <div className="p-4">
-        <ButtonRequest show_text="Login" url="/auth/login" 
+        <ButtonRequest show_text="Login" url="/auth/signIn" 
             header={{
             method: 'POST',
+            credentials: 'include',
             headers: {
               'Content-Type': 'application/json'
             },

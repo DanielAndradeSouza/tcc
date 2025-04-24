@@ -2,18 +2,18 @@ import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards } from '@n
 import { TableService } from './table.service';
 import { CreateTableDto } from './dto/create-table.dto';
 import { UpdateTableDto } from './dto/update-table.dto';
-import { UserTableController } from '../user_table/user_table.controller';
 import { CurrentUser } from 'src/auth/current-user.decorator';
+import { JwtAuthGuard } from 'src/auth/jwt_strategy/auth.guard';
 
 @Controller('table')
 export class TableController {
-  constructor(private readonly tableService: TableService, private userTableController: UserTableController) {}
-
+  constructor(private readonly tableService: TableService) {}
+  //JwtAuthGuard é uma função sendo exportada e que extende a AuthGuard do nest.js/passport
   @UseGuards(JwtAuthGuard)
   @Post('create')
   createTable(@Body() dto: CreateTableDto, @CurrentUser() user: any) {
-    console.log(user.id); // aqui você acessa direto o ID do usuário autenticado
-    return this.tableService.create(dto, user.id);
+    console.log(user);
+    return this.tableService.create(dto,user.id);
   }
 
   @Get()

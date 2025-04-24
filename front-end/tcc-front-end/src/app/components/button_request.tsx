@@ -11,12 +11,12 @@ type ButtonRequestProps = {
 };
 
 export default function ButtonRequest({ show_text, url, header }: ButtonRequestProps) {
-  const [usuarios, setUsuarios] = useState<any[]>([]);
+  const [usuarios, setData] = useState<any[]>([]);
 
   const handleClick = async () => {
     try {
       const data = await fetchData(url,header);
-      setUsuarios(data);
+      setData(data);
     } catch (err: any) {
       console.error(err);
     }
