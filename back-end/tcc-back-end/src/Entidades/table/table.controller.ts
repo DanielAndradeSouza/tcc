@@ -15,9 +15,11 @@ export class TableController {
   console.log('Usuário autenticado:', user);
   return await this.tableService.create(dto, user.id);
   }
+  
   @UseGuards(CustomJwtGuard)
   @Get('findAll')
   findAll(@CurrentUser() user:any) {
+    console.log(user);
     return this.tableService.findAll(user);
   }
 

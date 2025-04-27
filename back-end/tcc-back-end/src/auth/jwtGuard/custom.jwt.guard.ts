@@ -8,7 +8,7 @@ export class CustomJwtGuard implements CanActivate {
   canActivate(context: ExecutionContext): boolean {
     const request = context.switchToHttp().getRequest<Request>();
     const token = request.cookies?.['jwt'];
-    console.log(token);
+    //console.log(token);
     if (!token) throw new UnauthorizedException('Token ausente');
 
     try {
