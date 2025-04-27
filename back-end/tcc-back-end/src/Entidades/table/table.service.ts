@@ -14,26 +14,40 @@ export class TableService {
   @InjectRepository(User) private userRepository: Repository<User>){} 
 
   async create(createTableDto: CreateTableDto, userId: number): Promise<Table>{
+    //Cria a mesa com os atributos distribuidos
     const table = this.tableRepository.create({...createTableDto,active:true, creation_date:new Date()});
+    //Salva a mesa
     const savedTable = await this.tableRepository.save(table);
-
+    //Procura se o usuário existe
     const user = await this.userRepository.findOne({ where: { id: userId } });
     if (!user) {
       throw new Error('Usuário não encontrado, por favor logue em sua conta');
     }
+    //Cria o relacionamento n por n
     const userTable = this.userTableRepository.create({
       user,
       table: savedTable,
       role: 'gm', 
     });
+    //Salva
     await this.userTableRepository.save(userTable);
 
     return savedTable;
   }
 
-  findAll() {
-    return `This action returns all table`;
+  async findAll(user: User): Promise<Table[]> {
+    // Busca todos os userTable do usuário
+    const userTables = await this.userTableRepository.find({
+      where: { user: { id: user.id } },
+      relations: ['table'],
+    });
+  
+    // E então de fato busca as mesas
+    const tables = userTables.map(userTable => userTable.table);
+  
+    return tables;
   }
+  
 
   findOne(id: number) {
     return `This action returns a #${id} table`;

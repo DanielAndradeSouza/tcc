@@ -14,11 +14,11 @@ export class TableController {
   async createTable(@Body() dto: CreateTableDto, @CurrentUser() user: any) {
   console.log('Usuário autenticado:', user);
   return await this.tableService.create(dto, user.id);
-}
-
-  @Get()
-  findAll() {
-    return this.tableService.findAll();
+  }
+  @UseGuards(CustomJwtGuard)
+  @Get('findAll')
+  findAll(@CurrentUser() user:any) {
+    return this.tableService.findAll(user);
   }
 
   @Get(':id')
