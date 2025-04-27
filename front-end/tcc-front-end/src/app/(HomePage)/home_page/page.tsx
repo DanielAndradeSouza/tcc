@@ -4,7 +4,7 @@ import { fetchData } from "@/app/services/api";
 import React, { useEffect, useState } from 'react';
 
 export default function HomePage() {
-    const [tables, setTables] = useState<{ id: number; name: string }[]>([]);
+    const [tables, setTables] = useState<{ id: number; table_name: string }[]>([]);
 
   useEffect(() => {
     async function loadTables() {
@@ -18,7 +18,7 @@ export default function HomePage() {
     <div>
       {tables.map((table, id) => (
         <div key={id}>
-          {table.name}
+          {table.table_name}
         </div>
       ))}
     </div>
