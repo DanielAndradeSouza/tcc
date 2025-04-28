@@ -27,7 +27,7 @@ export class TableService {
     const userTable = this.userTableRepository.create({
       user,
       table: savedTable,
-      role: 'gm', 
+      role: 'dm', 
     });
     //Salva
     await this.userTableRepository.save(userTable);

@@ -13,7 +13,7 @@ export class TableController {
   @Post('create')
   async createTable(@Body() dto: CreateTableDto, @CurrentUser() user: any) {
   console.log('Usuário autenticado:', user);
-  return await this.tableService.create(dto, user.id);
+  return await this.tableService.create(dto, user.sub);
   }
   
   @UseGuards(CustomJwtGuard)
