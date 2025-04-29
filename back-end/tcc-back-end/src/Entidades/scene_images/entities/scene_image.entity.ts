@@ -3,7 +3,7 @@ import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
 @Entity("scene_images")
 export class SceneImage {
       @PrimaryGeneratedColumn()
-      image_id: number;
+      id: number;
     
       @ManyToOne(() => Scene, (scene) => scene.sceneImages, { onDelete: 'CASCADE' })
       scene: Scene;
