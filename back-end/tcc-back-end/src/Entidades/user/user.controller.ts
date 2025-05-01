@@ -15,6 +15,7 @@ export class UserController {
   create(@Body() createUserDto: CreateUserDto) {
     return this.userService.create(createUserDto);
   }
+
   @UseInterceptors(ClassSerializerInterceptor)
   @UseGuards(CustomJwtGuard)
   @Get('findOne')
@@ -22,7 +23,7 @@ export class UserController {
     return await this.userService.findById(user.sub);
  
   }
-
+  @UseInterceptors(ClassSerializerInterceptor)
   @Patch(':id')
   update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
     return this.userService.update(+id, updateUserDto);
