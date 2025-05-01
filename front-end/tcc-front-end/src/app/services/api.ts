@@ -1,4 +1,4 @@
-const API_URL = 'http://localhost:3050'; // ou use variável de ambiente
+const API_URL = 'http://localhost:3050'; 
 export async function fetchData(endpoint: string, options: RequestInit = {}) {
   const url = `${API_URL}${endpoint.startsWith("/") ? endpoint : "/" + endpoint}`;
 

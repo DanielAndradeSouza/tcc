@@ -35,16 +35,14 @@ export class TableService {
     return savedTable;
   }
 
-  async findAll(user: User): Promise<Table[]> {
+  async findAll(userId: number): Promise<Table[]> {
     // Busca todos os userTable do usuário
     const userTables = await this.userTableRepository.find({
-      where: { user: { id: user.id } },
+      where: { user: { id: userId } },
       relations: ['table'],
     });
-  
     // E então de fato busca as mesas
     const tables = userTables.map(userTable => userTable.table);
-  
     return tables;
   }
   

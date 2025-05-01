@@ -19,8 +19,8 @@ export class TableController {
   @UseGuards(CustomJwtGuard)
   @Get('findAll')
   findAll(@CurrentUser() user:any) {
-    console.log(user);
-    return this.tableService.findAll(user);
+    console.log(user.sub);
+    return this.tableService.findAll(user.sub);
   }
 
   @Get(':id')
