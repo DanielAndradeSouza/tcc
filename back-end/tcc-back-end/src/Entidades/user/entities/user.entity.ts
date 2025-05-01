@@ -1,4 +1,4 @@
-import { Transform } from "class-transformer";
+import { Exclude, Transform } from "class-transformer";
 import { ChatMessage } from "src/Entidades/chat_messages/entities/chat_message.entity";
 import { UserTable } from "src/Entidades/user_table/entities/user_table.entity";
 import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
@@ -10,7 +10,8 @@ export class User {
 
     @Column({unique:true})
     email:string;
-
+    
+    @Exclude()
     @Column()
     password:string;
     
