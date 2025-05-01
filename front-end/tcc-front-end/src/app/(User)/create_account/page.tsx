@@ -12,7 +12,7 @@ export default function CreateUserPage() {
         <h1>Criar Conta</h1>
 
         <div>
-        <label htmlFor="username">Nome de Usuário</label>
+        <label htmlFor="username">Username</label>
         <input type="text" name="username" onChange={(e) => setName(e.target.value)}/>
         </div>
         <div>
@@ -20,7 +20,7 @@ export default function CreateUserPage() {
         <input type="email" name="email" onChange={(e) => setEmail(e.target.value)}/>
         </div>
         <div>
-        <label htmlFor="password">Senha</label>
+        <label htmlFor="password">Password</label>
         <input type="password" name="password" onChange={(e) => setPassword(e.target.value)}/>
         </div>
         <div className="p-4">

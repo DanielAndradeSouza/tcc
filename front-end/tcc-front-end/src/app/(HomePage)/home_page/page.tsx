@@ -8,8 +8,14 @@ export default function HomePage() {
 
   useEffect(() => {
     async function loadTables() {
-      const data = await fetchData('table/findAll', {credentials: 'include'});
-      setTables(data);
+      try{
+        const data = await fetchData('table/findAll', {credentials: 'include'});
+        setTables(data);
+      }catch(e){
+        console.error(e)
+      }
+      
+
     }
     loadTables();
   }, []);

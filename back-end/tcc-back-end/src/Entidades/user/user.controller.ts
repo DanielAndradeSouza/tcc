@@ -1,7 +1,11 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards } from '@nestjs/common';
 import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
+import { CurrentUser } from 'src/auth/current-user.decorator';
+import { User } from './entities/user.entity';
+import { CustomJwtGuard } from 'src/auth/jwtGuard/custom.jwt.guard';
+import { SafeUserDto } from './dto/safe-user.dto';
 
 @Controller('user')
 export class UserController {
@@ -11,10 +15,11 @@ export class UserController {
   create(@Body() createUserDto: CreateUserDto) {
     return this.userService.create(createUserDto);
   }
-
+  @UseGuards(CustomJwtGuard)
   @Get('findOne')
-  findOne() {
-    return this.userService.findAll();
+  async findOne(@CurrentUser() user: any) : Promise<User|null> {
+    return await this.userService.findById(user.sub);
+ 
   }
 
   @Patch(':id')

@@ -4,6 +4,7 @@ import { UpdateUserDto } from './dto/update-user.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { User } from './entities/user.entity';
 import { Repository } from 'typeorm';
+import { SafeUserDto } from './dto/safe-user.dto';
 
 @Injectable()
 export class UserService {
@@ -13,12 +14,12 @@ export class UserService {
     return await this.userRepository.save(user);
   }
 
-  findAll() {
-    return `This action returns all user`;
-  }
 
   async findOne(email: string): Promise<User | null> {
     return this.userRepository.findOne({ where: { email } });
+  }
+  async findById(userId: number): Promise<User | null> {
+    return await this.userRepository.findOne({ where: { id: userId } });
   }
   
 

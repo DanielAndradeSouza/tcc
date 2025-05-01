@@ -15,7 +15,7 @@ export class User {
     password:string;
     
     @Column()
-    name:String;
+    name:string;
     @Transform(({ value }) => new Date(value)) 
     @Column('text')
     creation_date: Date;
