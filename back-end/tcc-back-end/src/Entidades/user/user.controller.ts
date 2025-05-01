@@ -5,7 +5,7 @@ import { UpdateUserDto } from './dto/update-user.dto';
 import { CurrentUser } from 'src/auth/current-user.decorator';
 import { User } from './entities/user.entity';
 import { CustomJwtGuard } from 'src/auth/jwtGuard/custom.jwt.guard';
-import { SafeUserDto } from './dto/safe-user.dto';
+
 
 @Controller('user')
 export class UserController {
