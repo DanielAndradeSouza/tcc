@@ -2,8 +2,10 @@
 // pages/PageUser.tsx
 import { useState } from "react";
 import ButtonRequest from "../../components/button_request";
+import { useRouter } from "next/navigation";
 
 export default function CreateTablePage() {
+  const router = useRouter();
   const [table_name, setTableName] = useState('');
   const [description, setDescription] = useState('');
   return (
@@ -28,6 +30,9 @@ export default function CreateTablePage() {
             },
             body: JSON.stringify({table_name,description})
           }} 
+          onSuccess={() =>{alert("Mesa Criada com Sucesso!");
+            router.push("/home_page")
+          }}
         />
 
       </div>
