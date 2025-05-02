@@ -25,10 +25,10 @@ export class UserService {
   async update(id: number, updateUserDto: UpdateUserDto) {
     const user = await this.userRepository.findOne({ where: { id } });
     if (!user) throw new NotFoundException('Usuário não encontrado');
-  
-    const updatedUser = { ...user, ...updateUserDto };
+    const updatedUser = this.userRepository.merge(user, updateUserDto);
     return await this.userRepository.save(updatedUser);
   }
+  
   
 
   remove(id: number) {

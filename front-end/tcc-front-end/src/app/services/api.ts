@@ -3,6 +3,7 @@ export async function fetchData(endpoint: string, options: RequestInit = {}) {
   const url = `${API_URL}${endpoint.startsWith("/") ? endpoint : "/" + endpoint}`;
 
   try {
+    //console.log(options);
     const res = await fetch(url, options);
     const raw = await res.text(); // Lê o corpo apenas uma vez
     console.log("Resposta bruta:", raw);
