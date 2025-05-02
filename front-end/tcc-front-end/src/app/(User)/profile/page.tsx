@@ -31,7 +31,7 @@ export default function PerfilPage() {
           <input type="text"value={user?.email || ""}onChange={(e) =>setUser((prev) => ({ ...prev!, email: e.target.value }))}/>
         </div>
         <div className="p-4">
-        <ButtonRequest show_text="Login" url="/user/" 
+        <ButtonRequest show_text="Atualizar Dados" url={`/user/${user?.id}`}
             header={{
             method: 'PATCH',
             credentials: 'include',
