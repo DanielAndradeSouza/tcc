@@ -2,8 +2,10 @@
 // pages/PageUser.tsx
 import { useState } from "react";
 import ButtonRequest from "../../components/button_request";
+import { useRouter } from "next/navigation";
 
 export default function LoginPage() {
+  const router = useRouter();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   return (
@@ -27,6 +29,8 @@ export default function LoginPage() {
             },
             body: JSON.stringify({email,password})
           }} 
+          onSuccess={() => router.push("/home_page")}
+          onError={() => alert("Dados Incorretos")}
         />
 
       </div>
