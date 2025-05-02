@@ -21,7 +21,7 @@ export default function TablesPage() {
   }, []);
 
   async function handleClick(tableId: number) {
-    router.push(`table/${tableId}`)
+    router.push(`tables/description_table/${tableId}`)
   }
 
   return (
