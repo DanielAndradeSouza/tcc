@@ -6,7 +6,7 @@ import React, { useEffect, useState } from 'react';
 
 export default function TablesPage() {
   const router = useRouter();
-  const [tables, setTables] = useState<{ id: number; table_name: string }[]>([]);
+  const [tables, setTables] = useState<Table[]>([]);
 
   useEffect(() => {
     async function loadTables() {

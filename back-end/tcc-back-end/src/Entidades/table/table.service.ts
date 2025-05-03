@@ -47,8 +47,8 @@ export class TableService {
   }
   
 
-  findOne(id: number) {
-    return `This action returns a #${id} table`;
+  findOne(userId: number) {
+    return this.tableRepository.findOne({where: {id:userId}});
   }
 
   update(id: number, updateTableDto: UpdateTableDto) {

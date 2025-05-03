@@ -1,8 +1,30 @@
 'use client'
-import { useRouter } from "next/navigation";
+import { fetchData } from "@/app/services/api";
+import { useParams, useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
 
 export default function tableIdPage(){
+    const {id} = useParams();
     const router = useRouter();
+    const [table,setTable] = useState<Table>();
 
+    useEffect(() => {
+        async function loadTable() {
+          try {
+            const data = await fetchData(`table/${id}`, { credentials: 'include' });
+            setTable(data);
+          } catch (e) {
+            console.error(e);
+          }
+        }
+        loadTable();
+      }, []);
+    
+
+    return (<div>
+        <h1>{table?.table_name}</h1>
+        <p>{table?.description}</p>
+        <button>Iniciar Mesa</button>
+    </div>)
     
 }

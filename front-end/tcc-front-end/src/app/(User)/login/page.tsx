@@ -29,7 +29,7 @@ export default function LoginPage() {
             },
             body: JSON.stringify({email,password})
           }} 
-          onSuccess={() => router.push("/home_page")}
+          onSuccess={() => router.push("/tables")}
           onError={() => alert("Dados Incorretos")}
         />
 
