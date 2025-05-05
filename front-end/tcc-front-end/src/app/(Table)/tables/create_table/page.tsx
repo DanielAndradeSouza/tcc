@@ -1,7 +1,7 @@
 'use client'
 // pages/PageUser.tsx
 import { useState } from "react";
-import ButtonRequest from "../../components/button_request";
+import ButtonRequest from "../../../components/button_request";
 import { useRouter } from "next/navigation";
 
 export default function CreateTablePage() {

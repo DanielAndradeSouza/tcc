@@ -19,7 +19,9 @@ export default function TablesPage() {
     }
     loadTables();
   }, []);
-
+  async function handleClickCreateTable(){
+    router.push('tables/create_table');
+  }
   async function handleClick(tableId: number) {
     router.push(`tables/description_table/${tableId}`)
   }
@@ -33,6 +35,8 @@ export default function TablesPage() {
           </button>
         </div>
       ))}
+      <button onClick={() => handleClickCreateTable()}>Criar Nova Mesa</button>
     </div>
+    
   );
 }
