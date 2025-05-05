@@ -28,9 +28,9 @@ export default function UpdateTablePage() {
 
   return (
     <div>
-      <h1>Atualizar Tabela</h1>
+      <h1>Atualizar Mesa</h1>
       <div>
-        <label htmlFor="table_name">Nome da Tabela:</label>
+        <label htmlFor="table_name">Nome da Mesa:</label>
         <input
           type="text"
           value={table?.table_name || ""}

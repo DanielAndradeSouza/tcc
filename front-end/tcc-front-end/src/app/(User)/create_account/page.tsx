@@ -27,7 +27,7 @@ export default function CreateUserPage() {
         <input type="email" name="email" onChange={(e) => setEmail(e.target.value)} />
       </div>
       <div>
-        <label htmlFor="password">Password</label>
+        <label htmlFor="password">Senha</label>
         <input type="password" name="password" onChange={(e) => setPassword(e.target.value)} />
       </div>
 
