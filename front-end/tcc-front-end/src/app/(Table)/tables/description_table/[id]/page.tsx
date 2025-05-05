@@ -19,12 +19,15 @@ export default function tableIdPage(){
         }
         loadTable();
       }, []);
-    
+    async function handleUpdatePage(){
+      router.push(`/tables/description_table/${id}/update_table`);
+    }
 
     return (<div>
         <h1>{table?.table_name}</h1>
         <p>{table?.description}</p>
         <button>Iniciar Mesa</button>
+        <button onClick={() => handleUpdatePage()}>Atualizar Dados da Mesa</button>
     </div>)
     
 }

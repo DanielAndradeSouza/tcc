@@ -1,4 +1,4 @@
-import { Injectable, UseGuards } from '@nestjs/common';
+import { Injectable, NotFoundException, UseGuards } from '@nestjs/common';
 import { CreateTableDto } from './dto/create-table.dto';
 import { UpdateTableDto } from './dto/update-table.dto';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -51,8 +51,11 @@ export class TableService {
     return this.tableRepository.findOne({where: {id:userId}});
   }
 
-  update(id: number, updateTableDto: UpdateTableDto) {
-    return `This action updates a #${id} table`;
+  async update(id: number, updateTableDto: UpdateTableDto) {
+    const table = await this.tableRepository.findOne({where : {id}});
+    if(!table) throw new NotFoundException("Table Not Found");
+    const updatedTable = this.tableRepository.merge(table, updateTableDto);
+    return await this.tableRepository.save(updatedTable);
   }
 
   remove(id: number) {

@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import ButtonRequest from "../../components/button_request";
 import { fetchData } from "@/app/services/api";
-export default function PerfilPage() {
+export default function ProfilePage() {
 
   const [user, setUser] = useState<User | null>(null);
   useEffect(() => {

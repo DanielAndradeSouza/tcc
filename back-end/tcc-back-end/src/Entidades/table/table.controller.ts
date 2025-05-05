@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, ClassSerializerInterceptor, UseInterceptors } from '@nestjs/common';
 import { TableService } from './table.service';
 import { CreateTableDto } from './dto/create-table.dto';
 import { UpdateTableDto } from './dto/update-table.dto';
@@ -27,10 +27,11 @@ export class TableController {
   findOne(@Param('id') id: string) {
     return this.tableService.findOne(+id);
   }
-
+  @UseInterceptors(ClassSerializerInterceptor)
+  @UseGuards(CustomJwtGuard)
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateTableDto: UpdateTableDto) {
-    return this.tableService.update(+id, updateTableDto);
+  async update(@Param('id') id: string, @Body() updateTableDto: UpdateTableDto) {
+    return await this.tableService.update(+id, updateTableDto);
   }
 
   @Delete(':id')

@@ -1,3 +1,4 @@
+import { Exclude } from "class-transformer";
 import { IsBoolean, IsNotEmpty, IsOptional, IsString } from "class-validator";
 
 export class CreateTableDto {
@@ -7,7 +8,7 @@ export class CreateTableDto {
     @IsOptional()
     @IsString()
     description?: string;
-
+    @Exclude()
     @IsOptional()
     @IsBoolean()
     active?: boolean;
