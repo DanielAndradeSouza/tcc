@@ -31,7 +31,7 @@ export default function CreateTablePage() {
             body: JSON.stringify({table_name,description})
           }} 
           onSuccess={() =>{alert("Mesa Criada com Sucesso!");
-            router.push("/home_page")
+            router.push("/tables")
           }}
         />
 
