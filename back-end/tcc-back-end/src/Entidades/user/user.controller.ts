@@ -10,7 +10,7 @@ import { CustomJwtGuard } from 'src/auth/jwtGuard/custom.jwt.guard';
 @Controller('user')
 export class UserController {
   constructor(private readonly userService: UserService) {}
-
+  @UseInterceptors(ClassSerializerInterceptor)  
   @Post()
   create(@Body() createUserDto: CreateUserDto) {
     return this.userService.create(createUserDto);
