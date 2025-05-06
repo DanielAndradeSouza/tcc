@@ -19,5 +19,5 @@ export class CreateSceneDto {
 
     @IsOptional()
     @IsObject()
-    tokens?: any; // JSON opcional para armazenar tokens
+    tokens?: any; 
 }

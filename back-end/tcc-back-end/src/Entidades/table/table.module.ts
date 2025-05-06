@@ -5,10 +5,11 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { Table } from './entities/table.entity';
 import { UserTable } from '../user_table/entities/user_table.entity';
 import { User } from '../user/entities/user.entity';
+import { Scene } from '../scene/entities/scene.entity';
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([Table, UserTable, User]), 
+    TypeOrmModule.forFeature([Table, UserTable, User,Scene]), 
   ],
   controllers: [TableController],
   providers: [TableService],
