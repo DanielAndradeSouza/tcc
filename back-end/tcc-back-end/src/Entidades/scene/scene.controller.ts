@@ -13,10 +13,10 @@ export class SceneController {
     return this.sceneService.create(createSceneDto);
   }
   @UseGuards(CustomJwtGuard)
-    @Post(':id/image_scene')
-    async createImageScene(idTable:number,createSceneDto:CreateSceneDto){
-      // Criação da Image Scene
-    }
+  @Post(':id/image_scene')
+  async createImageScene(idScene:number,createSceneDto:CreateSceneDto){
+    return await this.sceneService.createSceneImage(idScene,createSceneDto)
+  }
   
   @UseGuards(CustomJwtGuard)
   @Get(':id/image_scene')
