@@ -5,12 +5,6 @@ import { useParams, useRouter } from 'next/navigation';
 import { fetchData } from "@/app/services/api";
 import ButtonRequest from "@/app/components/button_request";
 
-type Table = {
-  id: number;
-  table_name: string;
-  description: string;
-};
-
 export default function UpdateTablePage() {
   const params = useParams();
   const id = params?.id as string;
