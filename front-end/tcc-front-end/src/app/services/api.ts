@@ -1,22 +1,26 @@
+// app/services/api.ts
 export async function fetchData(endpoint: string, options: RequestInit = {}) {
   const API_URL = 'http://localhost:3050';
   const url = `${API_URL}${endpoint.startsWith('/') ? endpoint : '/' + endpoint}`;
 
+  const res = await fetch(url, options);
+  const raw = await res.text();
+
+  let json;
   try {
-    const res = await fetch(url, options);
-    const raw = await res.text();
-    if (!res.ok) {
-      throw new Error(`Erro na requisição: ${res.status} - ${raw}`);
-    }
-
-    try {
-      return JSON.parse(raw);
-    } catch {
-      return raw;
-    }
-
-  } catch (err) {
-    console.error("Erro na requisição:", err);
-    throw err; // ← Isso aqui é essencial
+    json = JSON.parse(raw);
+  } catch {
+    json = raw;
   }
+
+  if (!res.ok) {
+    // Lança erro com status e corpo da resposta do backend
+    throw {
+      status: res.status,
+      message: json?.message || 'Erro na requisição',
+      body: json,
+    };
+  }
+
+  return json;
 }

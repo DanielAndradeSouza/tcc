@@ -1,3 +1,4 @@
+// app/hooks/useAuth.tsx
 'use client';
 
 import { useRouter } from 'next/navigation';
@@ -15,8 +16,12 @@ export function useAuth<T = any[]>(endpoint: string, defaultValue: T = [] as T) 
         const result = await fetchData(endpoint, { credentials: 'include' });
         setData(result);
       } catch (err: any) {
-        console.error("Erro de autenticação, redirecionando para login:", err);
-        router.push('/login');
+        if (err.status === 401) {
+          console.warn("Não autenticado. Redirecionando para login...");
+          router.push('/login');
+        } else {
+          console.error("Erro ao carregar dados:", err);
+        }
       } finally {
         setLoading(false);
       }
