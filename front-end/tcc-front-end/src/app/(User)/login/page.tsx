@@ -3,11 +3,13 @@
 import { useState } from "react";
 import ButtonRequest from "../../components/button_request";
 import { useRouter } from "next/navigation";
+import { useRedirectIfAuthenticated } from "@/app/hooks/veriftLogin";
 
 export default function LoginPage() {
   const router = useRouter();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  useRedirectIfAuthenticated();
   return (
     <div>
         <h1>Login</h1>

@@ -1,19 +1,16 @@
 'use client';
 
-import { useEffect, useState } from "react";
+import {  useState } from "react";
 import ButtonRequest from "../../components/button_request";
 import { useRouter } from "next/navigation";
+import { useRedirectIfAuthenticated } from "@/app/hooks/veriftLogin";
 
 export default function CreateUserPage() {
   const router = useRouter();
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  useEffect(() => {
-    function isAuthenticated(){
-      
-    }
-  })
+  useRedirectIfAuthenticated();
   return (
     <div>
       <h1>Criar Conta</h1>
