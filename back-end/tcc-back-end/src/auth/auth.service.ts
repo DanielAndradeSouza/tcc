@@ -1,10 +1,13 @@
-import { Injectable, UnauthorizedException } from '@nestjs/common';
+import { Injectable, NotFoundException, UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { UserService } from 'src/Entidades/user/user.service';
+import { UserTable } from 'src/Entidades/user_table/entities/user_table.entity';
+import { UserTableService } from 'src/Entidades/user_table/user_table.service';
+import { EntityNotFoundError, Repository } from 'typeorm';
 
 @Injectable()
 export class AuthService {
-    constructor(private userService: UserService, private jwtService: JwtService){}
+    constructor(private userService: UserService, private jwtService: JwtService,private userTableService:UserTableService){}
 
     async signIn(email:string, pass:string){
         const user = await this.userService.findOne(email);
@@ -16,12 +19,13 @@ export class AuthService {
         console.log(payload)
         return {access_token: await this.jwtService.signAsync(payload)};
     }
-    async validateUser(email: string, pass: string){
-        const user = await this.userService.findOne(email);
-        if(user && user.password === pass){
-            const {password, ...result} = user;
-            return result;
+    async getProfile(userId:number, tableId:number){
+        try{
+            const userTable = await this.userTableService.findOne(userId,tableId);
+            const userRole = userTable?.role;
+            return userRole;
+        }catch(e){
+            throw new NotFoundException("Usuário não vinculado a Mesa");
         }
-        return null;
     }
 }

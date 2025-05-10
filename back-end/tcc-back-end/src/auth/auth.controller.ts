@@ -1,6 +1,8 @@
-import { Body, Controller, HttpCode, HttpStatus, Post, Res } from '@nestjs/common';
+import { Body, Controller, Get, HttpCode, HttpStatus, Param, Post, Res, UseGuards, UseInterceptors } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { Response } from 'express';
+import { CustomJwtGuard } from './jwtGuard/custom.jwt.guard';
+import { CurrentUser } from './current-user.decorator';
 
 @Controller('auth')
 export class AuthController {
@@ -22,5 +24,13 @@ export class AuthController {
     });
 
     return { message: 'Login realizado com sucesso' };
+  }
+  @UseGuards(CustomJwtGuard)
+  @Get('profile/:id')
+  async getProfile(
+    @CurrentUser() user: any,
+    @Param('id') tableId: string,
+  ) {
+    return await this.authService.getProfile(user.sub, +tableId);
   }
 }

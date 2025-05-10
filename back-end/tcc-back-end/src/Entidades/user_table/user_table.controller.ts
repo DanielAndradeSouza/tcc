@@ -16,12 +16,6 @@ export class UserTableController {
   findAll() {
     return this.userTableService.findAll();
   }
-
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.userTableService.findOne(+id);
-  }
-
   @Patch(':id')
   update(@Param('id') id: string, @Body() updateUserTableDto: UpdateUserTableDto) {
     return this.userTableService.update(+id, updateUserTableDto);
