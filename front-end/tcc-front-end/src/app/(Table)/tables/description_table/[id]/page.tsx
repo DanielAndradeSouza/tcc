@@ -15,13 +15,18 @@ export default function TableIdPage() {
 
   async function handleScenePage(){
     const userRole = await fetchData(`auth/profile/${id}`,{credentials:'include'})
-    if(userRole == 'gm'){
-      router.push("gm/scene");
-    } 
-    if (userRole == "player"){
-      router.push("player/scene");
+    switch(userRole){
+      case 'gm':
+        const scene_atualGM = await fetchData(`table/${id}/gmscene`,{credentials:'include'});
+        await router.push(`gm/scene/${scene_atualGM}`);
+        break;
+      case 'player':
+        const scene_atualPlayer = await fetchData(`table/${id}/playerscene`,{credentials:'include'});
+        await router.push(`player/scene/${scene_atualPlayer}`);
+        break;
+      default:
+        alert("Erro ao sincronizar dados da Mesa!");
     }
-    alert("Erro ao sincronizar a mesa!");
   }
 
   if (loading) {

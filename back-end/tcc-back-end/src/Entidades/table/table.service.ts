@@ -17,8 +17,12 @@ export class TableService {
   @InjectRepository(Scene) private sceneRepository: Repository<Scene>){} 
 
   async create(createTableDto: CreateTableDto, userId: number): Promise<Table>{
+    //Cria a cena inicial
+    const initialScene = await this.sceneRepository.create();
+    await this.sceneRepository.save(initialScene);
     //Cria a mesa com os atributos distribuidos
-    const table = this.tableRepository.create({...createTableDto,active:true, creation_date:new Date()});
+    const table = await this.tableRepository.create({...createTableDto,active:true, creation_date:new Date(),
+      sceneAtualPlayers:initialScene,sceneAtualGM:initialScene});
     //Salva a mesa
     const savedTable = await this.tableRepository.save(table);
     //Procura se o usuário existe
@@ -32,9 +36,8 @@ export class TableService {
       table: savedTable,
       role: 'gm', 
     });
-    //Salva
+    
     await this.userTableRepository.save(userTable);
-
     return savedTable;
   }
   //Cria uma Cena
@@ -59,10 +62,28 @@ export class TableService {
   async findAllScenes(idTable:number): Promise<Scene[]>{
     return await this.sceneRepository.find({where: {table: {id:idTable}}});
   }
+  //Procura a mesa pelo id
   async findOne(userId: number) {
     return await this.tableRepository.findOne({where: {id:userId}});
   }
-
+  async findGmScene(tableId:number){
+    try{
+      const table = await this.tableRepository.findOne({where:{id:tableId}, relations:['sceneAtualGM']})
+      const sceneAtual = table?.sceneAtualGM.id;
+      return sceneAtual
+    }catch(e){
+      throw new NotFoundException("Cena do Game Master não encontrada!");
+    }
+  }
+  async findPlayerScene(tableId:number){
+    try{
+      const table = await this.tableRepository.findOne({where:{id:tableId}, relations:['sceneAtualPlayers']})
+      const sceneId = table?.sceneAtualPlayers.id;
+      return sceneId
+    }catch(e){
+      throw new NotFoundException("Cena dos Players não encontrada!");
+    }
+  }
   async update(id: number, updateTableDto: UpdateTableDto):Promise<Table> {
     const table = await this.tableRepository.findOne({where : {id}});
     if(!table) throw new NotFoundException("Table Not Found");

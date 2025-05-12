@@ -36,7 +36,16 @@ export class TableController {
   async findAllScenes(idTable:number){
     return this.tableService.findAllScenes(idTable);
   }
-
+  @UseGuards(CustomJwtGuard)
+  @Get(':id/gmscene')
+  async findGmScene(@Param('id') idTable:string){
+    return await this.tableService.findGmScene(+idTable);
+  }
+  @UseGuards(CustomJwtGuard)
+  @Get(':id/playerscene')
+  async findPlayerScene(idTable:string){
+    return await this.tableService.findPlayerScene(+idTable);
+  }
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.tableService.findOne(+id);

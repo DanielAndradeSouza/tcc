@@ -1,7 +1,7 @@
 import { Transform } from "class-transformer";
 import { Scene } from "src/Entidades/scene/entities/scene.entity";
 import { UserTable } from "src/Entidades/user_table/entities/user_table.entity";
-import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, JoinColumn, OneToMany, OneToOne, PrimaryGeneratedColumn } from "typeorm";
 
 @Entity("table")
 export class Table {
@@ -20,9 +20,17 @@ export class Table {
     @Column({default:true})
     active:boolean;
 
-    @OneToMany(()=> UserTable,(usersTable) => usersTable.table)
+    @OneToMany(()=> UserTable,(usersTable) => usersTable.table, {onDelete:'CASCADE'})
     usersTable: UserTable;
 
-    @OneToMany(() => Scene, (scene) => scene.table)
+    @OneToMany(() => Scene, (scene) => scene.table, {onDelete:'CASCADE'})
     scenes: Scene[];
+
+    @OneToOne(() => Scene, { nullable: true })
+    @JoinColumn({ name: 'scene_atual_players_id' })
+    sceneAtualPlayers: Scene;
+
+    @OneToOne(() => Scene, { nullable: true })
+    @JoinColumn({ name: 'scene_atual_gm_id' })
+    sceneAtualGM: Scene;
 }

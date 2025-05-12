@@ -27,6 +27,6 @@ export class User {
     @Column({ type: 'datetime', nullable: true })
     deactivation_date: Date;
     
-    @OneToMany(() => UserTable, (usersTable) => usersTable.user)
+    @OneToMany(() => UserTable, (usersTable) => usersTable.user, {onDelete:'CASCADE'})
     usersTable: UserTable;
 }

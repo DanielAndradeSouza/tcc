@@ -10,18 +10,15 @@ export class Scene {
       @ManyToOne(() => Table, (table) => table.scenes, { onDelete: 'CASCADE' })
       table: Table;
     
-      @Column()
+      @Column({default:'Cena Inicial'})
       title: string;
     
-      @Column()
+      @Column({default:10})
       width: number;
     
-      @Column()
+      @Column({default:10})
       height: number;
     
-      @Column({ type: 'json', nullable: true })
-      tokens: any; // Pode ser um objeto JSON para armazenar os tokens do cenário
-    
-      @OneToMany(() => SceneImage, (sceneImage) => sceneImage.scene)
+      @OneToMany(() => SceneImage, (sceneImage) => sceneImage.scene, {onDelete:'CASCADE'})
       sceneImages: SceneImage[];
 }
