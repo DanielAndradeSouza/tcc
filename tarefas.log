@@ -1,10 +1,10 @@
-12/05 
-1. Criei o hook useSceneData que irá servir para sempre atualizar a cena no back-end
-2. Fiz o redirecionamento correto da pagina description_table para o gm, além de fazer as buscas necessárias para acessa-la
+12/05
+1. Criei o hook useSceneData que irá servir para sempre atualizar a cena no back-end.
+2. Fiz o redirecionamento correto da pagina description_table para o gm, além de fazer as buscas necessárias para acessa-la.
 3. Armazenei tanto o id da mesa quando da cena no localStorage.
-4. Fiz a consulta da Cena tanto para os players quando para o Game Master, para que eu possa utilizar para que eu possa manipular
+4. Fiz a consulta da Cena tanto para os players quando para o Game Master, para que eu possa utilizar quando precisar manipular.
 os dados no kanva do konva.
 5. Criei esse log, por que ai eu não fico perdido.
 OBS: 
     Ainda preciso mexer no update, para ter certeza que ele funciona corretamente.
-    Preciso decidir como limitar o acesso do player a algumas funcionalidades
+    Preciso decidir como limitar o acesso do player a algumas funcionalidades.
