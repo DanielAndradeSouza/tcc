@@ -6,7 +6,6 @@ export function useSceneData(sceneId:number | null){
 
   useEffect(() => {
     if (!sceneId) return;
-
     const fetchScene = async () => {
       try {
         const res = await fetch(`table/scene/${sceneId}`, { credentials: "include" });

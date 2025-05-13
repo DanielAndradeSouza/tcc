@@ -18,12 +18,14 @@ export default function TableIdPage() {
     switch(userRole){
       case 'gm':
         const scene_atualGM = await fetchData(`table/${id}/gmscene`,{credentials:'include'});
-        localStorage.setItem("tableId", scene_atualGM);
+        localStorage.setItem("tableId",`${id}`);
+        localStorage.setItem("sceneId",scene_atualGM);
         await router.push(`/gm/scene/${scene_atualGM}`);
         break;
       case 'player':
         const scene_atualPlayer = await fetchData(`table/${id}/playerscene`,{credentials:'include'});
-        localStorage.setItem("tableId",scene_atualPlayer);
+        localStorage.setItem("tableId",`${id}`);
+        localStorage.setItem("sceneId",scene_atualPlayer);
         await router.push(`/player/scene/${scene_atualPlayer}`);
         break;
       default:
