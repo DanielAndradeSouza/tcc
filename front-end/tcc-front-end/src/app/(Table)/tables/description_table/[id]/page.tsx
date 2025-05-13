@@ -51,8 +51,9 @@ export default function TableIdPage() {
   }
   async function handleConfirmation(){
     try{
+      console.log(id);
       const deletedTable = await fetchData(`table/${id}` ,{credentials:'include', method:'DELETE'});
-      router.push("tables");
+      router.push("/tables");
     }catch(e){
       alert("Erro ao excluir a mesa!");
     }
