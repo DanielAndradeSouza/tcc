@@ -5,10 +5,11 @@ import { UpdateTableDto } from './dto/update-table.dto';
 import { CurrentUser } from 'src/auth/current-user.decorator';
 import { CustomJwtGuard } from 'src/auth/jwtGuard/custom.jwt.guard';
 import { CreateSceneDto } from '../scene/dto/create-scene.dto';
+import { SceneService } from '../scene/scene.service';
 
 @Controller('table')
 export class TableController {
-  constructor(private readonly tableService: TableService) {}
+  constructor(private readonly tableService: TableService, private readonly sceneService: SceneService) {}
   //JwtAuthGuard é uma função sendo exportada e que extende a AuthGuard do nest.js/passport
   @UseGuards(CustomJwtGuard)
   @Post('create')
@@ -36,19 +37,29 @@ export class TableController {
   async findAllScenes(idTable:number){
     return this.tableService.findAllScenes(idTable);
   }
+
   @UseGuards(CustomJwtGuard)
   @Get(':id/gmscene')
   async findGmScene(@Param('id') idTable:string){
     return await this.tableService.findGmScene(+idTable);
   }
+
   @UseGuards(CustomJwtGuard)
   @Get(':id/playerscene')
   async findPlayerScene(idTable:string){
     return await this.tableService.findPlayerScene(+idTable);
   }
+
+  @UseGuards(CustomJwtGuard)
+  @Get("scene/:id")
+  async findScene(idScene:string){
+    return await this.sceneService.findOne(+idScene);
+  }
+
+  @UseGuards(CustomJwtGuard)
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.tableService.findOne(+id);
+  async findOne(@Param('id') id: string) {
+    return await this.tableService.findOne(+id);
   }
 
   @UseInterceptors(ClassSerializerInterceptor)

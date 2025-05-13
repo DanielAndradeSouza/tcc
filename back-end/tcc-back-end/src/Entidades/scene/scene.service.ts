@@ -21,8 +21,8 @@ export class SceneService {
   async findAllSceneImage(idScene:number){
     return await this.sceneImageRepository.find({where:{scene: {id:idScene}}});
   }
-  findOne(id: number) {
-    return `This action returns a #${id} scene`;
+  async findOne(idScene: number) {
+    return await this.sceneImageRepository.findOne({where: {id:idScene}})
   }
 
   update(id: number, updateSceneDto: UpdateSceneDto) {
