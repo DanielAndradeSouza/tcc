@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { fetchData } from '@/app/services/api';
 
-export function useAuth<T = any[]>(endpoint: string, defaultValue: T = [] as T) {
+export function  useAuth<T = any[]>(endpoint: string, defaultValue: T = [] as T) {
   const router = useRouter();
   const [data, setData] = useState<T>(defaultValue);
   const [loading, setLoading] = useState(true);

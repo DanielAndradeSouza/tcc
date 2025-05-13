@@ -1,7 +1,7 @@
-type ConfirmModal = {
+type ConfirmModalInfo = {
     isOpen:boolean;
-    onClose:() =>  boolean;
-    onConfirm: () => boolean;
+    onClose:() =>  void;
+    onConfirm: () => void;
     title?:string;
-    message:string;
+    message?:string;
 }

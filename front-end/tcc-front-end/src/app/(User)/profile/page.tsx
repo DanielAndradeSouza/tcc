@@ -2,19 +2,43 @@
 
 import { useAuth } from "@/app/hooks/useAuth";
 import ButtonRequest from "../../components/button_request";
+import ConfirmModal from "@/app/components/modals/confirm_modal";
+import { useState, useEffect } from "react";
+import { fetchData } from "@/app/services/api";
 
 export default function ProfilePage() {
-  // Usando useAuth para buscar os dados do usuário
+  const [modalOpen, setModalOpen] = useState(false);
   const { data: user, loading } = useAuth<User>('user/findOne');
 
-  // Se estiver carregando os dados
-  if (loading) {
-    return <p>Carregando perfil...</p>;
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+
+  useEffect(() => {
+    if (user) {
+      setName(user.name || "");
+      setEmail(user.email || "");
+    }
+  }, [user]);
+
+  if (loading) return <p>Carregando perfil...</p>;
+  if (!user) return <p>Não foi possível carregar os dados do perfil.</p>;
+
+  function openModal() {
+    setModalOpen(true);
   }
 
-  // Se não encontrar dados do usuário ou ocorrer algum erro
-  if (!user) {
-    return <p>Não foi possível carregar os dados do perfil.</p>;
+  function closeModal() {
+    setModalOpen(false);
+  }
+
+  async function handleConfirm() {
+    try {
+      await fetchData(`user/deactivate/${user.id}`, { credentials: 'include' });
+      console.log("Usuário Desativado!");
+      closeModal();
+    } catch (e) {
+      console.error("Erro ao desativar usuário:", e);
+    }
   }
 
   return (
@@ -25,11 +49,8 @@ export default function ProfilePage() {
         <input
           id="username"
           type="text"
-          value={user.name || ""}
-          onChange={(e) => {
-            // Para editar o nome do usuário localmente
-            // Não alteramos o estado diretamente aqui porque estamos usando useAuth
-          }}
+          value={name}
+          onChange={(e) => setName(e.target.value)}
         />
       </div>
       <div>
@@ -37,11 +58,8 @@ export default function ProfilePage() {
         <input
           id="email"
           type="text"
-          value={user.email || ""}
-          onChange={(e) => {
-            // Para editar o e-mail do usuário localmente
-            // Sem alterar o estado diretamente aqui também
-          }}
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
         />
       </div>
       <div className="p-4">
@@ -54,8 +72,24 @@ export default function ProfilePage() {
             headers: {
               'Content-Type': 'application/json',
             },
-            body: JSON.stringify(user),
+            body: JSON.stringify({
+              ...user,
+              name,
+              email,
+            }),
           }}
+          onSuccess={() => alert("Dados Atualizados com Sucesso!")}
+          onError={() => alert("Errp de requisição.")}
+        />
+      </div>
+      <div>
+        <button onClick={openModal}>Desativar Conta</button>
+        <ConfirmModal
+          isOpen={modalOpen}
+          onClose={closeModal}
+          onConfirm={handleConfirm}
+          title="Você tem certeza?"
+          message="Tem certeza que deseja desativar sua conta?"
         />
       </div>
     </div>

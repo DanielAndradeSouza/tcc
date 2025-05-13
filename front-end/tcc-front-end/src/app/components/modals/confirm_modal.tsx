@@ -1,4 +1,4 @@
-export default function ConfirmModal(modalInfo:ConfirmModal) {
+export default function ConfirmModal(modalInfo:ConfirmModalInfo) {
   if (!modalInfo.isOpen) return null
 
   return (

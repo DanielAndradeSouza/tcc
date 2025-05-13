@@ -8,3 +8,5 @@ os dados no kanva do konva.
 OBS: 
     Ainda preciso mexer no update, para ter certeza que ele funciona corretamente.
     Preciso decidir como limitar o acesso do player a algumas funcionalidades.
+13/05:
+1. Criei o ConfirmModal e o ConfirmModalInfo
