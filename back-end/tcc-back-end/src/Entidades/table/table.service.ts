@@ -21,7 +21,7 @@ export class TableService {
     const initialScene = await this.sceneRepository.create();
     await this.sceneRepository.save(initialScene);
     //Cria a mesa com os atributos distribuidos
-    const table = await this.tableRepository.create({...createTableDto,active:true, creation_date:new Date(),
+    const table = await this.tableRepository.create({...createTableDto, creation_date:new Date(),
       sceneAtualPlayers:initialScene,sceneAtualGM:initialScene});
     //Salva a mesa
     const savedTable = await this.tableRepository.save(table);
@@ -90,8 +90,9 @@ export class TableService {
     const updatedTable = this.tableRepository.merge(table, updateTableDto);
     return await this.tableRepository.save(updatedTable);
   }
-
-/*  remove(id: number) {
-    return `This action removes a #${id} table`;
-  }*/
+s
+  async remove(id: number) {
+    console.log(id);
+    return await this.tableRepository.delete(id)
+  }
 }

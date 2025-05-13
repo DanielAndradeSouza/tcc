@@ -2,10 +2,11 @@
 
 import { useAuth } from "@/app/hooks/useAuth";
 import ButtonRequest from "../../components/button_request";
-import ConfirmModal from "@/app/components/modals/confirm_modal";
+
 import { useState, useEffect } from "react";
 import { fetchData } from "@/app/services/api";
 import { useRouter } from "next/navigation";
+import ConfirmationModal from "@/app/components/modals/confirmation_modal";
 
 export default function ProfilePage() {
   const [modalOpen, setModalOpen] = useState(false);
@@ -88,7 +89,7 @@ export default function ProfilePage() {
       </div>
       <div>
         <button onClick={openModal}>Desativar Conta</button>
-        <ConfirmModal
+        <ConfirmationModal
           isOpen={modalOpen}
           onClose={closeModal}
           onConfirm={handleConfirm}

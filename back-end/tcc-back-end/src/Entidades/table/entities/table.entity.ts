@@ -17,8 +17,6 @@ export class Table {
     @Transform(({ value }) => new Date(value)) 
     @Column('text')
     creation_date: Date;
-    @Column({default:true})
-    active:boolean;
 
     @OneToMany(()=> UserTable,(usersTable) => usersTable.table, {onDelete:'CASCADE'})
     usersTable: UserTable;

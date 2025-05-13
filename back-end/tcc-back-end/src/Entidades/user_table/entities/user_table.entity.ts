@@ -7,10 +7,10 @@ export class UserTable {
     @PrimaryGeneratedColumn()
     id: number;
 
-    @ManyToOne(() => User, (user) => user.usersTable)
+    @ManyToOne(() => User, (user) => user.usersTable, {onDelete:'CASCADE'})
     user: User;
 
-    @ManyToOne(() => Table, (table) => table.usersTable)
+    @ManyToOne(() => Table, (table) => table.usersTable, {onDelete:'CASCADE'})
     table: Table;
 
     @Column()

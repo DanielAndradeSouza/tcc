@@ -69,8 +69,8 @@ export class TableController {
     return await this.tableService.update(+id, updateTableDto);
   }
 
-  /*@Delete(':id')
+  @Delete(':id')
   async remove(@Param('id') id: string) {
     return await this.tableService.remove(+id);
-  }*/
+  }
 }

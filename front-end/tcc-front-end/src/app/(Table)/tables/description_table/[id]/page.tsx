@@ -1,10 +1,13 @@
 'use client';
 
+import ConfirmationModal from "@/app/components/modals/confirmation_modal";
 import { useAuth } from "@/app/hooks/useAuth";
 import { fetchData } from "@/app/services/api";
 import { useParams, useRouter } from "next/navigation";
+import { useState } from "react";
 
 export default function TableIdPage() {
+  const [modalOpen, setModalOpen] = useState(false);
   const { id } = useParams();
   const router = useRouter();
   const { data: table, loading } = useAuth<Table | null>(`table/${id}`, null);
@@ -13,6 +16,12 @@ export default function TableIdPage() {
     router.push(`/tables/description_table/${id}/update_table`);
   }
 
+  function openModal(){
+    setModalOpen(true);
+  }
+  function closeModal(){
+    setModalOpen(false);
+  }
   async function handleScenePage(){
     const userRole = await fetchData(`auth/profile/${id}`,{credentials:'include'})
     switch(userRole){
@@ -40,13 +49,24 @@ export default function TableIdPage() {
   if (!table) {
     return <p>Não foi possível carregar a mesa.</p>;
   }
-
+  async function handleConfirmation(){
+    try{
+      const deletedTable = await fetchData(`table/${id}` ,{credentials:'include', method:'DELETE'});
+      router.push("tables");
+    }catch(e){
+      alert("Erro ao excluir a mesa!");
+    }
+  }
   return (
     <div>
       <h1>{table.table_name}</h1>
       <p>{table.description}</p>
       <button onClick={handleScenePage}>Iniciar Mesa</button>
       <button onClick={handleUpdatePage}>Atualizar Dados da Mesa</button>
+      <button onClick={openModal}>Deletar Mesa</button>
+      <ConfirmationModal isOpen={modalOpen} onClose={closeModal} onConfirm={handleConfirmation} 
+      title="Tem Certeza que deseja excluir a mesa?" message="O mesa será excluida permanentemente, tem certeza que deseja excluir a mesa?"
+      />
     </div>
   );
 }

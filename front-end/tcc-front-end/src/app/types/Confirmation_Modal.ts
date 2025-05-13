@@ -1,4 +1,4 @@
-type ConfirmModalInfo = {
+type ConfirmationModalInfo = {
     isOpen:boolean;
     onClose:() =>  void;
     onConfirm: () => void;
