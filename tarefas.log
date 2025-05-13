@@ -10,3 +10,5 @@ OBS:
     Preciso decidir como limitar o acesso do player a algumas funcionalidades.
 13/05:
 1. Criei o ConfirmModal e o ConfirmModalInfo
+2. Fiz a desativação do Usuário
+3. Fiz a Verificação do login, para se o usuário está ativado ou não.

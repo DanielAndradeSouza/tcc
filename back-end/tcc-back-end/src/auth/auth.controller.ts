@@ -33,4 +33,13 @@ export class AuthController {
   ) {
     return await this.authService.getProfile(user.sub, +tableId);
   }
+  @Post('logout')
+  async logout(@Res() res:Response){
+    res.cookie('jwt','',{
+      httpOnly:true,
+      expires:new Date(0),
+      path:'/'
+    })
+    return res.status(200).json({message:"Logout Realizado com Sucesso"})
+  }
 }

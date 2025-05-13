@@ -5,11 +5,12 @@ import ButtonRequest from "../../components/button_request";
 import ConfirmModal from "@/app/components/modals/confirm_modal";
 import { useState, useEffect } from "react";
 import { fetchData } from "@/app/services/api";
+import { useRouter } from "next/navigation";
 
 export default function ProfilePage() {
   const [modalOpen, setModalOpen] = useState(false);
   const { data: user, loading } = useAuth<User>('user/findOne');
-
+  const router = useRouter();
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
 
@@ -33,9 +34,12 @@ export default function ProfilePage() {
 
   async function handleConfirm() {
     try {
-      await fetchData(`user/deactivate/${user.id}`, { credentials: 'include' });
+      await fetchData(`user/deactivate/${user.id}`, {method:'PATCH' ,credentials: 'include' });
       console.log("Usuário Desativado!");
       closeModal();
+      await localStorage.clear();
+      await fetchData(`auth/logout`,{method:'POST',credentials:'include'});
+      router.push('create_account');
     } catch (e) {
       console.error("Erro ao desativar usuário:", e);
     }

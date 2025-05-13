@@ -13,10 +13,10 @@ export class UserService {
     return await this.userRepository.save(user);
   }
 
-
   async findOne(email: string): Promise<User | null> {
     return this.userRepository.findOne({ where: { email } });
   }
+  
   async findById(userId: number): Promise<User | null> {
     return await this.userRepository.findOne({ where: { id: userId } });
   }
@@ -28,10 +28,16 @@ export class UserService {
     const updatedUser = this.userRepository.merge(user, updateUserDto);
     return await this.userRepository.save(updatedUser);
   }
-  
-  
+  async deactivate(id: number): Promise<User | undefined> {
+    try{
+    const user = await this.userRepository.findOne({where: {id}});
+    if(user != null){
+      user.active = false;
+      return this.userRepository.save(user);
+    }
 
-  remove(id: number) {
-    return `This action removes a #${id} user`;
+    }catch(e){
+      throw new NotFoundException("Usuário não Encontrado!");
+    }
   }
 }

@@ -12,8 +12,8 @@ export class UserController {
   constructor(private readonly userService: UserService) {}
   @UseInterceptors(ClassSerializerInterceptor)  
   @Post()
-  create(@Body() createUserDto: CreateUserDto) {
-    return this.userService.create(createUserDto);
+  async create(@Body() createUserDto: CreateUserDto) {
+    return await this.userService.create(createUserDto);
   }
 
   @UseInterceptors(ClassSerializerInterceptor)
@@ -30,9 +30,11 @@ export class UserController {
     console.log(updateUserDto);
     return await this.userService.update(+id, updateUserDto);
   }
-
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.userService.remove(+id);
+  
+  @UseInterceptors(ClassSerializerInterceptor)
+  @UseGuards(CustomJwtGuard)
+  @Patch('deactivate/:id')
+  async deactivate(@Param('id') id: string) {
+    return await this.userService.deactivate(+id);
   }
 }
