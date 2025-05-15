@@ -19,41 +19,10 @@ export class TableController {
   }
 
   @UseGuards(CustomJwtGuard)
-  @Post(':id/scene')
-  async createScene(idTable:number,createSceneDto:CreateSceneDto){
-    // Criação da Cena
-    const scene = this.tableService.createScene(idTable,createSceneDto);
-  }
-
-  @UseGuards(CustomJwtGuard)
   @Get('findAll')
   async findAll(@CurrentUser() user:any) {
     console.log(user.sub);
     return await this.tableService.findAll(user.sub);
-  }
-  
-  @UseGuards(CustomJwtGuard)
-  @Get(':id/scene')
-  async findAllScenes(idTable:number){
-    return this.tableService.findAllScenes(idTable);
-  }
-
-  @UseGuards(CustomJwtGuard)
-  @Get(':id/gmscene')
-  async findGmScene(@Param('id') idTable:string){
-    return await this.tableService.findGmScene(+idTable);
-  }
-
-  @UseGuards(CustomJwtGuard)
-  @Get(':id/playerscene')
-  async findPlayerScene(idTable:string){
-    return await this.tableService.findPlayerScene(+idTable);
-  }
-
-  @UseGuards(CustomJwtGuard)
-  @Get("scene/:id")
-  async findScene(idScene:string){
-    return await this.sceneService.findOne(+idScene);
   }
 
   @UseGuards(CustomJwtGuard)
@@ -72,5 +41,27 @@ export class TableController {
   @Delete(':id')
   async remove(@Param('id') id: string) {
     return await this.tableService.remove(+id);
+  }
+  @UseGuards(CustomJwtGuard)
+  @Post(':id/scene')
+  async createScene(idTable:number,createSceneDto:CreateSceneDto){
+    // Criação da Cena
+    const scene = this.tableService.createScene(idTable,createSceneDto);
+  }
+  @UseGuards(CustomJwtGuard)
+  @Get(':id/scene')
+  async findAllScenes(idTable:number){
+    return this.tableService.findAllScenes(idTable);
+  }
+  @UseGuards(CustomJwtGuard)
+  @Get(':id/gmscene')
+  async findGmScene(@Param('id') idTable:string){
+    return await this.tableService.findGmScene(+idTable);
+  }
+
+  @UseGuards(CustomJwtGuard)
+  @Get(':id/playerscene')
+  async findPlayerScene(idTable:string){
+    return await this.tableService.findPlayerScene(+idTable);
   }
 }

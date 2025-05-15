@@ -5,14 +5,14 @@ import { Request } from 'express';
 
 @Injectable()
 export class CustomJwtGuard implements CanActivate {
-  canActivate(context: ExecutionContext): boolean {
-    const request = context.switchToHttp().getRequest<Request>();
-    const token = request.cookies?.['jwt'];
+  async canActivate(context: ExecutionContext): Promise<boolean> {
+    const request = await context.switchToHttp().getRequest<Request>();
+    const token = await request.cookies?.['jwt'];
     //console.log(token);
     if (!token) throw new UnauthorizedException('Token ausente');
 
     try {
-      const payload = jwt.verify(token, process.env.JWT_SECRET!);
+      const payload = await jwt.verify(token, process.env.JWT_SECRET!);
       request.user = payload;
       return true;
     } catch (e) {

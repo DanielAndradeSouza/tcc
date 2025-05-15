@@ -1,26 +1,34 @@
 import { useEffect, useState } from "react";
+import { fetchData } from "../services/api";
+import { useRouter } from 'next/navigation';
 
-export function useSceneData(sceneId:number | null){
+export function useSceneData() {
   const [scene, setScene] = useState(null);
   const [loading, setLoading] = useState(true);
+  const router = useRouter();
 
   useEffect(() => {
-    if (!sceneId) return;
-    const fetchScene = async () => {
+    async function fetchScene() {
       try {
-        const res = await fetch(`table/scene/${sceneId}`, { credentials: "include" });
-        const data = await res.json();
-        console.log(data);
-        setScene(data);
-      } catch (err) {
-        console.error("Erro ao carregar cena:", err);
+        const id = localStorage.getItem("sceneId");
+        //console.log(id);
+        const result = await fetchData(`scene/${id}`, {credentials: 'include'});
+        console.log(result);
+        setScene(result);
+      } catch (err: any) {
+        if (err.status === 404) {
+          console.warn("Dados da cena não encontrados, redirecionando para tables...");
+   //       router.push('/tables');
+        } else {
+          console.error("Erro ao carregar dados:", err);
+        }
       } finally {
         setLoading(false);
       }
-    };
+    }
 
     fetchScene();
-  }, [sceneId]);
+  }, []); 
 
   return { scene, loading };
 }
