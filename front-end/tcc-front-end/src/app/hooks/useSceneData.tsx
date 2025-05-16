@@ -16,11 +16,15 @@ export function useSceneData() {
         console.log(result);
         setScene(result);
       } catch (err: any) {
-        if (err.status === 404) {
-          console.warn("Dados da cena não encontrados, redirecionando para tables...");
-   //       router.push('/tables');
-        } else {
-          console.error("Erro ao carregar dados:", err);
+        switch(err.status){
+          case 401:
+            router.push("/login");
+          case 404:
+            alert("Cena não encontrada! Redirecinondo para a home page!")
+            router.push("/tables");
+          default:
+            alert("Erro no servidor!");
+            router.push("/tables");
         }
       } finally {
         setLoading(false);

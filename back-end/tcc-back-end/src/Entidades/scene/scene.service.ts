@@ -32,8 +32,15 @@ export class SceneService {
     return await this.sceneImageRepository.find({where:{scene: {id:idScene}}});
   }
 
-  update(id: number, updateSceneDto: UpdateSceneDto) {
-    return `This action updates a #${id} scene`;
+  async update(id: number, updateSceneDto: UpdateSceneDto): Promise<Scene | null> {
+    try{
+      const scene = await this.sceneRepository.findOneOrFail({where: {id}});
+      const updatedScene = await this.sceneRepository.merge(scene,updateSceneDto);
+      console.log(updateSceneDto);
+      return this.sceneRepository.save(updatedScene);
+    }catch(e){
+      throw new NotFoundException("Cena não encontrada!");
+    }
   }
 
   remove(id: number) {
