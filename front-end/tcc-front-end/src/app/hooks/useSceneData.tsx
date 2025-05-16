@@ -3,7 +3,7 @@ import { fetchData } from "../services/api";
 import { useRouter } from 'next/navigation';
 
 export function useSceneData() {
-  const [scene, setScene] = useState(null);
+  const [scene, setScene] = useState<Scene | null>(null);
   const [loading, setLoading] = useState(true);
   const router = useRouter();
 
