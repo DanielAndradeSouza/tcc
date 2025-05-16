@@ -11,7 +11,7 @@ export function useSceneData() {
     async function fetchScene() {
       try {
         const id = localStorage.getItem("sceneId");
-        //console.log(id);
+        console.log(id);
         const result = await fetchData(`scene/${id}`, {credentials: 'include'});
         console.log(result);
         setScene(result);

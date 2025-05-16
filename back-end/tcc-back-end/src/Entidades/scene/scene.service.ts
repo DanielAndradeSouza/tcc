@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreateSceneDto } from './dto/create-scene.dto';
 import { UpdateSceneDto } from './dto/update-scene.dto';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -18,7 +18,11 @@ export class SceneService {
     return await this.sceneImageRepository.save(sceneImage);
   }
   async findOne(id: number) {
-    return await this.sceneRepository.findOne({where: {id}})
+    try{
+      return await this.sceneRepository.findOne({where: {id}})
+    }catch(e){
+      throw new NotFoundException("Scene não encontrada!");
+    }
   }
   findAll() {
     return `This action returns all scene`;

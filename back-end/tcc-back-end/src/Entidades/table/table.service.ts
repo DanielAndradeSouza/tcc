@@ -16,30 +16,39 @@ export class TableService {
   @InjectRepository(User) private userRepository: Repository<User>,
   @InjectRepository(Scene) private sceneRepository: Repository<Scene>){} 
 
-  async create(createTableDto: CreateTableDto, userId: number): Promise<Table>{
-    //Cria a cena inicial
-    const initialScene = await this.sceneRepository.create();
-    await this.sceneRepository.save(initialScene);
-    //Cria a mesa com os atributos distribuidos
-    const table = await this.tableRepository.create({...createTableDto, creation_date:new Date(),
-      sceneAtualPlayers:initialScene,sceneAtualGM:initialScene});
-    //Salva a mesa
-    const savedTable = await this.tableRepository.save(table);
-    //Procura se o usuário existe
-    const user = await this.userRepository.findOne({ where: { id: userId } });
-    if (!user) {
-      throw new Error('Usuário não encontrado, por favor logue em sua conta');
-    }
-    //Cria o relacionamento n por n
-    const userTable = this.userTableRepository.create({
-      user,
-      table: savedTable,
-      role: 'gm', 
-    });
-    
-    await this.userTableRepository.save(userTable);
-    return savedTable;
-  }
+async create(createTableDto: CreateTableDto, userId: number): Promise<Table> {
+  const table = this.tableRepository.create({
+    ...createTableDto,
+    creation_date: new Date(),
+  });
+
+  const savedTable = await this.tableRepository.save(table);
+
+  const initialScene = this.sceneRepository.create({
+    table: savedTable,
+  });
+
+  await this.sceneRepository.save(initialScene);
+
+  savedTable.sceneAtualGM = initialScene;
+  savedTable.sceneAtualPlayers = initialScene;
+  await this.tableRepository.save(savedTable);
+
+  const user = await this.userRepository.findOne({ where: { id: userId } });
+  if (!user) throw new Error('Usuário não encontrado, por favor logue em sua conta');
+
+  const userTable = this.userTableRepository.create({
+    user,
+    table: savedTable,
+    role: 'gm',
+  });
+
+  await this.userTableRepository.save(userTable);
+
+  return savedTable;
+}
+
+
   //Cria uma Cena
   async createScene(idTable:number, createSceneDto:CreateSceneDto):Promise<Scene>{
     const scene = this.sceneRepository.create(createSceneDto);

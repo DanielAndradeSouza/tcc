@@ -7,7 +7,7 @@ export class SceneController {
   constructor(private readonly sceneService: SceneService) {}
   @UseGuards(CustomJwtGuard)
   @Get(':id')
-  async findScene(@Param('id') id:string){ 
+  async findOne(@Param('id') id:string){ 
     console.log(id);
     return await this.sceneService.findOne(+id);
   }
