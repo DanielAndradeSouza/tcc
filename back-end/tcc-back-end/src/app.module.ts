@@ -11,6 +11,7 @@ import { UserModule } from './Entidades/user/user.module';
 import { TableModule } from './Entidades/table/table.module';
 import { UserTableModule } from './Entidades/user_table/user_table.module';
 import { AuthModule } from './auth/auth.module';
+import { SceneModule } from './Entidades/scene/scene.module';
 
 @Module({
   imports: [TypeOrmModule.forRoot({
@@ -26,6 +27,7 @@ import { AuthModule } from './auth/auth.module';
   }),
   UserModule,
   TableModule,
+  SceneModule,
   UserTableModule,
   AuthModule,
   ],

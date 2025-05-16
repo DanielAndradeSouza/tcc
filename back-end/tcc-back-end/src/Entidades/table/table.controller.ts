@@ -5,11 +5,11 @@ import { UpdateTableDto } from './dto/update-table.dto';
 import { CurrentUser } from 'src/auth/current-user.decorator';
 import { CustomJwtGuard } from 'src/auth/jwtGuard/custom.jwt.guard';
 import { CreateSceneDto } from '../scene/dto/create-scene.dto';
-import { SceneService } from '../scene/scene.service';
 
 @Controller('table')
 export class TableController {
-  constructor(private readonly tableService: TableService, private readonly sceneService: SceneService) {}
+  //Metodos organizados da seguinte forma, primeiro são os metodos da Table, e depois da Table em relação a Scene
+  constructor(private readonly tableService: TableService) {}
   //JwtAuthGuard é uma função sendo exportada e que extende a AuthGuard do nest.js/passport
   @UseGuards(CustomJwtGuard)
   @Post('create')
@@ -44,13 +44,13 @@ export class TableController {
   }
   @UseGuards(CustomJwtGuard)
   @Post(':id/scene')
-  async createScene(idTable:number,createSceneDto:CreateSceneDto){
+  async createScene(@Param('id') idTable:number,createSceneDto:CreateSceneDto){
     // Criação da Cena
     const scene = this.tableService.createScene(idTable,createSceneDto);
   }
   @UseGuards(CustomJwtGuard)
   @Get(':id/scene')
-  async findAllScenes(idTable:number){
+  async findAllScenes(@Param('id') idTable:number){
     return this.tableService.findAllScenes(idTable);
   }
   @UseGuards(CustomJwtGuard)

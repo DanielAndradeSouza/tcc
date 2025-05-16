@@ -13,3 +13,9 @@ OBS:
 2. Fiz a desativação do Usuário
 3. Fiz a Verificação do login, para se o usuário está ativado ou não.
 4. Fiz a Deleção da Table
+
+15/05
+1. Consegui retornar a Scene para a tela do Canva, o problema foi que eu não coloquei a Scene no root.Module
+
+16/05
+1.
