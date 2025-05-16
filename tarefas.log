@@ -18,4 +18,7 @@ OBS:
 1. Consegui retornar a Scene para a tela do Canva, o problema foi que eu não coloquei a Scene no root.Module
 
 16/05
-1.
+1. Fiz o Stage básico para vizualizar a Scene
+2. Fiz o modal de atualização das cenas
+3. Fiz a atualização das Cenas no back-end
+OBS: Meu próximo passo será atualizar em tempo real, a modificação de tamanho da Cena.
