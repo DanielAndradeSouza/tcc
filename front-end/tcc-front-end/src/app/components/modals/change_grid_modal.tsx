@@ -1,10 +1,13 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import ButtonRequest from "../button_request";
 
 export default function ChangeGridModal(modalInfo: SceneModalInfo) {
   const [width, setWidth] = useState<number>(modalInfo.scene.width);
   const [height, setHeight] = useState<number>(modalInfo.scene.height); // <- Corrigido aqui também, antes estava pegando o width duas vezes
-
+  useEffect(() => {
+    setWidth(modalInfo.scene.width);
+    setHeight(modalInfo.scene.height);
+  }, [modalInfo.scene]);
   return (
     <div>
       <label htmlFor="width">Largura:</label>
@@ -24,7 +27,12 @@ export default function ChangeGridModal(modalInfo: SceneModalInfo) {
             'Content-Type':'application/json'
           }
         }}
-        onSuccess={() => alert("Cena redimensionada com sucesso!")}
+        onSuccess={ ()=>{
+          modalInfo.onUpdate(width,height);
+          modalInfo.onClose()
+
+        }
+        }
         onError={() => alert("Erro ao redimensionar a cena")}
       />
     </div>

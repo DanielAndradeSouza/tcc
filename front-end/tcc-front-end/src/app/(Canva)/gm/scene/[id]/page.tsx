@@ -56,7 +56,15 @@ export default function ScenePage(){
         <div>
             <button onClick={toggleModal}>Modificar Cena</button>
             {modal && (
-                <ChangeGridModal scene={scene} isOpen={true} onClose={toggleModal} ></ChangeGridModal>
+                <ChangeGridModal scene={scene} isOpen={true} onClose={toggleModal} onUpdate={(newWidth,newHeight) =>
+                {
+                  setWidth(newWidth);
+                  setHeight(newHeight);
+                  scene.width = newWidth;
+                  scene.height = newHeight;
+                  setCells(Array(newWidth * newHeight).fill(false));
+                }
+                } ></ChangeGridModal>
             )}
         </div>
     </div>

@@ -22,3 +22,8 @@ OBS:
 2. Fiz o modal de atualização das cenas
 3. Fiz a atualização das Cenas no back-end
 OBS: Meu próximo passo será atualizar em tempo real, a modificação de tamanho da Cena.
+
+17/05
+1. Fiz a atualização em Tempo Real.
+2. Corriji o bug de que os campos do change_grid_modal não eram atualizados depois de alguma alteração já ser feita na scene.
+3. 
