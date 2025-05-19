@@ -26,4 +26,6 @@ OBS: Meu próximo passo será atualizar em tempo real, a modificação de tamanh
 17/05
 1. Fiz a atualização em Tempo Real.
 2. Corriji o bug de que os campos do change_grid_modal não eram atualizados depois de alguma alteração já ser feita na scene.
-3. 
+
+19/05
+1.
