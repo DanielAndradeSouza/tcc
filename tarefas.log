@@ -28,4 +28,7 @@ OBS: Meu próximo passo será atualizar em tempo real, a modificação de tamanh
 2. Corriji o bug de que os campos do change_grid_modal não eram atualizados depois de alguma alteração já ser feita na scene.
 
 19/05
-1.
+Precisam ser feitas até final de junho:
+1. Descobrir como armazenar imagens no MySQL
+2. Fazer o sistema de convites de gm para player
+3. Interfaces
