@@ -35,7 +35,7 @@ Precisam ser feitas até final de junho:
 4. Interfaces
 25/05:
 1. Usei Multer para a criação de diretórios de forma local.
-2. Fiz o componente "UploadImage" para testar o upload.
+2. Fiz o componente "UploadImage" para fazer o Upload.
 3. Fiz as estilizações dos Modais, criando três principais componentes estilizados, dentro de modal.style.tsx temos: Overlay, ModalConteiner e CloseButton.
 4. A imagem está sendo armazenada corretamente, tanto no diretório quanto no id do usuário. Também percebi que por padrão
 se a imagem enviada e salva tem o mesmo nome onde ela está sendo guardada, ele não cria uma imagem nova.
