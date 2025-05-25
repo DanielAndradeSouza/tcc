@@ -7,6 +7,7 @@ import { CustomJwtGuard } from 'src/auth/jwtGuard/custom.jwt.guard';
 import * as fs from 'fs';
 import * as multer from 'multer';
 import { CurrentUser } from 'src/auth/current-user.decorator';
+import * as path from 'path';
 @Controller('scene_images')
 export class SceneImagesController {
   constructor(private readonly sceneImagesService: SceneImagesService) {}
@@ -21,7 +22,9 @@ async create(@UploadedFile() file: Express.Multer.File,@CurrentUser() user: any,
   const uploadDir = `img/${userId}`;
   await fs.mkdirSync(uploadDir, { recursive: true });
   await fs.writeFileSync(`${uploadDir}/${file.originalname}`, file.buffer);
-  const savedImage = await this.sceneImagesService.create(uploadDir,+sceneId);
+  console.log(fs.readdirSync(uploadDir))
+  const fullPath = path.join(uploadDir, file.originalname);
+  const savedImage = await this.sceneImagesService.create(fullPath,+sceneId);
   return { message: 'Arquivo salvo com sucesso!' };
 }
 

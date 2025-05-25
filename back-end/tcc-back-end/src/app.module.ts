@@ -12,6 +12,7 @@ import { TableModule } from './Entidades/table/table.module';
 import { UserTableModule } from './Entidades/user_table/user_table.module';
 import { AuthModule } from './auth/auth.module';
 import { SceneModule } from './Entidades/scene/scene.module';
+import { SceneImagesModule } from './Entidades/scene_images/scene_images.module';
 
 @Module({
   imports: [TypeOrmModule.forRoot({
@@ -28,6 +29,7 @@ import { SceneModule } from './Entidades/scene/scene.module';
   UserModule,
   TableModule,
   SceneModule,
+  SceneImagesModule,
   UserTableModule,
   AuthModule,
   ],

@@ -36,5 +36,10 @@ Precisam ser feitas até final de junho:
 25/05:
 1. Usei Multer para a criação de diretórios de forma local.
 2. Fiz o componente "UploadImage" para testar o upload.
-3. Fiz as estilizações dos Modais.
-4. Preciso fazer os testes do upload de imagem
+3. Fiz as estilizações dos Modais, criando três principais componentes estilizados, dentro de modal.style.tsx temos: Overlay, ModalConteiner e CloseButton.
+4. A imagem está sendo armazenada corretamente, tanto no diretório quanto no id do usuário. Também percebi que por padrão
+se a imagem enviada e salva tem o mesmo nome onde ela está sendo guardada, ele não cria uma imagem nova.
+Para os próximos passos, eu preciso conseguir retornar imagens para o front-end para renderiza-las, será uma operação bem pesada mas no momento estou pensando assim:
+1. Retornarei dois vetores para o front-end, o primeiro retornarei as imagens o segundo será os objetos com as especificações(posição da imagem e etc)
+2. Eu terei de fazer o seguinte, percorrerei o vetor de objetos e então irei verificar a posição de cada um deles e quais arquivos eles são referentes 
+para assim fazer a renderização no TableTop.
