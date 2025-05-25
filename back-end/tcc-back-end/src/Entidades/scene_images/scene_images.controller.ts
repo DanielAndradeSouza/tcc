@@ -1,16 +1,30 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, UseInterceptors, UseGuards } from '@nestjs/common';
 import { SceneImagesService } from './scene_images.service';
-import { CreateSceneImageDto } from './dto/create-scene_image.dto';
+import { UploadedFile } from '@nestjs/common';
 import { UpdateSceneImageDto } from './dto/update-scene_image.dto';
-
-@Controller('scene-images')
+import { FileInterceptor } from '@nestjs/platform-express';
+import { CustomJwtGuard } from 'src/auth/jwtGuard/custom.jwt.guard';
+import * as fs from 'fs';
+import * as multer from 'multer';
+import { CurrentUser } from 'src/auth/current-user.decorator';
+@Controller('scene_images')
 export class SceneImagesController {
   constructor(private readonly sceneImagesService: SceneImagesService) {}
 
-  @Post()
-  create(@Body() createSceneImageDto: CreateSceneImageDto) {
-    return this.sceneImagesService.create(createSceneImageDto);
-  }
+@Post(":id")
+@UseGuards(CustomJwtGuard)
+@UseInterceptors(FileInterceptor('file', { storage: multer.memoryStorage() }))
+async create(@UploadedFile() file: Express.Multer.File,@CurrentUser() user: any, @Param("id") sceneId:string) {
+  console.log('Arquivo na memória:', file.originalname);
+
+  const userId = user.sub;
+  const uploadDir = `img/${userId}`;
+  await fs.mkdirSync(uploadDir, { recursive: true });
+  await fs.writeFileSync(`${uploadDir}/${file.originalname}`, file.buffer);
+  const savedImage = await this.sceneImagesService.create(uploadDir,+sceneId);
+  return { message: 'Arquivo salvo com sucesso!' };
+}
+
 
   @Get()
   findAll() {

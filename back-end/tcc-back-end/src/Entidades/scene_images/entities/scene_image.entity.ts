@@ -4,28 +4,23 @@ import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
 export class SceneImage {
       @PrimaryGeneratedColumn()
       id: number;
-    
+      
       @ManyToOne(() => Scene, (scene) => scene.sceneImages, { onDelete: 'CASCADE' })
       scene: Scene;
     
-      @Column()
+      @Column({nullable:false})
       height: number;
     
-      @Column()
+      @Column({nullable:false})
       width: number;
     
-      @Column()
+      @Column({nullable:false})
       image_url: string;
     
-      @Column()
+      @Column({default:1})
       x_pos: number;
     
-      @Column()
+      @Column({default:1})
       y_pos: number;
     
-      @Column()
-      rotation: number;
-    
-      @Column()
-      layer: string;
 }
