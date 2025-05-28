@@ -1,11 +1,10 @@
-import { Injectable } from '@nestjs/common';
-import { CreateSceneImageDto } from './dto/create-scene_image.dto';
-import { UpdateSceneImageDto } from './dto/update-scene_image.dto';
+import { Injectable, NotFoundException } from '@nestjs/common';
+import { readdirSync, readFileSync, existsSync } from 'fs';
 import { InjectRepository } from '@nestjs/typeorm';
 import { SceneImage } from './entities/scene_image.entity';
 import { Repository } from 'typeorm';
 import { Scene } from '../scene/entities/scene.entity';
-
+import { join } from 'path';
 @Injectable()
 export class SceneImagesService {
   constructor(@InjectRepository(SceneImage) private readonly sceneImageRepository: Repository<SceneImage>, 
@@ -24,19 +23,45 @@ export class SceneImagesService {
 
   }
 
-  findAll() {
-    return `This action returns all sceneImages`;
+  async findAllByScene(idScene:number,userId:number) {
+    try{
+      return await this.sceneImageRepository.find({where: {scene: {id: idScene}}});      
+    }catch(e){
+      throw new NotFoundException("Erro ao carregar algum arquivo contido na Cena!");
+    }
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} sceneImage`;
-  }
 
-  update(id: number, updateSceneImageDto: UpdateSceneImageDto) {
-    return `This action updates a #${id} sceneImage`;
-  }
+  async findAllFiles(idScene: number, userId:number) {
+    const userDir = `img/${userId}`;
+    if (!existsSync(userDir)) {
+      throw new NotFoundException('Usuário ou diretório não encontrado');
+    }
 
-  remove(id: number) {
-    return `This action removes a #${id} sceneImage`;
+    const files = readdirSync(userDir);
+
+    if (files.length === 0) {
+      throw new NotFoundException('Nenhum arquivo encontrado para esse usuário');
+    }
+
+    const filesWithContent = files.map((filename) => {
+      const filePath = join(userDir, filename);
+      const fileBuffer = readFileSync(filePath);
+      const base64Content = fileBuffer.toString('base64');
+
+      // Definindo tipo básico para uso no frontend
+      let mimeType = 'application/octet-stream';
+      if (filename.endsWith('.png')) mimeType = 'image/png';
+      else if (filename.endsWith('.jpg') || filename.endsWith('.jpeg')) mimeType = 'image/jpeg';
+      else if (filename.endsWith('.gif')) mimeType = 'image/gif';
+
+      return {
+        filename,
+        mimeType,
+        base64Content,
+      };
+    });
+
+    return filesWithContent;
   }
 }

@@ -27,25 +27,16 @@ async create(@UploadedFile() file: Express.Multer.File,@CurrentUser() user: any,
   const savedImage = await this.sceneImagesService.create(fullPath,+sceneId);
   return { message: 'Arquivo salvo com sucesso!' };
 }
-
-
-  @Get()
-  findAll() {
-    return this.sceneImagesService.findAll();
-  }
-
+  //Metodo utilizado para achar todas as referências do banco
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.sceneImagesService.findOne(+id);
+  @UseGuards(CustomJwtGuard)
+  async findAllByScene(@Param('id') idScene: string, @CurrentUser() user: any) {
+    return await this.sceneImagesService.findAllByScene(+idScene,user.sub);
   }
 
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateSceneImageDto: UpdateSceneImageDto) {
-    return this.sceneImagesService.update(+id, updateSceneImageDto);
-  }
-
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.sceneImagesService.remove(+id);
+  @Get(':findAllFiles/:id')
+  @UseGuards(CustomJwtGuard)
+  findAllFiles(@Param('id') idscene: string,@CurrentUser() user:any) {
+    return this.sceneImagesService.findAllFiles(+idscene,user.sub);
   }
 }
