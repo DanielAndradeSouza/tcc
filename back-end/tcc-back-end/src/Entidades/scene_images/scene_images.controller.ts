@@ -34,9 +34,9 @@ async create(@UploadedFile() file: Express.Multer.File,@CurrentUser() user: any,
     return await this.sceneImagesService.findAllByScene(+idScene,user.sub);
   }
 
-  @Get(':findAllFiles/:id')
+  @Get('findAllFiles/:id')
   @UseGuards(CustomJwtGuard)
-  findAllFiles(@Param('id') idscene: string,@CurrentUser() user:any) {
-    return this.sceneImagesService.findAllFiles(+idscene,user.sub);
+  async findAllFiles(@Param('id') idscene: string,@CurrentUser() user:any) {
+    return await this.sceneImagesService.findAllFiles(+idscene,user.sub);
   }
 }

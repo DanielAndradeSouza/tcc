@@ -30,9 +30,9 @@ export class SceneImagesService {
       throw new NotFoundException("Erro ao carregar algum arquivo contido na Cena!");
     }
   }
-
-
-  async findAllFiles(idScene: number, userId:number) {
+  
+  //Isso vai ser achado todos os arquivos do usuário
+  async findAllFiles(sceneId:number,userId: number) {
     const userDir = `img/${userId}`;
     if (!existsSync(userDir)) {
       throw new NotFoundException('Usuário ou diretório não encontrado');
@@ -49,15 +49,8 @@ export class SceneImagesService {
       const fileBuffer = readFileSync(filePath);
       const base64Content = fileBuffer.toString('base64');
 
-      // Definindo tipo básico para uso no frontend
-      let mimeType = 'application/octet-stream';
-      if (filename.endsWith('.png')) mimeType = 'image/png';
-      else if (filename.endsWith('.jpg') || filename.endsWith('.jpeg')) mimeType = 'image/jpeg';
-      else if (filename.endsWith('.gif')) mimeType = 'image/gif';
-
       return {
         filename,
-        mimeType,
         base64Content,
       };
     });

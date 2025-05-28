@@ -3,6 +3,7 @@
 import ChangeGridModal from "@/app/components/modals/change_grid_modal";
 import { UploadImage } from "@/app/components/modals/upload_image";
 import { useSceneData } from "@/app/hooks/useSceneData"
+import { fetchData } from "@/app/services/api";
 import { useEffect, useState } from "react";
 import { Stage, Layer, Rect } from "react-konva"
 
@@ -14,14 +15,37 @@ export default function ScenePage(){
   const [cells, setCells] = useState<boolean[]>([]);
   const [modal, setModal] = useState(false);
   const [uploadModalOpen, setUploadModalOpen] = useState(false);
+  const [userImages, setUserImages] = useState<
+    { filename: string; base64Content: string }[]
+  >([]);
+  const [imagesLoading, setImagesLoading] = useState<boolean>(true);
 
-  useEffect(() => {
-    if (scene) {
-      setWidth(scene.width);
-      setHeight(scene.height);
-      setCells(Array(scene.width * scene.height).fill(false));
+useEffect(() => {
+  if (!scene) return;
+
+  // Atualiza o grid e as células
+  setWidth(scene.width);
+  setHeight(scene.height);
+  setCells(Array(scene.width * scene.height).fill(false));
+
+  // Busca as imagens do usuário
+  const fetchImages = async () => {
+    try {
+      const data = await fetchData(`scene_images/findAllFiles/${localStorage.getItem("sceneId")}`, { credentials: 'include' });
+      console.log(data)
+      setUserImages(data || []); // garante que sempre vai um array
+    } catch (error) {
+      console.error('Erro ao buscar imagens', error);
+      setUserImages([]); // garante um array vazio em caso de falha
+    } finally {
+      setImagesLoading(false);
     }
-  }, [scene]);
+  };
+
+  setImagesLoading(true);
+  fetchImages();
+}, [scene]);
+
 
   if (loading || !scene || cells.length === 0) {
     return <p>Carregando Cena aguarde...</p>;

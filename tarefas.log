@@ -43,7 +43,10 @@ Para os próximos passos, eu preciso conseguir retornar imagens para o front-end
 1. Retornarei dois vetores para o front-end, o primeiro retornarei as imagens o segundo será os objetos com as especificações(posição da imagem e etc)
 2. Eu terei de fazer o seguinte, percorrerei o vetor de objetos e então irei verificar a posição de cada um deles e quais arquivos eles são referentes 
 para assim fazer a renderização no TableTop.
-27/04
+27/05
 1.Criei a função que retorna todas as posições das imagens para o navegador
 2.Criei a função que retornar todas as imagens para o navegador.
 Próximo passo será verificar como usar o Blob
+28/05
+1. Revisei o código do findAllFiles e apenas tirei o retorno do path, agora ele está retornando o conteudo do arquivo em base 64 e também o nome do arquivo.
+2. Fiz o teste, as imagens estão retornando corretamente
