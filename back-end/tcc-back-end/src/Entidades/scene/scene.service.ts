@@ -24,9 +24,6 @@ export class SceneService {
       throw new NotFoundException("Scene não encontrada!");
     }
   }
-  findAll() {
-    return `This action returns all scene`;
-  }
 
   async findAllSceneImage(idScene:number){
     return await this.sceneImageRepository.find({where:{scene: {id:idScene}}});
@@ -41,9 +38,5 @@ export class SceneService {
     }catch(e){
       throw new NotFoundException("Cena não encontrada!");
     }
-  }
-
-  remove(id: number) {
-    return `This action removes a #${id} scene`;
   }
 }
