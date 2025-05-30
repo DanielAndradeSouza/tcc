@@ -8,10 +8,10 @@ export class SceneImage {
       @ManyToOne(() => Scene, (scene) => scene.sceneImages, { onDelete: 'CASCADE' })
       scene: Scene;
     
-      @Column({nullable:false, default:10})
+      @Column({nullable:false, default:64})
       height: number;
     
-      @Column({nullable:false, default:10})
+      @Column({nullable:false, default:64})
       width: number;
     
       @Column({nullable:false})

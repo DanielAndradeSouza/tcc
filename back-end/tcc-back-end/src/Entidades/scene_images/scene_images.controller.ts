@@ -24,7 +24,7 @@ async create(@UploadedFile() file: Express.Multer.File,@CurrentUser() user: any,
   await fs.writeFileSync(`${uploadDir}/${file.originalname}`, file.buffer);
   console.log(fs.readdirSync(uploadDir))
   const fullPath = path.join(uploadDir, file.originalname);
-  const savedImage = await this.sceneImagesService.create(fullPath,+sceneId);
+  const savedImage = await this.sceneImagesService.create(file.originalname,+sceneId);
   return { message: 'Arquivo salvo com sucesso!' };
 }
   //Metodo utilizado para achar todas as referências do banco

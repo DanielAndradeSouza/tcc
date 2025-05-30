@@ -2,8 +2,10 @@
 
 import ChangeGridModal from "@/app/components/modals/change_grid_modal";
 import { UploadImage } from "@/app/components/modals/upload_image";
+import { useTabletopImages } from "@/app/hooks/Canva/useTabletopImages";
 import { useSceneData } from "@/app/hooks/useSceneData";
 import { fetchData } from "@/app/services/api";
+import { ImageItem, ImageList, Title } from "@/app/styles/toolBar.style";
 import { useEffect, useState } from "react";
 import { Stage, Layer, Rect } from "react-konva";
 
@@ -19,6 +21,7 @@ export default function ScenePage() {
     { filename: string; base64Content: string }[]
   >([]);
   const [imagesLoading, setImagesLoading] = useState<boolean>(true);
+  const { placedImages, addImage, updateImagePosition } = useTabletopImages();
 
   useEffect(() => {
     if (!scene) return;
@@ -110,29 +113,26 @@ export default function ScenePage() {
 
       <UploadImage isOpen={uploadModalOpen} onClose={toggleUploadModal} />
 
-      <div style={{ marginTop: 20 }}>
-        <h3>Imagens do Usuário:</h3>
-        {imagesLoading ? (
-          <p>Carregando imagens...</p>
-        ) : userImages.length === 0 ? (
-          <p>Nenhuma imagem encontrada</p>
-        ) : (
-          <div style={{ display: 'flex', flexWrap: 'wrap', gap: 10 }}>
-            {userImages.map((img, index) => (
-              <div key={index}>
-                <img
-                  src={`data:image/png;base64,${img.base64Content}`}
-                  alt={img.filename}
-                  width={100}
-                  height={100}
-                  style={{ objectFit: 'cover', border: '1px solid #ccc' }}
-                />
-                <p style={{ textAlign: 'center', fontSize: 12 }}>{img.filename}</p>
-              </div>
-            ))}
-          </div>
-        )}
-      </div>
+      <div>
+      {imagesLoading ? (
+        <p>Carregando imagens...</p>
+      ) : userImages.length === 0 ? (
+        <p>Nenhuma imagem encontrada</p>
+      ) : (
+        <ImageList>
+          <Title>Imagens do Usuário:</Title>
+          {userImages.map((img, index) => (
+            <ImageItem key={index}>
+              <img
+                src={`data:image/png;base64,${img.base64Content}`}
+                alt={img.filename}
+              />
+              <p>{img.filename}</p>
+            </ImageItem>
+          ))}
+        </ImageList>
+      )}
+    </div>
     </div>
   );
 }

@@ -50,3 +50,7 @@ Próximo passo será verificar como usar o Blob
 28/05
 1. Revisei o código do findAllFiles e apenas tirei o retorno do path, agora ele está retornando o conteudo do arquivo em base 64 e também o nome do arquivo.
 2. Fiz o teste, as imagens estão retornando corretamente
+29/05:
+Objetivos para a próxima semana:
+1.Colocar as imagens no TableTop
+2.Sistema de Invite
