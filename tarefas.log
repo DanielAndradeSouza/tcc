@@ -55,12 +55,6 @@ Objetivos para a próxima semana:
 1.Colocar as imagens no TableTop
 2.Sistema de Invite
 31/05:
-Parei no useTableTopImages
-Observações do que eu acabei  de me tocar:
-Da forma que estou fazendo somente o GameMaster fará os uploads de tokens(o que está correto), mas ao eu acessar com outro usuário, ele não terá acesso
-as imagens, pelo menos de acordo com os metodos implementados, o player tecnicamente nem buscará as imagens, portanto a busca para os players será mais pesada
-eu primeiro teria que: 
-1.Verificar qual é a mesa sendo manipulada. 
-2.Para então verificar quem é o GM
-3.Para então verificar quais são as imagens que o GM está utilizando e então retornar no front e poder printar ao player normalmente no TableTop.
-4.Mas isso é algo do player, no momento eu preciso fazer a parte do gm.
+1.Imagens sendo printadas corretamente no TableTop(Foi necessário fazer outra Layer no sistema).
+2.Foi criado alguns botões para a estilização do site.
+Próximos passos fazer a operação do movimento
