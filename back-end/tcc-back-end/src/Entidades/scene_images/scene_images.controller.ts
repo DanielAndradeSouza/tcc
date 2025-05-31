@@ -8,6 +8,7 @@ import * as fs from 'fs';
 import * as multer from 'multer';
 import { CurrentUser } from 'src/auth/current-user.decorator';
 import * as path from 'path';
+import { CreateSceneImageDto } from './dto/create-scene_image.dto';
 @Controller('scene_images')
 export class SceneImagesController {
   constructor(private readonly sceneImagesService: SceneImagesService) {}
@@ -23,10 +24,13 @@ async create(@UploadedFile() file: Express.Multer.File,@CurrentUser() user: any,
   await fs.mkdirSync(uploadDir, { recursive: true });
   await fs.writeFileSync(`${uploadDir}/${file.originalname}`, file.buffer);
   console.log(fs.readdirSync(uploadDir))
-  const fullPath = path.join(uploadDir, file.originalname);
-  const savedImage = await this.sceneImagesService.create(file.originalname,+sceneId);
   return { message: 'Arquivo salvo com sucesso!' };
 }
+  @Post(':id/createOnTableTop')
+  @UseGuards(CustomJwtGuard)
+  async createOnTableTop(@Body() createSceneImageDto:CreateSceneImageDto,@Param('id') sceneId: string){
+    
+  }
   //Metodo utilizado para achar todas as referências do banco
   @Get(':id')
   @UseGuards(CustomJwtGuard)

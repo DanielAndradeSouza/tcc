@@ -12,7 +12,7 @@ export class SceneImagesService {
   async create(path:string, sceneId:number) {
     const scene = await this.sceneRepository.findOneBy({ id: sceneId });
     if (!scene) {
-      throw new Error('Cena não encontrada'); // pode criar uma exceção customizada aqui
+      throw new Error('Cena não encontrada');
     }
     const sceneImage = this.sceneImageRepository.create({
       image_url: path,

@@ -1,0 +1,14 @@
+31/05:
+Observações do que eu acabei  de me tocar:
+Da forma que estou fazendo somente o GameMaster fará os uploads de tokens(o que está correto), mas ao eu acessar com outro usuário, ele não terá acesso
+as imagens, pelo menos de acordo com os metodos implementados, o player tecnicamente nem buscará as imagens, portanto a busca para os players será mais pesada
+eu primeiro teria que: 
+1.Verificar qual é a mesa sendo manipulada. 
+2.Para então verificar quem é o GM
+3.Para então verificar quais são as imagens que o GM está utilizando e então retornar no front e poder printar ao player normalmente no TableTop.
+4.Mas isso é algo do player, no momento eu preciso fazer a parte do gm.
+Sobre o Hook useTableTopImages, ele irá:
+1.Ele receberá de parametro as imagens do GM e também vai receber as referências das imagens da cena.
+2.Ele irá verificar cada uma dessas referências, de acordo com as imagens contidas no vetor de imagens, e irá criar uma estrutura(um vetor) que terá
+as posições das imagens e seu conteudo base64.
+obs: caso o repositório do gm(a primeira requisição) estiver vazio significa que a cena também está vazia, portanto ele somente não faz nenhuma operação.
