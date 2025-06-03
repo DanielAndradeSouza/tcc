@@ -11,7 +11,7 @@ import { Stage, Layer, Rect, Image as KonvaImage } from "react-konva";
 import useImage from "use-image";
 import { useTabletopImages } from "@/app/hooks/Canva/useTableTopImages";
 
-export default function ScenePage() {
+export default function ScenePageGm() {
   const { scene, loading } = useSceneData();
 
   const pixels = 64;

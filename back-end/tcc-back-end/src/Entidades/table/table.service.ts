@@ -105,24 +105,36 @@ s
     return await this.tableRepository.delete(id)
   }
   async join(idTable: number, idUser: number) {
-    try {
-      const table = await this.tableRepository.findOne({ where: { id: idTable } });
-      const user = await this.userRepository.findOne({ where: { id: idUser } });
+  try {
+    const table = await this.tableRepository.findOne({ where: { id: idTable } });
+    const user = await this.userRepository.findOne({ where: { id: idUser } });
 
-      if (!table || !user) {
-        throw new NotFoundException("Mesa ou usuário não encontrado!");
-      }
-
-      const newPlayer = this.userTableRepository.create({
-        user,
-        role: 'player',
-        table,
-      });
-
-      await this.userTableRepository.save(newPlayer);
-      return newPlayer;
-    } catch (e) {
-      throw new NotFoundException("Erro ao adicionar jogador à mesa.");
+    if (!table || !user) {
+      throw new NotFoundException("Mesa ou usuário não encontrado!");
     }
+
+    const existing = await this.userTableRepository.findOne({
+      where: {
+        user: { id: idUser },
+        table: { id: idTable },
+      },
+    });
+
+    if (existing) {
+      return existing;
+    }
+
+    const newPlayer = this.userTableRepository.create({
+      user,
+      role: 'player',
+      table,
+    });
+
+    await this.userTableRepository.save(newPlayer);
+    return newPlayer;
+  } catch (e) {
+    throw new NotFoundException("Erro ao adicionar jogador à mesa.");
+  }
 }
+
 }
