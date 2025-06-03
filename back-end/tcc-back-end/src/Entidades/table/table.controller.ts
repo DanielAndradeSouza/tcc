@@ -61,7 +61,12 @@ export class TableController {
 
   @UseGuards(CustomJwtGuard)
   @Get(':id/playerscene')
-  async findPlayerScene(idTable:string){
+  async findPlayerScene(@Param('id') idTable:string){
     return await this.tableService.findPlayerScene(+idTable);
+  }
+  @UseGuards(CustomJwtGuard)
+  @Get('join/:id')
+  async join(@Param('id') idTable:string, @CurrentUser() user:any){
+    return await this.tableService.join(+idTable,user.sub);
   }
 }

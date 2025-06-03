@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException, UseGuards } from '@nestjs/common';
+import { Injectable, NotFoundException, UnauthorizedException, UseGuards } from '@nestjs/common';
 import { CreateTableDto } from './dto/create-table.dto';
 import { UpdateTableDto } from './dto/update-table.dto';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -104,4 +104,25 @@ s
     console.log(id);
     return await this.tableRepository.delete(id)
   }
+  async join(idTable: number, idUser: number) {
+    try {
+      const table = await this.tableRepository.findOne({ where: { id: idTable } });
+      const user = await this.userRepository.findOne({ where: { id: idUser } });
+
+      if (!table || !user) {
+        throw new NotFoundException("Mesa ou usuário não encontrado!");
+      }
+
+      const newPlayer = this.userTableRepository.create({
+        user,
+        role: 'player',
+        table,
+      });
+
+      await this.userTableRepository.save(newPlayer);
+      return newPlayer;
+    } catch (e) {
+      throw new NotFoundException("Erro ao adicionar jogador à mesa.");
+    }
+}
 }
