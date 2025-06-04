@@ -13,6 +13,7 @@ import { UserTableModule } from './Entidades/user_table/user_table.module';
 import { AuthModule } from './auth/auth.module';
 import { SceneModule } from './Entidades/scene/scene.module';
 import { SceneImagesModule } from './Entidades/scene_images/scene_images.module';
+import { CacheModule } from '@nestjs/cache-manager';
 
 @Module({
   imports: [TypeOrmModule.forRoot({
@@ -26,6 +27,7 @@ import { SceneImagesModule } from './Entidades/scene_images/scene_images.module'
       synchronize: true, 
       logging: true
   }),
+  CacheModule.register(),
   UserModule,
   TableModule,
   SceneModule,

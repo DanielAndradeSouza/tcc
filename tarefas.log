@@ -64,11 +64,14 @@ de mostrar o link de join
 2.Usuário agora tem uma rota, apenas não está renderizando as imagens(Precisa fazer uma rota no nest.js para isso).
 3.Está adicionando as imagens no TableTop, e está chamando um metodo de save no scene_images, contudo ainda não possuo a rota pronta
 04/06:
-Antes de qualquer coisa, uma lista do que fazer:
-1.Ir para o useTableTopImagesPlayer e mudar a url, para retornar os dados referêntes a mesa(talvez de para usar cache)
-2.Ir para o useAutoSaveScene para salvar os dados de forma automatica, somente preciso fazer a rota e então o metodo na service.
-3.Mexer na parte de WebSocket
+Ok tive grandes revelações hoje, infelizmente não vai ter muita coisa pro Mauro nessa semana, eu vou utilizar de fato cache para a atualização
+em tempo real do meu sistema, eu instalei o *npm install @nestjs/cache-manager cache-manager* e agora vou começar a extruturar o básico de 
+como será feito este armazenamento em cache, mas o sistema dele vai funcionar basicamente assim:
+1.Usuário requisita dados da cena, esses dados são buscados no banco e então armazenados na cache, estes dados vão ser extruturados, 
+é como se eles tivessem um type que vai consistir apenas de jsons.
+2.As próximas vezes que algum usuário requisitar esses dados será verificado se o id da cena, é o id que esta na cache, se sim, retorna o Json, se não
+então busca no banco.
+Como vão ser feitos os dados em tempo real? não sei
 
-Sobre o que de fato foi feito:
-1.Criado o update dos tokens da cena, apenas precisa de teste
-2.Vou verificar a renderização com base no back-end, por que não tem condição de eu fazer a renderização da forma que estou fazendo agora.
+Continuação de 04/06:
+1. Fiz o scene.state.gateway,module e service para guardar dados na cache do servidor.

@@ -11,7 +11,6 @@ import { Stage, Layer, Rect, Image as KonvaImage } from "react-konva";
 import useImage from "use-image";
 import { useTableTopImagesGm } from "@/app/hooks/Canva/useTableTopImagesGm";
 import { v4 as uuidv4 } from 'uuid';
-import { useAutoSaveScene } from "@/app/hooks/Canva/useAutoSaveScene";
 
 export default function ScenePageGm() {
   const { scene, loading } = useSceneData();
@@ -32,8 +31,6 @@ export default function ScenePageGm() {
   const sceneId = typeof window !== "undefined" ? localStorage.getItem("sceneId") : null;
 
   const { placedImages, setPlacedImages } = useTableTopImagesGm(userImages, positionImages);
-
-  useAutoSaveScene(sceneId, placedImages);
 
   const [manualPlacedImages, setManualPlacedImages] = useState<SceneImage[]>([]);
 
@@ -109,12 +106,6 @@ export default function ScenePageGm() {
   const toggleModal = () => setModal(prev => !prev);
   const toggleUploadModal = () => setUploadModalOpen(prev => !prev);
 
-  const toggleCell = (index: number) => {
-    const newCells = [...cells];
-    newCells[index] = !newCells[index];
-    setCells(newCells);
-  };
-
   const KonvaImageComponent = ({ src, x, y, width, height }: any) => {
     const [image] = useImage(src);
     return <KonvaImage image={image} x={x} y={y} width={width} height={height} />;
@@ -152,7 +143,6 @@ export default function ScenePageGm() {
                 fill={active ? 'rgba(135,206,250,0.3)' : 'rgba(211,211,211,0.3)'}
                 stroke="black"
                 strokeWidth={2}
-                onClick={() => toggleCell(i)}
               />
             );
           })}

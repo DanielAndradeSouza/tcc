@@ -15,6 +15,7 @@
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "react-konva": "^19.0.3",
+    "socket.io-client": "^4.8.1",
     "styled-components": "^6.1.18",
     "uuid": "^11.1.0"
   },
