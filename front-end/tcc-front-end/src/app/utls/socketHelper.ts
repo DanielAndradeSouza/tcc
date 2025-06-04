@@ -1,6 +1,6 @@
 import { io } from 'socket.io-client';
 
-const socket = io('http://localhost:3000', {
+const socket = io('http://localhost:3050', {
   withCredentials: true, // se estiver usando cookies httpOnly
 });
 
@@ -24,5 +24,4 @@ export function onSceneState(sceneId: string, callback: (state: any) => void) {
   socket.on(`sceneState:${sceneId}`, callback);
 }
 
-// Expor o socket caso precise diretamente
 export { socket };
