@@ -71,3 +71,4 @@ Antes de qualquer coisa, uma lista do que fazer:
 
 Sobre o que de fato foi feito:
 1.Criado o update dos tokens da cena, apenas precisa de teste
+2.Vou verificar a renderização com base no back-end, por que não tem condição de eu fazer a renderização da forma que estou fazendo agora.
