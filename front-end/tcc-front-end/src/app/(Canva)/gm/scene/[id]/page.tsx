@@ -12,6 +12,7 @@ import useImage from "use-image";
 import { useTableTopImagesGm } from "@/app/hooks/Canva/useTableTopImagesGm";
 import { v4 as uuidv4 } from 'uuid';
 import { useAutoSaveScene } from "@/app/hooks/Canva/useAutoSaveScene";
+
 export default function ScenePageGm() {
   const { scene, loading } = useSceneData();
 
@@ -29,16 +30,16 @@ export default function ScenePageGm() {
   const [imagesLoading, setImagesLoading] = useState<boolean>(true);
   const [positionImages, setPositionImages] = useState<SceneImage[]>([]);
   const sceneId = typeof window !== "undefined" ? localStorage.getItem("sceneId") : null;
-  // Hook que junta as imagens do GM com as imagens da cena
+
   const { placedImages, setPlacedImages } = useTableTopImagesGm(userImages, positionImages);
 
-  useAutoSaveScene(sceneId,placedImages);
-  // Imagens adicionadas manualmente com botão
+  useAutoSaveScene(sceneId, placedImages);
+
   const [manualPlacedImages, setManualPlacedImages] = useState<SceneImage[]>([]);
 
   const handleAddToScene = (img: { filename: string; base64Content: string }) => {
     const newImage: SceneImage = {
-      id: uuidv4(), 
+      id: uuidv4(),
       width: 1,
       height: 1,
       x_pos: 0,
@@ -80,6 +81,26 @@ export default function ScenePageGm() {
     setImagesLoading(true);
     fetchImages();
   }, [scene]);
+
+  // 🔁 Atualiza automaticamente as imagens posicionadas a cada 10 segundos
+  useEffect(() => {
+    if (!sceneId) return;
+
+    const interval = setInterval(async () => {
+      try {
+        const updatedPositionImages = await fetchData(
+          `scene_images/${sceneId}`,
+          { credentials: 'include' }
+        );
+        setPositionImages(updatedPositionImages || []);
+        console.log("🔄 Atualização automática das imagens da cena.");
+      } catch (error) {
+        console.error("Erro ao atualizar imagens posicionadas:", error);
+      }
+    }, 10000);
+
+    return () => clearInterval(interval);
+  }, [sceneId]);
 
   if (loading || !scene || cells.length === 0) {
     return <p>Carregando Cena, aguarde...</p>;

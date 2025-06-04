@@ -1,35 +1,23 @@
 import { IsInt, IsNotEmpty, IsNumber, IsOptional, IsString } from "class-validator";
 
 export class CreateSceneImageDto {
-    @IsNotEmpty()
-    @IsInt()
-    sceneId: number;
+  @IsNotEmpty()
+  @IsInt()
+  id: number; 
 
-    @IsNotEmpty()
-    @IsNumber()
-    height: number;
+  @IsOptional()
+  @IsString()
+  name?: string;
 
-    @IsNotEmpty()
-    @IsNumber()
-    width: number;
+  @IsOptional()
+  @IsString()
+  url?: string;
 
-    @IsNotEmpty()
-    @IsString()
-    imageUrl: string;
+  @IsOptional()
+  @IsNumber()
+  positionX?: number;
 
-    @IsNotEmpty()
-    @IsNumber()
-    xPos: number;
-
-    @IsNotEmpty()
-    @IsNumber()
-    yPos: number;
-
-    @IsNotEmpty()
-    @IsNumber()
-    rotation: number;
-
-    @IsNotEmpty()
-    @IsString()
-    layer: string;
+  @IsOptional()
+  @IsNumber()
+  positionY?: number;
 }

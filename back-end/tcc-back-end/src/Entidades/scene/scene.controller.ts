@@ -1,8 +1,9 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, Put } from '@nestjs/common';
 import { SceneService } from './scene.service';
 import { CustomJwtGuard } from 'src/auth/jwtGuard/custom.jwt.guard';
 import { UpdateSceneDto } from './dto/update-scene.dto';
 import { Scene } from './entities/scene.entity';
+import { UpdateSceneImageDto } from '../scene_images/dto/update-scene_image.dto';
 
 @Controller('scene')
 export class SceneController {
@@ -17,5 +18,13 @@ export class SceneController {
   @Patch(':id')
   async update(@Param('id') id:string, @Body() UpdateSceneDto: UpdateSceneDto){
     return await this.sceneService.update(+id,UpdateSceneDto);
+  }
+  @Put(':id/updateImages')
+  async updateImages(
+    @Param('id') id: string,
+    @Body() images: UpdateSceneImageDto[],
+  ) {
+    console.log(images);
+    return this.sceneService.updateSceneImages(+id, images);
   }
 }

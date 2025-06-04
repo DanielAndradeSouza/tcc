@@ -1,3 +1,4 @@
+import { fetchData } from "@/app/services/api";
 import { useEffect } from "react";
 
 export const useAutoSaveScene = (
@@ -6,20 +7,27 @@ export const useAutoSaveScene = (
 ) => {
   useEffect(() => {
     if (!sceneId || placedImages.length === 0) return;
+    console.log("Cena salva")
 
+    const filteredImages = placedImages.map(({ id, width, height, x_pos, y_pos }) => ({
+      id,
+      width,
+      height,
+      x_pos,
+      y_pos,
+    }));
+
+    const body = JSON.stringify(filteredImages); 
     const interval = setInterval(() => {
-      fetch("/api/scene_images/save", {
-        method: "POST",
+      fetchData(`scene/${sceneId}/updateImages`, {
+        method: "PUT",
         headers: { "Content-Type": "application/json" },
         credentials: "include",
-        body: JSON.stringify({
-          sceneId,
-          images: placedImages,
-        }),
+        body,
       }).catch((err) =>
         console.error("Erro ao salvar estado da cena:", err)
       );
-    }, 30000); // a cada 30 segundos
+    }, 30000); //30 segundos
 
     return () => clearInterval(interval);
   }, [sceneId, placedImages]);

@@ -5,6 +5,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { SceneImage } from '../scene_images/entities/scene_image.entity';
 import { Scene } from './entities/scene.entity';
+import { UpdateSceneImageDto } from '../scene_images/dto/update-scene_image.dto';
 
 @Injectable()
 export class SceneService {
@@ -39,4 +40,40 @@ export class SceneService {
       throw new NotFoundException("Cena não encontrada!");
     }
   }
+  async updateSceneImages(
+    sceneId: number,
+    updatedImages: UpdateSceneImageDto[],
+  ): Promise<Scene> {
+    const scene = await this.sceneRepository.findOne({
+      where: { id: sceneId },
+      relations: ['sceneImages'],
+    });
+
+    if (!scene) {
+      throw new NotFoundException('Cena não encontrada');
+    }
+
+    for (const updatedImage of updatedImages) {
+      const existingImage = scene.sceneImages.find(
+        (img) => img.id === updatedImage.id,
+      );
+
+      if (!existingImage) {
+        throw new NotFoundException(
+          `Imagem com id ${updatedImage.id} não encontrada na cena`,
+        );
+      }
+      Object.assign(existingImage, updatedImage);
+    }
+    await this.sceneImageRepository.save(scene.sceneImages);
+    const updatedScene = await this.sceneRepository.findOne({
+      where: { id: sceneId },
+      relations: ['sceneImages'],
+    });
+
+    if (!updatedScene) {
+      throw new NotFoundException('Cena não encontrada após atualização');
+    }
+    return updatedScene;
+}
 }
