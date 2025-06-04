@@ -58,6 +58,13 @@ Objetivos para a próxima semana:
 1.Imagens sendo printadas corretamente no TableTop(Foi necessário fazer outra Layer no sistema).
 2.Foi criado alguns botões para a estilização do site.
 Próximos passos fazer a operação do movimento
-03/05:
+03/06:
 1.Feito o sistema do Join, agora pretendo fazer a pagina do join que irá mostrar os usuários da mesa e também mostrar seus nomes, além 
 de mostrar o link de join
+2.Usuário agora tem uma rota, apenas não está renderizando as imagens(Precisa fazer uma rota no nest.js para isso).
+3.Está adicionando as imagens no TableTop, e está chamando um metodo de save no scene_images, contudo ainda não possuo a rota pronta
+04/06:
+Antes de qualquer coisa, uma lista do que fazer:
+1.Ir para o useTableTopImagesPlayer e mudar a url, para retornar os dados referêntes a mesa(talvez de para usar cache)
+2.Ir para o useAutoSaveScene para salvar os dados de forma automatica, somente preciso fazer a rota e então o metodo na service.
+3.Mexer na parte de WebSocket

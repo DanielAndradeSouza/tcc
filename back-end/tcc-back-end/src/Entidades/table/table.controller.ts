@@ -33,6 +33,12 @@ export class TableController {
 
   @UseInterceptors(ClassSerializerInterceptor)
   @UseGuards(CustomJwtGuard)
+  @Get('/:id/players')
+  async players(@Param('id') id:string){
+    return await this.tableService.players(+id)
+  }
+  
+  @UseGuards(CustomJwtGuard)
   @Patch(':id')
   async update(@Param('id') id: string, @Body() updateTableDto: UpdateTableDto) {
     return await this.tableService.update(+id, updateTableDto);
@@ -58,7 +64,7 @@ export class TableController {
   async findGmScene(@Param('id') idTable:string){
     return await this.tableService.findGmScene(+idTable);
   }
-
+  @UseInterceptors()
   @UseGuards(CustomJwtGuard)
   @Get(':id/playerscene')
   async findPlayerScene(@Param('id') idTable:string){

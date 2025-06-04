@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 
-export const useTabletopImages = (
+export const useTableTopImagesGm = (
   userImages: { filename: string; base64Content: string }[],
   sceneImages: SceneImage[]
 ) => {

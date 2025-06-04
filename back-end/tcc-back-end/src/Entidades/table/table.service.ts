@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException, UnauthorizedException, UseGuards } from '@nestjs/common';
+import { Injectable, InternalServerErrorException, NotFoundException, UnauthorizedException, UseGuards } from '@nestjs/common';
 import { CreateTableDto } from './dto/create-table.dto';
 import { UpdateTableDto } from './dto/update-table.dto';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -75,6 +75,20 @@ async create(createTableDto: CreateTableDto, userId: number): Promise<Table> {
   async findOne(userId: number) {
     return await this.tableRepository.findOne({where: {id:userId}});
   }
+  async players(tableId: number) {
+    try{
+      const userTables = await this.userTableRepository.find({
+        where: { table: { id: tableId } },
+        relations: ['user'],
+      });
+
+      const users = userTables.map(ut => ut.user);
+      return users;
+    }catch(e){
+      throw new InternalServerErrorException("Erro ao resgatar os usuários!");
+    }
+  }
+  
   async findGmScene(tableId:number){
     try{
       const table = await this.tableRepository.findOne({where:{id:tableId}, relations:['sceneAtualGM']})

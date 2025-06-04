@@ -9,8 +9,9 @@ import { ImageItem, ImageList, Title } from "@/app/styles/toolBar.style";
 import { useEffect, useState } from "react";
 import { Stage, Layer, Rect, Image as KonvaImage } from "react-konva";
 import useImage from "use-image";
-import { useTabletopImages } from "@/app/hooks/Canva/useTableTopImages";
-
+import { useTableTopImagesGm } from "@/app/hooks/Canva/useTableTopImagesGm";
+import { v4 as uuidv4 } from 'uuid';
+import { useAutoSaveScene } from "@/app/hooks/Canva/useAutoSaveScene";
 export default function ScenePageGm() {
   const { scene, loading } = useSceneData();
 
@@ -27,9 +28,26 @@ export default function ScenePageGm() {
   >([]);
   const [imagesLoading, setImagesLoading] = useState<boolean>(true);
   const [positionImages, setPositionImages] = useState<SceneImage[]>([]);
-
+  const sceneId = typeof window !== "undefined" ? localStorage.getItem("sceneId") : null;
   // Hook que junta as imagens do GM com as imagens da cena
-  const { placedImages, setPlacedImages } = useTabletopImages(userImages, positionImages);
+  const { placedImages, setPlacedImages } = useTableTopImagesGm(userImages, positionImages);
+
+  useAutoSaveScene(sceneId,placedImages);
+  // Imagens adicionadas manualmente com botão
+  const [manualPlacedImages, setManualPlacedImages] = useState<SceneImage[]>([]);
+
+  const handleAddToScene = (img: { filename: string; base64Content: string }) => {
+    const newImage: SceneImage = {
+      id: uuidv4(), 
+      width: 1,
+      height: 1,
+      x_pos: 0,
+      y_pos: 0,
+      image_url: `data:image/png;base64,${img.base64Content}`,
+    };
+
+    setManualPlacedImages((prev) => [...prev, newImage]);
+  };
 
   useEffect(() => {
     if (!scene) return;
@@ -41,13 +59,13 @@ export default function ScenePageGm() {
     const fetchImages = async () => {
       try {
         const data = await fetchData(
-          `scene_images/findAllFiles/${localStorage.getItem("sceneId")}`,
+          `scene_images/findAllFiles/${sceneId}`,
           { credentials: 'include' }
         );
         setUserImages(data || []);
 
         const positionImages = await fetchData(
-          `scene_images/${localStorage.getItem("sceneId")}`,
+          `scene_images/${sceneId}`,
           { credentials: 'include' }
         );
         setPositionImages(positionImages || []);
@@ -76,54 +94,49 @@ export default function ScenePageGm() {
     setCells(newCells);
   };
 
-  // Helper para carregar a imagem do Konva
   const KonvaImageComponent = ({ src, x, y, width, height }: any) => {
     const [image] = useImage(src);
-    console.log("Imagem ID:", width,height);
-
     return <KonvaImage image={image} x={x} y={y} width={width} height={height} />;
   };
 
   return (
     <div>
       <Stage width={pixels * width} height={pixels * height}>
+        {/* Layer das imagens */}
+        <Layer>
+          {[...placedImages, ...manualPlacedImages].map((img) => (
+            <KonvaImageComponent
+              key={img.id}
+              src={img.image_url}
+              x={img.x_pos * pixels}
+              y={img.y_pos * pixels}
+              width={img.width * pixels}
+              height={img.height * pixels}
+            />
+          ))}
+        </Layer>
 
-  {/* Layer das imagens — fica embaixo */}
-  <Layer>
-    {placedImages.map((img) => (
-      <KonvaImageComponent
-        key={img.id}
-        src={img.image_url}
-        x={(img.x_pos) * pixels}
-        y={(img.y_pos) * pixels}
-        width={img.width * pixels}
-        height={img.height * pixels}
-      />
-    ))}
-  </Layer>
-
-  {/* Layer do grid — fica por cima */}
-  <Layer>
-    {cells.map((active, i) => {
-      const x = (i % width) * pixels;
-      const y = Math.floor(i / width) * pixels;
-      return (
-        <Rect
-          key={i}
-          x={x}
-          y={y}
-          width={pixels}
-          height={pixels}
-          fill={active ? 'rgba(135,206,250,0.3)' : 'rgba(211,211,211,0.3)'}
-          stroke="black"
-          strokeWidth={2}
-          onClick={() => toggleCell(i)}
-        />
-      );
-    })}
-  </Layer>
-</Stage>
-
+        {/* Layer do grid */}
+        <Layer>
+          {cells.map((active, i) => {
+            const x = (i % width) * pixels;
+            const y = Math.floor(i / width) * pixels;
+            return (
+              <Rect
+                key={i}
+                x={x}
+                y={y}
+                width={pixels}
+                height={pixels}
+                fill={active ? 'rgba(135,206,250,0.3)' : 'rgba(211,211,211,0.3)'}
+                stroke="black"
+                strokeWidth={2}
+                onClick={() => toggleCell(i)}
+              />
+            );
+          })}
+        </Layer>
+      </Stage>
 
       <ListButton>
         <BlueButton onClick={toggleModal}>Modificar Cena</BlueButton>
@@ -162,7 +175,9 @@ export default function ScenePageGm() {
                   alt={img.filename}
                 />
                 <p>{img.filename}</p>
-                {/* Aqui você pode implementar o botão para adicionar manualmente ao tabletop */}
+                <BlueButton onClick={() => handleAddToScene(img)}>
+                  Adicionar à Cena
+                </BlueButton>
               </ImageItem>
             ))}
           </ImageList>
