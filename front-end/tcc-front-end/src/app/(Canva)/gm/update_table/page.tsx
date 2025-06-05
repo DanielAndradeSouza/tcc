@@ -6,8 +6,8 @@ import { fetchData } from "@/app/services/api";
 import ButtonRequest from "@/app/components/button_request";
 
 export default function UpdateTablePage() {
-  const params = useParams();
-  const id = params?.id as string;
+  const id = localStorage.getItem("tableId");
+
 
   const [table, setTable] = useState<Table | null>(null);
   const [loading, setLoading] = useState(true);

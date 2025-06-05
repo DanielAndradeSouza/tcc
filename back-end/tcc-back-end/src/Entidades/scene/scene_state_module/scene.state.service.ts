@@ -1,11 +1,12 @@
 import { CACHE_MANAGER } from "@nestjs/cache-manager";
 import { Inject, Injectable } from "@nestjs/common";
 import { Cache } from "cache-manager";
+import { SceneService } from "../scene.service";
 
 @Injectable()
 export class SceneStateService {
   
-constructor(@Inject(CACHE_MANAGER) private cacheManager: Cache) {}
+constructor(@Inject(CACHE_MANAGER) private cacheManager: Cache, private readonly sceneService:SceneService) {}
 
   async saveSceneState(sceneId: string, state: any) {
     await this.cacheManager.set(sceneId, state);
@@ -15,7 +16,8 @@ constructor(@Inject(CACHE_MANAGER) private cacheManager: Cache) {}
   async getSceneState(sceneId: string): Promise<any | undefined> {
     const sceneState = await this.cacheManager.get(sceneId);
     if (!sceneState) {
-      return [];
+      const sceneImages = await this.sceneService.findAllSceneImage(+sceneId);
+      return sceneImages;
     }
     return sceneState; 
   }

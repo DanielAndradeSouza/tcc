@@ -76,3 +76,9 @@ Como vão ser feitos os dados em tempo real? não sei
 Continuação de 04/06:
 1. Fiz o scene.state.gateway,module e service para guardar dados na cache do servidor.
 2. Consegui colocar a bagaça das imagens na cache e retorna-las para o front(agora falta fazer o armazenamento no banco).
+
+05/06:
+Passos da busca nova: 
+1. O usuário vai entrar em acesso com a scene no front.  
+2. Então o socket fará a requisição de get, caso esteja vazia ele irá fazer a requisição das imagens no banco.
+3. Ao terminar de carregar os dados do banco, ele vai armazenar todas as referências na cache.

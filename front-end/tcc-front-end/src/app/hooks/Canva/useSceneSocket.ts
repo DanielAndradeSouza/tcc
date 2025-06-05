@@ -29,6 +29,7 @@ export function useSceneSocket({
           const data = await res.json();
           if (Array.isArray(data)) {
             currentImagesRef.current = data;
+            console.log(data)
             setManualPlacedImages(data);
           } else {
             console.warn('Estado do banco inválido:', data);
@@ -42,7 +43,7 @@ export function useSceneSocket({
     socket.emit('getSceneState', sceneId);
 
     socket.on(`sceneState:${sceneId}`, (state: unknown) => {
-      console.log('Estado inicial da cena recebido do servidor via socket');
+      console.log("Estado inicial da cena: ", state)
       if (Array.isArray(state) && state.length > 0) {
         currentImagesRef.current = state;
         setManualPlacedImages(state);

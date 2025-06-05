@@ -13,8 +13,10 @@ import { useTableTopImagesGm } from "@/app/hooks/Canva/useTableTopImagesGm";
 import { v4 as uuidv4 } from 'uuid';
 import { useSceneSocket } from "@/app/hooks/Canva/useSceneSocket";
 import socket from "@/app/utls/socket"; // 🔧 necessário para emitir socket
+import { useRouter } from "next/navigation";
 
 export default function ScenePageGm() {
+  const router = useRouter();
   const { scene, loading } = useSceneData();
 
   const pixels = 64;
@@ -36,7 +38,6 @@ export default function ScenePageGm() {
 
   const [manualPlacedImages, setManualPlacedImages] = useState<SceneImage[]>([]);
 
-  // ✅ Nova função para emitir atualização da cena via socket
   const updateSceneImages = (newImages: SceneImage[]) => {
     setManualPlacedImages(newImages);
 
@@ -172,6 +173,7 @@ export default function ScenePageGm() {
       )}
 
       <UploadImage isOpen={uploadModalOpen} onClose={toggleUploadModal} />
+      <BlueButton onClick={() => router.push("/gm/update_table")}>Mudar Dados da Cena</BlueButton>
 
       <div>
         {imagesLoading ? (

@@ -6,7 +6,8 @@ import { Repository } from 'typeorm';
 import { SceneImage } from '../scene_images/entities/scene_image.entity';
 import { Scene } from './entities/scene.entity';
 import { UpdateSceneImageDto } from '../scene_images/dto/update-scene_image.dto';
-
+import * as fs from 'fs'
+import * as path from 'path'
 @Injectable()
 export class SceneService {
   constructor(@InjectRepository(Scene) private sceneRepository: Repository<Scene>,
@@ -26,9 +27,65 @@ export class SceneService {
     }
   }
 
-  async findAllSceneImage(idScene:number){
-    return await this.sceneImageRepository.find({where:{scene: {id:idScene}}});
+  async findAllSceneImage(idScene: number) {
+    const data = await this.sceneImageRepository
+        .createQueryBuilder('image')
+        .leftJoinAndSelect('image.scene', 'scene')
+        .leftJoinAndSelect('scene.table', 'table')
+        // Join só com o usersTable que têm role = 'gm'
+        .leftJoinAndSelect(
+          'table.usersTable',
+          'usersTable',
+          'usersTable.role = :role',
+          { role: 'gm' }
+        )
+        .where('scene.id = :sceneId', { sceneId: idScene })
+        .getMany();
+
+    const gm = data[0]?.scene?.table?.usersTable;
+    const gmId = gm[0].id;
+    console.log(gmId)
+    if (!gmId) {
+      throw new Error('GM não encontrado.');
+    }
+
+    const gmDir = path.join('img', String(gmId));
+    let files: string[] = [];
+
+    try {
+      files = fs.readdirSync(gmDir);
+    } catch (err) {
+      console.error('Erro ao ler diretório de imagens:', err);
+      // Retorna a cena sem conteúdo das imagens
+      return data;
+    }
+
+    // Lê e converte todas as imagens da pasta para base64
+    const filesWithContent = files.map((filename) => {
+      const filePath = path.join(gmDir, filename);
+      const fileBuffer = fs.readFileSync(filePath);
+      const base64Content = fileBuffer.toString('base64');
+
+      return {
+        filename,
+        base64Content,
+      };
+    });
+
+    // Junta o conteúdo base64 com os dados da cena, associando pelo nome do arquivo
+    const sceneImagesWithContent = data.map(sceneImage => {
+      const file = filesWithContent.find(f => f.filename === sceneImage.image_url);
+      return {
+        ...sceneImage,
+        base64Content: file ? file.base64Content : null,
+      };
+    });
+
+    return sceneImagesWithContent;
   }
+
+
+
 
   async update(id: number, updateSceneDto: UpdateSceneDto): Promise<Scene | null> {
     try{

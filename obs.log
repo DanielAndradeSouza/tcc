@@ -12,3 +12,12 @@ Sobre o Hook useTableTopImages, ele irá:
 2.Ele irá verificar cada uma dessas referências, de acordo com as imagens contidas no vetor de imagens, e irá criar uma estrutura(um vetor) que terá
 as posições das imagens e seu conteudo base64.
 obs: caso o repositório do gm(a primeira requisição) estiver vazio significa que a cena também está vazia, portanto ele somente não faz nenhuma operação.
+
+05/06:
+Tem feito:
+1.Atualização em tempo real.
+A fazer:
+1.Na rota do player precisa da renderização correta das imagens.
+2.Salvamento do token adicionado a cena no banco de dados.
+3.Atualização em tempo real por WebSocket caso o usuário interaja com o token.
+4.Redimencionamento de token.

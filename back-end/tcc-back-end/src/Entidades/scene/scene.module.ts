@@ -10,5 +10,6 @@ import { CacheModule } from '@nestjs/cache-manager';
   imports: [TypeOrmModule.forFeature([Scene,SceneImage])],
   controllers: [SceneController],
   providers: [SceneService],
+  exports: [SceneService]
 })
 export class SceneModule {}

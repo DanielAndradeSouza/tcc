@@ -5,58 +5,40 @@ import { fetchData } from "@/app/services/api";
 import { useEffect, useState } from "react";
 import { Stage, Layer, Rect, Image as KonvaImage } from "react-konva";
 import useImage from "use-image";
-import { useTableTopImagesPlayer } from "@/app/hooks/Canva/useTableTopImagesPlayer";
+import { useSceneSocket } from "@/app/hooks/Canva/useSceneSocket";
 
 export default function ScenePagePlayer() {
   const { scene, loading } = useSceneData();
-
   const pixels = 64;
-  const [width, setWidth] = useState<number>(0);
-  const [height, setHeight] = useState<number>(0);
-  const [cells, setCells] = useState<boolean[]>([]);
 
-  const [userImages, setUserImages] = useState<
-    { filename: string; base64Content: string }[]
-  >([]);
-  const [imagesLoading, setImagesLoading] = useState<boolean>(true);
   const [positionImages, setPositionImages] = useState<SceneImage[]>([]);
 
-  const { placedImages } = useTableTopImagesPlayer(positionImages);
-
+  useSceneSocket({
+    sceneId: localStorage.getItem("sceneId") || "",
+    manualPlacedImages: positionImages,
+    setManualPlacedImages: setPositionImages,
+  });
 
   useEffect(() => {
-    if (!scene) return;
-
-    setWidth(scene.width);
-    setHeight(scene.height);
-    setCells(Array(scene.width * scene.height).fill(false)); // Só para renderizar a grid
+    const sceneId = localStorage.getItem("sceneId");
+    if (!scene || !sceneId) return;
 
     const fetchImages = async () => {
       try {
-        const data = await fetchData(
-          `scene_images/findAllFiles/${localStorage.getItem("sceneId")}`,
-          { credentials: 'include' }
-        );
-        setUserImages(data || []);
-
         const positionImages = await fetchData(
-          `scene_images/${localStorage.getItem("sceneId")}`,
+          `scene_images/${sceneId}`,
           { credentials: 'include' }
         );
         setPositionImages(positionImages || []);
       } catch (error) {
-        console.error('Erro ao buscar imagens', error);
-        setUserImages([]);
-      } finally {
-        setImagesLoading(false);
+        console.error('Erro ao buscar imagens posicionadas', error);
       }
     };
 
-    setImagesLoading(true);
     fetchImages();
   }, [scene]);
 
-  if (loading || !scene || cells.length === 0) {
+  if (loading || !scene) {
     return <p>Carregando Cena, aguarde...</p>;
   }
 
@@ -67,27 +49,23 @@ export default function ScenePagePlayer() {
 
   return (
     <div>
-      <Stage width={pixels * width} height={pixels * height}>
-
-        {/* Layer das imagens — fica embaixo */}
+      <Stage width={pixels * scene.width} height={pixels * scene.height}>
         <Layer>
-          {placedImages.map((img) => (
+          {positionImages.map((img) => (
             <KonvaImageComponent
               key={img.id}
               src={img.image_url}
-              x={(img.x_pos) * pixels}
-              y={(img.y_pos) * pixels}
+              x={img.x_pos * pixels}
+              y={img.y_pos * pixels}
               width={img.width * pixels}
               height={img.height * pixels}
             />
           ))}
         </Layer>
-
-        {/* Layer do grid — só para visual, sem clique */}
         <Layer>
-          {cells.map((_, i) => {
-            const x = (i % width) * pixels;
-            const y = Math.floor(i / width) * pixels;
+          {Array(scene.width * scene.height).fill(null).map((_, i) => {
+            const x = (i % scene.width) * pixels;
+            const y = Math.floor(i / scene.width) * pixels;
             return (
               <Rect
                 key={i}
@@ -103,8 +81,6 @@ export default function ScenePagePlayer() {
           })}
         </Layer>
       </Stage>
-
-      {imagesLoading && <p>Carregando imagens...</p>}
     </div>
   );
 }

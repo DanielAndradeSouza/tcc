@@ -37,4 +37,11 @@ export class SceneStateGateway{
     const state = await this.sceneStateService.getSceneState(sceneId);
     client.emit(`sceneState:${sceneId}`, state);
   }
+  @SubscribeMessage('handledisconect')
+  async handleDisconect(
+    @MessageBody() data: {sceneId:string;state:SceneState; senderId: string}, 
+    @ConnectedSocket() socket:Socket
+  ){
+    
+  }
 }
