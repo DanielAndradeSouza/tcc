@@ -18,7 +18,6 @@ export class SceneStateGateway{
     @MessageBody() data: { sceneId: string; newState: SceneState; senderId: string },
     @ConnectedSocket() client: Socket,
   ) {
-    console.log("Salvando estado da cena", data);
 
     await this.sceneStateService.saveSceneState(data.sceneId, data.newState);
 
