@@ -14,6 +14,7 @@ import { AuthModule } from './auth/auth.module';
 import { SceneModule } from './Entidades/scene/scene.module';
 import { SceneImagesModule } from './Entidades/scene_images/scene_images.module';
 import { CacheModule } from '@nestjs/cache-manager';
+import { SceneStateModule } from './Entidades/scene/scene_state_module/scene.state.module';
 
 @Module({
   imports: [TypeOrmModule.forRoot({
@@ -28,6 +29,7 @@ import { CacheModule } from '@nestjs/cache-manager';
       logging: true
   }),
   CacheModule.register(),
+  SceneStateModule,
   UserModule,
   TableModule,
   SceneModule,

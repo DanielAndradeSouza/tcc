@@ -1,12 +1,12 @@
 import { io } from 'socket.io-client';
 
 const socket = io('http://localhost:3050', {
-  withCredentials: true, // se estiver usando cookies httpOnly
+  withCredentials: true, 
 });
 
 // Emitir estado da cena
 export function saveSceneState(sceneId: string, state: any) {
-  socket.emit('saveSceneState', { sceneId, state });
+  socket.emit('saveSceneState', { sceneId, state, senderId: socket.id });
 }
 
 // Solicitar estado atual da cena
@@ -24,4 +24,4 @@ export function onSceneState(sceneId: string, callback: (state: any) => void) {
   socket.on(`sceneState:${sceneId}`, callback);
 }
 
-export { socket };
+export default  socket ;

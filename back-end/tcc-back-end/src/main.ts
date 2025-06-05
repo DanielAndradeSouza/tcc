@@ -13,7 +13,7 @@ async function bootstrap() {
     origin: 'http://localhost:3000', // Permite o front-end acessar a API
     credentials: true, // Permite enviar cookies ou headers de autenticação
   });
-
+  
   await app.listen(process.env.PORT ?? 3050);
 }
 bootstrap();

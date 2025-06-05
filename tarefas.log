@@ -75,3 +75,4 @@ Como vão ser feitos os dados em tempo real? não sei
 
 Continuação de 04/06:
 1. Fiz o scene.state.gateway,module e service para guardar dados na cache do servidor.
+2. Consegui colocar a bagaça das imagens na cache e retorna-las para o front.

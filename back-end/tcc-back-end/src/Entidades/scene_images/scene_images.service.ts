@@ -23,10 +23,10 @@ export class SceneImagesService {
 
   }
 
-  async findAllByScene(idScene:number,userId:number) {
-    try{
-      return await this.sceneImageRepository.find({where: {scene: {id: idScene}}});      
-    }catch(e){
+  async findAllByScene(idScene: number, userId: number) {
+    try {
+      return (await this.sceneImageRepository.find({ where: { scene: { id: idScene } } })) || [];
+    } catch (e) {
       throw new NotFoundException("Erro ao carregar algum arquivo contido na Cena!");
     }
   }

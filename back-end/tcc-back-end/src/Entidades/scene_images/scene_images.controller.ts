@@ -31,10 +31,11 @@ async create(@UploadedFile() file: Express.Multer.File,@CurrentUser() user: any,
   async createOnTableTop(@Body() createSceneImageDto:CreateSceneImageDto,@Param('id') sceneId: string){
     
   }
-  //Metodo utilizado para achar todas as referências do banco
+  //Metodo utilizado para achar todas as referências de uma cena
   @Get(':id')
   @UseGuards(CustomJwtGuard)
   async findAllByScene(@Param('id') idScene: string, @CurrentUser() user: any) {
+    console.log("Cheguei aqui")
     return await this.sceneImagesService.findAllByScene(+idScene,user.sub);
   }
 

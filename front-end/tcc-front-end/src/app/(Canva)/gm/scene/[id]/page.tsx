@@ -11,6 +11,8 @@ import { Stage, Layer, Rect, Image as KonvaImage } from "react-konva";
 import useImage from "use-image";
 import { useTableTopImagesGm } from "@/app/hooks/Canva/useTableTopImagesGm";
 import { v4 as uuidv4 } from 'uuid';
+import { useSceneSocket } from "@/app/hooks/Canva/useSceneSocket";
+import socket from "@/app/utls/socket"; // 🔧 necessário para emitir socket
 
 export default function ScenePageGm() {
   const { scene, loading } = useSceneData();
@@ -34,6 +36,18 @@ export default function ScenePageGm() {
 
   const [manualPlacedImages, setManualPlacedImages] = useState<SceneImage[]>([]);
 
+  // ✅ Nova função para emitir atualização da cena via socket
+  const updateSceneImages = (newImages: SceneImage[]) => {
+    setManualPlacedImages(newImages);
+
+    socket.emit('saveSceneState', {
+      sceneId,
+      newState: newImages,
+    });
+
+    console.log('🛰️ Estado da cena emitido via socket');
+  };
+
   const handleAddToScene = (img: { filename: string; base64Content: string }) => {
     const newImage: SceneImage = {
       id: uuidv4(),
@@ -44,7 +58,7 @@ export default function ScenePageGm() {
       image_url: `data:image/png;base64,${img.base64Content}`,
     };
 
-    setManualPlacedImages((prev) => [...prev, newImage]);
+    updateSceneImages([...manualPlacedImages, newImage]);
   };
 
   useEffect(() => {
@@ -79,25 +93,13 @@ export default function ScenePageGm() {
     fetchImages();
   }, [scene]);
 
-  // 🔁 Atualiza automaticamente as imagens posicionadas a cada 10 segundos
-  useEffect(() => {
-    if (!sceneId) return;
 
-    const interval = setInterval(async () => {
-      try {
-        const updatedPositionImages = await fetchData(
-          `scene_images/${sceneId}`,
-          { credentials: 'include' }
-        );
-        setPositionImages(updatedPositionImages || []);
-        console.log("🔄 Atualização automática das imagens da cena.");
-      } catch (error) {
-        console.error("Erro ao atualizar imagens posicionadas:", error);
-      }
-    }, 10000);
+  useSceneSocket({
+    sceneId: sceneId || '',
+    manualPlacedImages, 
+    setManualPlacedImages, 
+  });
 
-    return () => clearInterval(interval);
-  }, [sceneId]);
 
   if (loading || !scene || cells.length === 0) {
     return <p>Carregando Cena, aguarde...</p>;
