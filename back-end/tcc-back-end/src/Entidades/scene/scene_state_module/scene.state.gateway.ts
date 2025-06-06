@@ -18,7 +18,7 @@ export class SceneStateGateway{
     @MessageBody() data: { sceneId: string; newState: SceneState; senderId: string },
     @ConnectedSocket() client: Socket,
   ) {
-
+    console.log("Salvando Estado da Cena");
     await this.sceneStateService.saveSceneState(data.sceneId, data.newState);
 
     // Enviar para todos os outros sockets, exceto o que enviou
@@ -34,6 +34,7 @@ export class SceneStateGateway{
     @MessageBody() sceneId: string,
     @ConnectedSocket() client: Socket,
   ) {
+    console.log("Procurando o Estado da Cena");
     const state = await this.sceneStateService.getSceneState(sceneId);
     client.emit(`sceneState:${sceneId}`, state);
   }

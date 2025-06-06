@@ -11,33 +11,10 @@ export function useSceneSocket({
   manualPlacedImages: SceneImage[];
   setManualPlacedImages: (imgs: SceneImage[]) => void;
 }) {
-  // Usamos ref para guardar o estado atual das imagens e evitar re-render infinito
   const currentImagesRef = useRef<SceneImage[]>([]);
 
   useEffect(() => {
     if (!sceneId) return;
-
-    async function fetchSceneStateFromDB() {
-      try {
-        const res = await fetchData(`/scene_images/${sceneId}`, {
-          credentials: 'include',
-        });
-        if (!res.ok) {
-          console.log("Cena Vazia");
-          setManualPlacedImages([]);
-        } else {
-          const data = await res.json();
-          if (Array.isArray(data)) {
-            currentImagesRef.current = data;
-            setManualPlacedImages(data);
-          } else {
-            console.warn('Estado do banco inválido:', data);
-          }
-        }
-      } catch (error) {
-        console.error('Falha ao buscar estado no banco:', error);
-      }
-    }
 
     socket.emit('getSceneState', sceneId);
 
@@ -48,7 +25,6 @@ export function useSceneSocket({
         setManualPlacedImages(state);
       } else {
         console.log('Estado inicial inválido ou vazio recebido do servidor, buscando no banco...');
-        fetchSceneStateFromDB();
       }
     });
 
