@@ -4,10 +4,10 @@ import { SceneController } from './scene.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Scene } from './entities/scene.entity';
 import { SceneImage } from '../scene_images/entities/scene_image.entity';
-import { CacheModule } from '@nestjs/cache-manager';
+import { UserTableModule } from '../user_table/user_table.module';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Scene,SceneImage])],
+  imports: [TypeOrmModule.forFeature([Scene,SceneImage]),UserTableModule],
   controllers: [SceneController],
   providers: [SceneService],
   exports:[SceneService]

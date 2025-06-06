@@ -1,21 +1,23 @@
-'use client'
+'use client';
 
-
+import KonvaImageComponent from "@/app/components/konva_image";
 import useSceneSocketReceiver from "@/app/hooks/Canva/useSceneSocketReceiver";
 import { useSceneData } from "@/app/hooks/useSceneData";
 import { useEffect, useState } from "react";
 import { Stage, Layer, Rect } from "react-konva";
+import { useSceneSocketSender } from "@/app/hooks/Canva/useSceneSocketSender";
 
 export default function ScenePagePlayer() {
   const { scene, loading } = useSceneData();
-  const [ sceneId,setSceneId] = useState<string | null>(null);
+  const [sceneId, setSceneId] = useState<string | null>(null);
   const pixels = 64;
   const [width, setWidth] = useState<number>(0);
   const [height, setHeight] = useState<number>(0);
   const [cells, setCells] = useState<boolean[]>([]);
-  const [images,setImages] = useState<SceneImage[]>([]);
-  //useSceneSocketReceiver(sceneId, setImages);
-  
+  const [images, setImages] = useState<SceneImage[]>([]);
+
+  const { sendSceneState } = useSceneSocketSender(sceneId);
+
   useEffect(() => {
     if (!scene) return;
     const storedId = localStorage.getItem("sceneId");
@@ -24,9 +26,18 @@ export default function ScenePagePlayer() {
     }
     setWidth(scene.width);
     setHeight(scene.height);
-    setCells(Array(scene.width * scene.height).fill(false)); // Só para renderizar a grid
+    setCells(Array(scene.width * scene.height).fill(false));
   }, [scene]);
+
   useSceneSocketReceiver(sceneId, setImages);
+
+  // ⏺️ Envia o estado da cena sempre que imagens forem alteradas
+  useEffect(() => {
+    if (sceneId && images.length > 0) {
+      sendSceneState(images);
+    }
+  }, [images]);
+
   if (loading || !scene || cells.length === 0) {
     return <p>Carregando Cena, aguarde...</p>;
   }
@@ -34,7 +45,7 @@ export default function ScenePagePlayer() {
   return (
     <div>
       <Stage width={pixels * width} height={pixels * height}>
-        {/* Layer do grid — só para visual, sem clique */}
+        {/* Grid Layer */}
         <Layer>
           {cells.map((_, i) => {
             const x = (i % width) * pixels;
@@ -52,6 +63,21 @@ export default function ScenePagePlayer() {
               />
             );
           })}
+        </Layer>
+
+        {/* Image Layer */}
+        <Layer>
+          {images.map((img) => (
+            <KonvaImageComponent
+              key={img.id}
+              src={`${img.base64Content}`}
+
+              x={img.x_pos * pixels}
+              y={img.y_pos * pixels}
+              width={img.width * pixels}
+              height={img.height * pixels}
+            />
+          ))}
         </Layer>
       </Stage>
     </div>

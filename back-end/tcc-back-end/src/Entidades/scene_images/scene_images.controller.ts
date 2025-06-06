@@ -35,7 +35,6 @@ async create(@UploadedFile() file: Express.Multer.File,@CurrentUser() user: any,
   @Get(':id')
   @UseGuards(CustomJwtGuard)
   async findAllByScene(@Param('id') idScene: string, @CurrentUser() user: any) {
-    console.log("Cheguei aqui")
     return await this.sceneImagesService.findAllByScene(+idScene,user.sub);
   }
 

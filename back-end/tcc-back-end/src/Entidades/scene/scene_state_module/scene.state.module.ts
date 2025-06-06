@@ -6,7 +6,7 @@ import { SceneModule } from '../scene.module';
 
 
 @Module({
-  imports:[CacheModule.register({tll:300}),SceneModule],
+  imports:[CacheModule.register({tll:50}),SceneModule],
   providers: [SceneStateService, SceneStateGateway],
   exports: [SceneStateService],
 })
