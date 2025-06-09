@@ -80,4 +80,4 @@ Continuação de 06/06:
 09/06:
 Comecei a mexer com a movimentação dos tokens no TableTop
 1.Modifiquei o konva_image para conseguir movimentar o token(ref para fazer a movimentação, onDragEnd para executar alguma operação).
-2.As imagens estão sendo movimentadas, também foi resolvido o problema do grid do gm
+2.As imagens estão sendo movimentadas, também foi resolvido o problema do grid do gm(Apesar que somente está funcionando com o mouse)
