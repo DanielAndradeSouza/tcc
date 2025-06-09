@@ -10,7 +10,6 @@ import { useEffect, useState } from "react";
 import { Stage, Layer, Rect } from "react-konva";
 import { useTableTopImagesGm } from "@/app/hooks/Canva/useTableTopImagesGm";
 import { v4 as uuidv4 } from "uuid";
-import socket from "@/app/utls/socket";
 import KonvaImageComponent from "@/app/components/konva_image";
 import useSceneSocketReceiver from "@/app/hooks/Canva/useSceneSocketReceiver";
 import { useSceneSocketSender } from "@/app/hooks/Canva/useSceneSocketSender";
@@ -34,7 +33,7 @@ export default function ScenePageGm() {
   const { sendSceneState } = useSceneSocketSender(sceneId);
   const { placedImages, setPlacedImages } = useTableTopImagesGm(userImages, positionImages);
   const [manualPlacedImages, setManualPlacedImages] = useState<SceneImage[]>([]);
-
+  
   // Envia atualizações via socket sempre que as imagens manuais forem atualizadas
   useEffect(() => {
     if (manualPlacedImages.length > 0) {
@@ -103,40 +102,57 @@ export default function ScenePageGm() {
   return (
     <div>
       <Stage width={pixels * width} height={pixels * height}>
-        {/* Layer das imagens */}
-        <Layer>
-          {[...placedImages, ...manualPlacedImages].map((img) => (
-            <KonvaImageComponent
-              key={`${img.id}-${img.x_pos}-${img.y_pos}`}
-              src={img.base64Content || img.image_url}
-              x={img.x_pos * pixels}
-              y={img.y_pos * pixels}
-              width={img.width * pixels}
-              height={img.height * pixels}
-            />
-          ))}
-        </Layer>
+  {/* Layer do grid */}
+  <Layer>
+    {cells.map((active, i) => {
+      const x = (i % width) * pixels;
+      const y = Math.floor(i / width) * pixels;
+      return (
+        <Rect
+          key={i}
+          x={x}
+          y={y}
+          width={pixels}
+          height={pixels}
+          fill={active ? "rgba(135,206,250,0.3)" : "rgba(211,211,211,0.3)"}
+          stroke="black"
+          strokeWidth={1}
+        />
+      );
+    })}
+  </Layer>
 
-        {/* Layer do grid */}
-        <Layer>
-          {cells.map((active, i) => {
-            const x = (i % width) * pixels;
-            const y = Math.floor(i / width) * pixels;
-            return (
-              <Rect
-                key={i}
-                x={x}
-                y={y}
-                width={pixels}
-                height={pixels}
-                fill={active ? "rgba(135,206,250,0.3)" : "rgba(211,211,211,0.3)"}
-                stroke="black"
-                strokeWidth={2}
-              />
-            );
-          })}
-        </Layer>
-      </Stage>
+  {/* Layer das imagens (com drag) */}
+  <Layer>
+    {[...placedImages, ...manualPlacedImages].map((img) => (
+      <KonvaImageComponent
+        key={`${img.id}-${img.x_pos}-${img.y_pos}`}
+        src={img.base64Content || img.image_url}
+        x={img.x_pos * pixels}
+        y={img.y_pos * pixels}
+        width={img.width * pixels}
+        height={img.height * pixels}
+        draggable={true}
+        //Função passada no onMove
+        onMove={({ x, y } : {x:number,y:number}) => {
+          const updatedImages = [...placedImages, ...manualPlacedImages].map((i) =>
+            i.id === img.id
+              ? {
+                //Calcula a posição que o x_pos e y_pos vai ficar ao final
+                  ...i,
+                  x_pos: Math.round(x / pixels),
+                  y_pos: Math.round(y / pixels),
+                }
+              : i
+          );
+          //Atualiza o estado da imagem
+          setManualPlacedImages(updatedImages);
+        }}
+      />
+    ))}
+  </Layer>
+</Stage>
+
 
       <ListButton>
         <BlueButton onClick={toggleModal}>Modificar Cena</BlueButton>

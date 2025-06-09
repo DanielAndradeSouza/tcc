@@ -6,14 +6,12 @@ export function useSceneSocketSender(sceneId: string | null) {
 
   const sendSceneState = (newState: SceneImage[]) => {
     if (!sceneId) {
-      console.warn("⚠️ Scene ID não definido, não foi possível enviar estado via socket.");
+      console.warn("Scene ID não definido, não foi possível enviar estado via socket.");
       return;
     }
 
-    // Compara se o estado novo é igual ao último enviado, evita envio duplicado
     const isEqual = JSON.stringify(newState) === JSON.stringify(lastSentStateRef.current);
     if (isEqual) {
-      // console.log("Estado igual ao último enviado, ignorando.");
       return;
     }
 
