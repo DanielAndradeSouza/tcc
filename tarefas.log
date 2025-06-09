@@ -73,6 +73,9 @@ como será feito este armazenamento em cache, mas o sistema dele vai funcionar b
 então busca no banco.
 Como vão ser feitos os dados em tempo real? não sei
 
-Continuação de 04/06:
+Continuação de 06/06:
 1. Fiz o scene.state.gateway,module e service para guardar dados na cache do servidor.
 2. Consegui colocar a bagaça das imagens na cache e retorna-las para o front(agora falta fazer o armazenamento no banco).
+
+09/06:
+1. Comecei a mexer com a movimentação dos tokens no TableTop

@@ -31,7 +31,6 @@ export default function ScenePagePlayer() {
 
   useSceneSocketReceiver(sceneId, setImages);
 
-  // ⏺️ Envia o estado da cena sempre que imagens forem alteradas
   useEffect(() => {
     if (sceneId && images.length > 0) {
       sendSceneState(images);
@@ -43,43 +42,42 @@ export default function ScenePagePlayer() {
   }
 
   return (
-    <div>
-      <Stage width={pixels * width} height={pixels * height}>
-        {/* Grid Layer */}
-        <Layer>
-          {cells.map((_, i) => {
-            const x = (i % width) * pixels;
-            const y = Math.floor(i / width) * pixels;
-            return (
-              <Rect
-                key={i}
-                x={x}
-                y={y}
-                width={pixels}
-                height={pixels}
-                fill="rgba(211,211,211,0.3)"
-                stroke="black"
-                strokeWidth={2}
-              />
-            );
-          })}
-        </Layer>
+  <div>
+    <Stage width={pixels * width} height={pixels * height}>
+      {/* Image Layer */}
+      <Layer>
+        {images.map((img) => (
+          <KonvaImageComponent
+            key={img.id}
+            src={`${img.base64Content}`}
+            x={img.x_pos * pixels}
+            y={img.y_pos * pixels}
+            width={img.width * pixels}
+            height={img.height * pixels}
+          />
+        ))}
+      </Layer>
 
-        {/* Image Layer */}
-        <Layer>
-          {images.map((img) => (
-            <KonvaImageComponent
-              key={img.id}
-              src={`${img.base64Content}`}
-
-              x={img.x_pos * pixels}
-              y={img.y_pos * pixels}
-              width={img.width * pixels}
-              height={img.height * pixels}
+      {/* Grid Layer */}
+      <Layer>
+        {cells.map((_, i) => {
+          const x = (i % width) * pixels;
+          const y = Math.floor(i / width) * pixels;
+          return (
+            <Rect
+              key={i}
+              x={x}
+              y={y}
+              width={pixels}
+              height={pixels}
+              fill="rgba(211,211,211,0.3)"
+              stroke="black"
+              strokeWidth={2}
             />
-          ))}
-        </Layer>
-      </Stage>
-    </div>
-  );
+          );
+        })}
+      </Layer>
+    </Stage>
+  </div>
+);
 }
