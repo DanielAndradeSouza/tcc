@@ -78,4 +78,5 @@ Continuação de 06/06:
 2. Consegui colocar a bagaça das imagens na cache e retorna-las para o front(agora falta fazer o armazenamento no banco).
 
 09/06:
-1. Comecei a mexer com a movimentação dos tokens no TableTop
+Comecei a mexer com a movimentação dos tokens no TableTop
+1.Modifiquei o konva_image para conseguir movimentar o token(ref para fazer a movimentação, onDragEnd para executar alguma operação).
