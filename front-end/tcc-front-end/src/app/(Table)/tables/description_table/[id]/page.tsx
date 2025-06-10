@@ -3,7 +3,7 @@
 import ConfirmationModal from "@/app/components/modals/confirmation_modal";
 import { useAuth } from "@/app/hooks/useAuth";
 import { fetchData } from "@/app/services/api";
-import { Container, InfoSection, PlayerName, PlayersSidebar, Button } from "@/app/styles/playersInfo.style";
+import { Container, InfoSection, PlayerName, PlayersSidebar, Button } from "@/app/styles/descriptionPage.style";
 import { useParams, useRouter } from "next/navigation";
 import { useState } from "react";
 

@@ -13,6 +13,7 @@ import { v4 as uuidv4 } from "uuid";
 import KonvaImageComponent from "@/app/components/konva_image";
 import useSceneSocketReceiver from "@/app/hooks/Canva/useSceneSocketReceiver";
 import { useSceneSocketSender } from "@/app/hooks/Canva/useSceneSocketSender";
+import { DropDownSceneList } from "@/app/components/dropdown/dropdown_scenes_list";
 
 export default function ScenePageGm() {
   const { scene, loading } = useSceneData();
@@ -38,7 +39,7 @@ export default function ScenePageGm() {
   useEffect(() => {
     if (manualPlacedImages.length > 0) {
       sendSceneState(manualPlacedImages);
-      console.log("🛰️ Estado da cena emitido via socket (por modificação manual)");
+      console.log("Estado da cena emitido via socket (por modificação manual)");
     }
   }, [manualPlacedImages]);
 
@@ -101,6 +102,7 @@ export default function ScenePageGm() {
 
   return (
     <div>
+      <DropDownSceneList />
       <Stage width={pixels * width} height={pixels * height}>
   {/* Layer do grid */}
   <Layer>

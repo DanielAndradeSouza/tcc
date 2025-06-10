@@ -1,6 +1,16 @@
 'use client';
 
 import { useAuth } from "@/app/hooks/useAuth";
+import {
+  ContainerTable,
+  CreateButton,
+  Header,
+  LeftGroup,
+  PageWrapper,
+  ProfileButton,
+  ProfileSidebar,
+  TableButton
+} from "@/app/styles/tables.style";
 import { useRouter } from "next/navigation";
 
 export default function TablesPage() {
@@ -10,15 +20,31 @@ export default function TablesPage() {
   if (loading) return <p>Carregando...</p>;
 
   return (
-    <div>
-      {tables.map((table) => (
-        <div key={table.id}>
-          <button onClick={() => router.push(`/tables/description_table/${table.id}`)}>
+    <PageWrapper>
+      <Header>
+        <LeftGroup>
+          <h2 style={{ margin: 0 }}>Mesas Disponíveis</h2>
+        </LeftGroup>
+        <ProfileSidebar>
+          <ProfileButton onClick={() => router.push('/profile')}>
+            Perfil
+          </ProfileButton>
+        </ProfileSidebar>
+      </Header>
+
+      <ContainerTable>
+        {tables.map((table) => (
+          <TableButton
+            key={table.id}
+            onClick={() => router.push(`/tables/description_table/${table.id}`)}
+          >
             {table.table_name}
-          </button>
-        </div>
-      ))}
-      <button onClick={() => router.push('/tables/create_table')}>Criar Nova Mesa</button>
-    </div>
+          </TableButton>
+        ))}
+        <CreateButton onClick={() => router.push('/tables/create_table')}>
+          Criar Nova Mesa
+        </CreateButton>
+      </ContainerTable>
+    </PageWrapper>
   );
 }
