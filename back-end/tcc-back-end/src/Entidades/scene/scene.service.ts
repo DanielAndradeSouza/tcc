@@ -8,13 +8,11 @@ import { Scene } from './entities/scene.entity';
 import { UpdateSceneImageDto } from '../scene_images/dto/update-scene_image.dto';
 import * as path from 'path';
 import * as fs from 'fs';
+import { TableService } from '../table/table.service';
 @Injectable()
 export class SceneService {
   constructor(@InjectRepository(Scene) private sceneRepository: Repository<Scene>,
   @InjectRepository(SceneImage) private sceneImageRepository: Repository<SceneImage>){}
-  create(createSceneDto: CreateSceneDto) {
-    return 'This action adds a new scene';
-  }
   async createSceneImage(sceneId:number, createSceneImage:CreateSceneDto){
     const sceneImage = this.sceneImageRepository.create(createSceneImage);
     return await this.sceneImageRepository.save(sceneImage);

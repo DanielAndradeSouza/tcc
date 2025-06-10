@@ -3,7 +3,8 @@
 import { fetchData } from "@/app/services/api";
 import { useEffect, useState } from "react";
 import styled from "styled-components";
-import { useRouter } from "next/navigation"; // App Router
+import { useRouter } from "next/navigation";
+import CreateSceneModal from "../modals/create_scene_modal";
 
 const DropdownContainer = styled.div`
   position: relative;
@@ -16,8 +17,7 @@ const ToggleButton = styled.img`
   cursor: pointer;
 `;
 
-const SceneList = styled.div<{ visible: boolean }>`
-  display: ${({ visible }) => (visible ? "block" : "none")};
+const SceneList = styled.div`
   position: absolute;
   background-color: white;
   border: 1px solid #ccc;
@@ -44,31 +44,48 @@ const SceneButton = styled.button`
   }
 `;
 
+const CreateSceneButton = styled(SceneButton)`
+  background-color: #d4edda;
+  font-weight: bold;
+
+  &:hover {
+    background-color: #c3e6cb;
+  }
+`;
+
 export function DropDownSceneList() {
   const [scenes, setScenes] = useState<Scene[]>([]);
   const [visible, setVisible] = useState(false);
-  const router = useRouter(); // 👈
+  const [modalOpen, setModalOpen] = useState(false);
+  const router = useRouter();
+
+  const fetchScenes = async () => {
+    const tableId = localStorage.getItem("tableId");
+    if (!tableId) return;
+
+    try {
+      const allScenes = await fetchData(`table/${tableId}/scene`, { credentials: 'include' });
+      setScenes(allScenes);
+    } catch (error) {
+      console.error("Erro ao buscar cenas:", error);
+    }
+  };
 
   useEffect(() => {
-    const fetchScenes = async () => {
-      const tableId = localStorage.getItem("tableId");
-      if (!tableId) return;
-
-      try {
-        const allScenes = await fetchData(`table/${tableId}/scene`, { credentials: 'include' });
-        console.log("Todas as Cenas", allScenes);
-        setScenes(allScenes);
-      } catch (error) {
-        console.error("Erro ao buscar cenas:", error);
-      }
-    };
-
     fetchScenes();
   }, []);
 
   const handleSceneChange = (sceneId: number) => {
     localStorage.setItem("sceneId", sceneId.toString());
-    router.push(`/gm/scene/${sceneId}`); 
+    router.push(`/gm/scene/${sceneId}`);
+  };
+
+  const handleOpenModal = () => setModalOpen(true);
+  const handleCloseModal = () => setModalOpen(false);
+
+  const handleCreated = (newScene: Scene) => {
+    setScenes(prev => [...prev, newScene]);
+    setModalOpen(false);
   };
 
   return (
@@ -77,16 +94,28 @@ export function DropDownSceneList() {
         alt="Abrir lista de cenas"
         onClick={() => setVisible(prev => !prev)}
       />
-      <SceneList visible={visible}>
-        {scenes.map(scene => (
-          <SceneButton
-            key={scene.id}
-            onClick={() => handleSceneChange(scene.id)}
-          >
-            {scene.title}
-          </SceneButton>
-        ))}
-      </SceneList>
+
+      {visible && (
+        <SceneList>
+          {scenes.map(scene => (
+            <SceneButton
+              key={scene.id}
+              onClick={() => handleSceneChange(scene.id)}
+            >
+              {scene.title}
+            </SceneButton>
+          ))}
+          <CreateSceneButton onClick={handleOpenModal}>
+            + Criar nova cena
+          </CreateSceneButton>
+        </SceneList>
+      )}
+
+      <CreateSceneModal
+        isOpen={modalOpen}
+        onClose={handleCloseModal}
+        onCreated={handleCreated}
+      />
     </DropdownContainer>
   );
 }

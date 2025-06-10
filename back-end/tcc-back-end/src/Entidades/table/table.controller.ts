@@ -50,9 +50,9 @@ export class TableController {
   }
   @UseGuards(CustomJwtGuard)
   @Post(':id/scene')
-  async createScene(@Param('id') idTable:number,createSceneDto:CreateSceneDto){
-    // Criação da Cena
-    const scene = this.tableService.createScene(idTable,createSceneDto);
+  async createScene(@Param('id') idTable:number,@Body() createSceneDto:CreateSceneDto){
+    const scene = await this.tableService.createScene(idTable,createSceneDto);
+    return scene;
   }
   @UseGuards(CustomJwtGuard)
   @Get(':id/scene')

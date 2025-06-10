@@ -3,4 +3,5 @@ interface Scene{
     title:string;
     width:number;
     height:number;
+    tableId?:number;
 }

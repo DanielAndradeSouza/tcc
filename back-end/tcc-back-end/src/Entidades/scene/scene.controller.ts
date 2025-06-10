@@ -4,6 +4,7 @@ import { CustomJwtGuard } from 'src/auth/jwtGuard/custom.jwt.guard';
 import { UpdateSceneDto } from './dto/update-scene.dto';
 import { Scene } from './entities/scene.entity';
 import { UpdateSceneImageDto } from '../scene_images/dto/update-scene_image.dto';
+import { CreateSceneDto } from './dto/create-scene.dto';
 
 @Controller('scene')
 export class SceneController {

@@ -67,7 +67,6 @@ export default function TableIdPage() {
         <p>{table.description}</p>
 
         <Button onClick={handleScenePage}>Iniciar Mesa</Button>
-        <Button onClick={handleUpdatePage}>Atualizar Dados da Mesa</Button>
         <Button onClick={openModal}>Deletar Mesa</Button>
 
         <ConfirmationModal

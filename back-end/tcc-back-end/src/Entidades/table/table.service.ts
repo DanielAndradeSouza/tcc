@@ -49,12 +49,16 @@ async create(createTableDto: CreateTableDto, userId: number): Promise<Table> {
 }
 
 
-  //Cria uma Cena
-  async createScene(idTable:number, createSceneDto:CreateSceneDto):Promise<Scene>{
-    const scene = this.sceneRepository.create(createSceneDto);
-    const savedScene = this.sceneRepository.save(scene);
-    return savedScene;
-  }
+async createScene(idTable: number, createSceneDto: CreateSceneDto): Promise<Scene> {
+  const scene =  this.sceneRepository.create(createSceneDto);
+
+  scene.table = { id: idTable } as any; 
+
+  const savedScene = await this.sceneRepository.save(scene);
+
+  return savedScene;
+}
+
   
   //Encontra todas as mesas do banco
   async findAll(userId: number): Promise<Table[]> {

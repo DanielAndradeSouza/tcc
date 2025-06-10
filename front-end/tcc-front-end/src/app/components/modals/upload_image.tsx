@@ -1,6 +1,6 @@
 import { useState } from "react";
 import ButtonRequest from "../button_request";
-import { Overlay, ModalContainer, CloseButton } from "@/app/styles/modal.style";
+import { ModalButton, ModalContent, ModalOverlay } from "@/app/styles/modal.style";
 
 interface UploadImageProps {
   isOpen: boolean;
@@ -30,9 +30,9 @@ export function UploadImage({ isOpen, onClose }: UploadImageProps) {
   };
 
   return (
-    <Overlay onClick={onClose}>
-      <ModalContainer onClick={(e) => e.stopPropagation()}>
-        <CloseButton onClick={onClose}>✖</CloseButton>
+    <ModalOverlay onClick={onClose}>
+      <ModalContent onClick={(e) => e.stopPropagation()}>
+        <ModalButton onClick={onClose}>✖</ModalButton>
 
         <h1>Upload de Token</h1>
         <input type="file" onChange={handleFileChange} />
@@ -53,7 +53,7 @@ export function UploadImage({ isOpen, onClose }: UploadImageProps) {
         ) : (
           <button disabled>Enviar Imagem</button>
         )}
-      </ModalContainer>
-    </Overlay>
+      </ModalContent>
+    </ModalOverlay>
   );
 }

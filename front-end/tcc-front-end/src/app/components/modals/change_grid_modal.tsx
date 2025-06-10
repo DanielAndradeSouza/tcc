@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import ButtonRequest from "../button_request";
-import { CloseButton, ModalContainer, Overlay } from "@/app/styles/modal.style";
+import { ModalButton, ModalContent, ModalOverlay } from "@/app/styles/modal.style";
 
 export default function ChangeGridModal(modalInfo: SceneModalInfo) {
   const [width, setWidth] = useState<number>(modalInfo.scene.width);
@@ -12,9 +12,9 @@ export default function ChangeGridModal(modalInfo: SceneModalInfo) {
   }, [modalInfo.scene]);
 
   return (
-    <Overlay>
-      <ModalContainer>
-        <CloseButton onClick={modalInfo.onClose}>✖</CloseButton>
+    <ModalOverlay>
+      <ModalContent>
+        <ModalButton onClick={modalInfo.onClose}>✖</ModalButton>
         <h2>Redimensionar Cena</h2>
 
         <label htmlFor="width">Largura:</label>
@@ -50,7 +50,7 @@ export default function ChangeGridModal(modalInfo: SceneModalInfo) {
           }}
           onError={() => alert("Erro ao redimensionar a cena")}
         />
-        </ModalContainer>
-    </Overlay>
+        </ModalContent>
+    </ModalOverlay>
   );
 }
