@@ -1,6 +1,7 @@
 import { ConnectedSocket, MessageBody, SubscribeMessage, WebSocketGateway, WebSocketServer } from '@nestjs/websockets'; // certo
 import { Server, Socket } from 'socket.io';
 import { SceneStateService } from './scene.state.service';
+import { isUUID } from 'class-validator';
 
 @WebSocketGateway({cors:{
   origin:'http://localhost:3000',
@@ -37,5 +38,11 @@ export class SceneStateGateway{
     console.log("Procurando o Estado da Cena");
     const state = await this.sceneStateService.getSceneState(sceneId);
     client.emit(`sceneState:${sceneId}`, state);
+  }
+  @SubscribeMessage('deleteSceneState')
+  async handleDeleteSceneState(
+    @MessageBody() data: { sceneId: string; scene_imageId: string },
+  ){
+    
   }
 }

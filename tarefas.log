@@ -84,3 +84,5 @@ Comecei a mexer com a movimentação dos tokens no TableTop
 
 10/06:
 1.Criei um DropDown para poder selecionar a cena que o Gm quer se movimentar para.
+11/06:
+1.Fiz a lógica do back-end para deleção, próximo passo é fazer teste.

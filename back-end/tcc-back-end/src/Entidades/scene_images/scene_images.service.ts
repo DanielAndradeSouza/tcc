@@ -57,4 +57,8 @@ export class SceneImagesService {
 
     return filesWithContent;
   }
-}
+  async delete(scene_imageId:number){
+    await this.sceneImageRepository.delete(scene_imageId);
+
+  }
+} 

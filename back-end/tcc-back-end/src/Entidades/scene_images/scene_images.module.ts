@@ -9,5 +9,6 @@ import { SceneImage } from './entities/scene_image.entity';
   imports:[TypeOrmModule.forFeature([Scene,SceneImage])],
   controllers: [SceneImagesController],
   providers: [SceneImagesService],
+  exports:[SceneImagesService]
 })
 export class SceneImagesModule {}

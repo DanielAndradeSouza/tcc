@@ -16,8 +16,4 @@ export class CreateSceneDto {
     @IsNotEmpty()
     @IsNumber()
     height: number;
-
-    @IsOptional()
-    @IsObject()
-    tokens?: any; 
 }
