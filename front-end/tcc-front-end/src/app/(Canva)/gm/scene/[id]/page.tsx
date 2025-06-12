@@ -14,6 +14,7 @@ import KonvaImageComponent from "@/app/components/konva_image";
 import useSceneSocketReceiver from "@/app/hooks/Canva/useSceneSocketReceiver";
 import { useSceneSocketSender } from "@/app/hooks/Canva/useSceneSocketSender";
 import { DropDownSceneList } from "@/app/components/dropdown/dropdown_scenes_list";
+import { deleteSceneImage } from "@/app/utls/socket";
 
 export default function ScenePageGm() {
   const { scene, loading } = useSceneData();
@@ -30,11 +31,13 @@ export default function ScenePageGm() {
   const [imagesLoading, setImagesLoading] = useState<boolean>(true);
   const [positionImages, setPositionImages] = useState<SceneImage[]>([]);
 
+  const [selectedImageId, setSelectedImageId] = useState<string | null>(null); 
+
   const sceneId = typeof window !== "undefined" ? localStorage.getItem("sceneId") : null;
   const { sendSceneState } = useSceneSocketSender(sceneId);
   const { placedImages, setPlacedImages } = useTableTopImagesGm(userImages, positionImages);
   const [manualPlacedImages, setManualPlacedImages] = useState<SceneImage[]>([]);
-  
+
   // Envia atualizações via socket sempre que as imagens manuais forem atualizadas
   useEffect(() => {
     if (manualPlacedImages.length > 0) {
@@ -43,10 +46,8 @@ export default function ScenePageGm() {
     }
   }, [manualPlacedImages]);
 
-  // Recebe atualizações via socket (caso o GM também queira escutar)
   useSceneSocketReceiver(sceneId || "", setManualPlacedImages);
 
-  // Atualiza localmente a lista de imagens colocadas manualmente
   const updateSceneImages = (newImages: SceneImage[]) => {
     setManualPlacedImages(newImages);
   };
@@ -62,6 +63,23 @@ export default function ScenePageGm() {
     };
     updateSceneImages([...manualPlacedImages, newImage]);
   };
+
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      console.log(selectedImageId);
+      if (e.key === 'Delete' && selectedImageId) {
+        setManualPlacedImages((prev) => prev.filter((img) => img.id !== selectedImageId));
+        //console.log("Tecla sendo digitada:\n", e.key,"SelectedImageId: ", selectedImageId);
+        if (sceneId && selectedImageId) {
+          deleteSceneImage(sceneId, selectedImageId);
+        }
+        setSelectedImageId(null);
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [selectedImageId, sceneId]);
 
   useEffect(() => {
     if (!scene) return;
@@ -104,57 +122,54 @@ export default function ScenePageGm() {
     <div>
       <DropDownSceneList />
       <Stage width={pixels * width} height={pixels * height}>
-  {/* Layer do grid */}
-  <Layer>
-    {cells.map((active, i) => {
-      const x = (i % width) * pixels;
-      const y = Math.floor(i / width) * pixels;
-      return (
-        <Rect
-          key={i}
-          x={x}
-          y={y}
-          width={pixels}
-          height={pixels}
-          fill={active ? "rgba(135,206,250,0.3)" : "rgba(211,211,211,0.3)"}
-          stroke="black"
-          strokeWidth={1}
-        />
-      );
-    })}
-  </Layer>
+        {/* Layer do grid */}
+        <Layer>
+          {cells.map((active, i) => {
+            const x = (i % width) * pixels;
+            const y = Math.floor(i / width) * pixels;
+            return (
+              <Rect
+                key={i}
+                x={x}
+                y={y}
+                width={pixels}
+                height={pixels}
+                fill={active ? "rgba(135,206,250,0.3)" : "rgba(211,211,211,0.3)"}
+                stroke="black"
+                strokeWidth={1}
+              />
+            );
+          })}
+        </Layer>
 
-  {/* Layer das imagens (com drag) */}
-  <Layer>
-    {[...placedImages, ...manualPlacedImages].map((img) => (
-      <KonvaImageComponent
-        key={`${img.id}-${img.x_pos}-${img.y_pos}`}
-        src={img.base64Content || img.image_url}
-        x={img.x_pos * pixels}
-        y={img.y_pos * pixels}
-        width={img.width * pixels}
-        height={img.height * pixels}
-        draggable={true}
-        //Função passada no onMove
-        onMove={({ x, y } : {x:number,y:number}) => {
-          const updatedImages = [...placedImages, ...manualPlacedImages].map((i) =>
-            i.id === img.id
-              ? {
-                //Calcula a posição que o x_pos e y_pos vai ficar ao final
-                  ...i,
-                  x_pos: Math.round(x / pixels),
-                  y_pos: Math.round(y / pixels),
-                }
-              : i
-          );
-          //Atualiza o estado da imagem
-          setManualPlacedImages(updatedImages);
-        }}
-      />
-    ))}
-  </Layer>
-</Stage>
-
+        {/* Layer das imagens (com drag) */}
+        <Layer>
+          {[...placedImages, ...manualPlacedImages].map((img) => (
+            <KonvaImageComponent
+              key={`${img.id}-${img.x_pos}-${img.y_pos}`}
+              src={img.base64Content || img.image_url}
+              x={img.x_pos * pixels}
+              y={img.y_pos * pixels}
+              width={img.width * pixels}
+              height={img.height * pixels}
+              draggable={true}
+              onClick={() => setSelectedImageId(img.id)}  
+              onMove={({ x, y }: { x: number; y: number }) => {
+                const updatedImages = [...placedImages, ...manualPlacedImages].map((i) =>
+                  i.id === img.id
+                    ? {
+                        ...i,
+                        x_pos: Math.round(x / pixels),
+                        y_pos: Math.round(y / pixels),
+                      }
+                    : i
+                );
+                setManualPlacedImages(updatedImages);
+              }}
+            />
+          ))}
+        </Layer>
+      </Stage>
 
       <ListButton>
         <BlueButton onClick={toggleModal}>Modificar Cena</BlueButton>
