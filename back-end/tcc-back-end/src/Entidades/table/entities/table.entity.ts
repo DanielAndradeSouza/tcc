@@ -24,11 +24,11 @@ export class Table {
     @OneToMany(() => Scene, (scene) => scene.table, {onDelete:'CASCADE'})
     scenes: Scene[];
 
-    @OneToOne(() => Scene, { nullable: true })
+    @OneToOne(() => Scene, { nullable: true, onDelete: 'SET NULL' })
     @JoinColumn({ name: 'scene_atual_players_id' })
     sceneAtualPlayers: Scene;
 
-    @OneToOne(() => Scene, { nullable: true })
+    @OneToOne(() => Scene, { nullable: true, onDelete: 'SET NULL' })
     @JoinColumn({ name: 'scene_atual_gm_id' })
     sceneAtualGM: Scene;
 }
