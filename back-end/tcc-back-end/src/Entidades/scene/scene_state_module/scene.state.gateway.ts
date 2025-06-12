@@ -39,10 +39,12 @@ export class SceneStateGateway{
     const state = await this.sceneStateService.getSceneState(sceneId);
     client.emit(`sceneState:${sceneId}`, state);
   }
-  @SubscribeMessage('deleteSceneState')
+  @SubscribeMessage('deleteSceneImage')
   async handleDeleteSceneState(
     @MessageBody() data: { sceneId: string; scene_imageId: string },
   ){
-    
+    const { sceneId, scene_imageId } = data;
+    console.log("Requerindo Deleção da imagem com id: ", scene_imageId);
+    await this.sceneStateService.deleteSceneState(data.sceneId,data.scene_imageId);
   }
 }

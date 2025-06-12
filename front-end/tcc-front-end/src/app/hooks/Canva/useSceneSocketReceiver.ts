@@ -15,7 +15,7 @@ export default function useSceneSocketReceiver(
 
     socket.on(`sceneStateUpdated:${sceneId}`, handleUpdate);
 
-    // Solicita o estado inicial da cena ao entrar
+   
     socket.emit("getSceneState", sceneId);
     socket.on(`sceneState:${sceneId}`, setImages);
 

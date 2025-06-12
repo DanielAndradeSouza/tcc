@@ -28,8 +28,8 @@ export function onSceneState(sceneId: string, callback: (state: any) => void) {
   socket.on(`sceneState:${sceneId}`, callback);
 }
 
-export function deleteSceneImage(sceneId: string, sceneImageId: string) {
-  console.log("Solicitando exclusão de imagem da cena...");
-  socket.emit('deleteSceneImage', { sceneId, sceneImageId, senderId: socket.id });
+export function deleteSceneImage(sceneId: string, scene_imageId: string) {
+  console.log("Solicitando exclusão de imagem da cena com id: ", scene_imageId);
+  socket.emit('deleteSceneImage', {sceneId, scene_imageId});
 }
 export default  socket ;
