@@ -143,32 +143,38 @@ export default function ScenePageGm() {
         </Layer>
 
         {/* Layer das imagens (com drag) */}
-        <Layer>
-          {[...placedImages, ...manualPlacedImages].map((img) => (
-            <KonvaImageComponent
-              key={`${img.id}-${img.x_pos}-${img.y_pos}`}
-              src={img.base64Content || img.image_url}
-              x={img.x_pos * pixels}
-              y={img.y_pos * pixels}
-              width={img.width * pixels}
-              height={img.height * pixels}
-              draggable={true}
-              onClick={() => setSelectedImageId(img.id)}  
-              onMove={({ x, y }: { x: number; y: number }) => {
-                const updatedImages = [...placedImages, ...manualPlacedImages].map((i) =>
-                  i.id === img.id
-                    ? {
-                        ...i,
-                        x_pos: Math.round(x / pixels),
-                        y_pos: Math.round(y / pixels),
-                      }
-                    : i
-                );
-                setManualPlacedImages(updatedImages);
-              }}
-            />
-          ))}
-        </Layer>
+            <Layer>
+      {[...placedImages, ...manualPlacedImages].map((img) => (
+        <KonvaImageComponent
+          key={`${img.id}-${img.x_pos}-${img.y_pos}`}
+          src={img.base64Content || img.image_url}
+          x={img.x_pos * pixels}
+          y={img.y_pos * pixels}
+          width={img.width * pixels}
+          height={img.height * pixels}
+          onClick={() => setSelectedImageId(img.id)}
+          onMove={({ x, y }: { x: number; y: number }) => {
+            const clampedX = Math.min(Math.max(Math.round(x / pixels), 0), width - img.width);
+            const clampedY = Math.min(Math.max(Math.round(y / pixels), 0), height - img.height);
+            const updatedImages = [...placedImages, ...manualPlacedImages].map((i) =>
+              i.id === img.id
+                ? {
+                    ...i,
+                    x_pos: clampedX,
+                    y_pos: clampedY,
+                  }
+                : i
+            );
+            setManualPlacedImages(updatedImages);
+          }}
+          dragBoundFunc={(pos: { x: number; y: number }) => {
+            const clampedX = Math.min(Math.max(pos.x, 0), pixels * (width - img.width));
+            const clampedY = Math.min(Math.max(pos.y, 0), pixels * (height - img.height));
+            return { x: clampedX, y: clampedY };
+          }}
+        />
+      ))}
+    </Layer>
       </Stage>
 
       <ListButton>

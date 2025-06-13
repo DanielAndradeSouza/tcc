@@ -1,5 +1,4 @@
 O que falta fazer de forma definitiva:
 1.Tratamento de caso o usuário coloque a imagem fora, ela pare no ponto mais extremo.
-2.Exclusão das imagens.
 3.Salvamento no banco de dados das imagens colocadas, além das deleções.
-4.Troca de Cenas.
+4.Troca de Cenas para o player.
