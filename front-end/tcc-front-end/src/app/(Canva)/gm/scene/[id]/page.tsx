@@ -122,7 +122,7 @@ export default function ScenePageGm() {
     <div>
       <DropDownSceneList />
       <Stage width={pixels * width} height={pixels * height}>
-        {/* Layer das imagens (com drag) */}
+        {/* Layer das imagens testando nova branch  */}
             <Layer>
       {[...placedImages, ...manualPlacedImages].map((img) => (
       <KonvaImageComponent
