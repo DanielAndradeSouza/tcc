@@ -86,3 +86,8 @@ Comecei a mexer com a movimentação dos tokens no TableTop
 1.Criei um DropDown para poder selecionar a cena que o Gm quer se movimentar para.
 11/06:
 1.Fiz a lógica do back-end para deleção, próximo passo é fazer teste.
+
+16/06:
+1.Pronto o redimencionamento.
+2.Fiz os diagramas de caso de uso.
+3.Escrevi um pouco mais no artigo, sobre a revisão bibliográfica e o fluxo do usuário e cada funcionalidade que cada usuário terá.
