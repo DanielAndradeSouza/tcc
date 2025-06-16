@@ -222,7 +222,20 @@ export default function ScenePageGm() {
         />
       )}
 
-      <UploadImage isOpen={uploadModalOpen} onClose={toggleUploadModal} />
+        <UploadImage
+        isOpen={uploadModalOpen}
+        onClose={toggleUploadModal}
+        onUploadComplete={async () => {
+          try {
+            const data = await fetchData(`scene_images/findAllFiles/${sceneId}`, {
+              credentials: "include",
+            });
+            setUserImages(data || []);
+          } catch (error) {
+            console.error("Erro ao atualizar lista de imagens após upload", error);
+          }
+        }}
+      />
 
       <div>
         {imagesLoading ? (

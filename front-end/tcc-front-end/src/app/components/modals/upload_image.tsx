@@ -5,9 +5,10 @@ import { ModalButton, ModalContent, ModalOverlay } from "@/app/styles/modal.styl
 interface UploadImageProps {
   isOpen: boolean;
   onClose: () => void;
+  onUploadComplete?:() => void;
 }
 
-export function UploadImage({ isOpen, onClose }: UploadImageProps) {
+export function UploadImage({ isOpen, onClose,onUploadComplete }: UploadImageProps) {
   const [file, setFile] = useState<File | null>(null);
   const [header, setHeader] = useState<RequestInit | null>(null);
 
@@ -46,6 +47,7 @@ export function UploadImage({ isOpen, onClose }: UploadImageProps) {
               alert("Imagem enviada com sucesso!");
               setFile(null);
               setHeader(null);
+              onUploadComplete?.();
               onClose();
             }}
             onError={() => alert("Erro ao enviar a imagem")}
