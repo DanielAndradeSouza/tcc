@@ -132,7 +132,7 @@ export default function ScenePageGm() {
         y={img.y_pos * pixels}
         width={img.width * pixels}
         height={img.height * pixels}
-        isSelected={selectedImageId === img.id} // ✅ Necessário para habilitar o Transformer
+        isSelected={selectedImageId === img.id}
         onClick={() => setSelectedImageId(img.id)}
         onMove={({ x, y }: { x: number; y: number }) => {
           const clampedX = Math.min(Math.max(Math.round(x / pixels), 0), width - img.width);
