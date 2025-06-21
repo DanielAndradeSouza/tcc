@@ -17,6 +17,7 @@ export default function UpdateTablePage() {
       try {
         if (!id) return;
         const data = await fetchData(`table/${id}`, { credentials: 'include' });
+        console.log(data);
         if (data) {
           setTable(data);
         }

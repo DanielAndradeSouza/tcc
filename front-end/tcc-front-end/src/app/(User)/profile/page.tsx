@@ -35,14 +35,24 @@ export default function ProfilePage() {
 
   async function handleConfirm() {
     try {
-      await fetchData(`user/deactivate/${user.id}`, {method:'PATCH' ,credentials: 'include' });
+      await fetchData(`user/deactivate/${user.id}`, { method: 'PATCH', credentials: 'include' });
       console.log("Usuário Desativado!");
       closeModal();
       await localStorage.clear();
-      await fetchData(`auth/logout`,{method:'POST',credentials:'include'});
+      await fetchData(`auth/logout`, { method: 'POST', credentials: 'include' });
       router.push('create_account');
     } catch (e) {
       console.error("Erro ao desativar usuário:", e);
+    }
+  }
+
+  async function handleLogout() {
+    try {
+      await localStorage.clear();
+      await fetchData(`auth/logout`, { method: 'POST', credentials: 'include' });
+      router.push('login');
+    } catch (e) {
+      console.error("Erro ao fazer logout:", e);
     }
   }
 
@@ -84,7 +94,7 @@ export default function ProfilePage() {
             }),
           }}
           onSuccess={() => alert("Dados Atualizados com Sucesso!")}
-          onError={() => alert("Errp de requisição.")}
+          onError={() => alert("Erro de requisição.")}
         />
       </div>
       <div>
@@ -96,6 +106,9 @@ export default function ProfilePage() {
           title="Você tem certeza?"
           message="Tem certeza que deseja desativar sua conta?"
         />
+      </div>
+      <div style={{ marginTop: '1rem' }}>
+        <button onClick={handleLogout}>Logout</button>
       </div>
     </div>
   );

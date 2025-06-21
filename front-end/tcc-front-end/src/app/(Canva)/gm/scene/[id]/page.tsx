@@ -15,6 +15,7 @@ import useSceneSocketReceiver from "@/app/hooks/Canva/useSceneSocketReceiver";
 import { useSceneSocketSender } from "@/app/hooks/Canva/useSceneSocketSender";
 import { DropDownSceneList } from "@/app/components/dropdown/dropdown_scenes_list";
 import { deleteSceneImage } from "@/app/utls/socket";
+import { useRouter } from "next/navigation";
 
 export default function ScenePageGm() {
   const { scene, loading } = useSceneData();
@@ -30,7 +31,7 @@ export default function ScenePageGm() {
   const [userImages, setUserImages] = useState<{ filename: string; base64Content: string }[]>([]);
   const [imagesLoading, setImagesLoading] = useState<boolean>(true);
   const [positionImages, setPositionImages] = useState<SceneImage[]>([]);
-
+  const router = useRouter();
   const [selectedImageId, setSelectedImageId] = useState<string | null>(null); 
 
   const sceneId = typeof window !== "undefined" ? localStorage.getItem("sceneId") : null;
@@ -117,7 +118,10 @@ export default function ScenePageGm() {
 
   const toggleModal = () => setModal((prev) => !prev);
   const toggleUploadModal = () => setUploadModalOpen((prev) => !prev);
-
+  const goToUpdateTable = () => {
+    const tableId = localStorage.getItem("tableId");
+    router.push(`/gm/update_table/${tableId}`);
+  };
   return (
     <div>
       <DropDownSceneList />
@@ -205,6 +209,7 @@ export default function ScenePageGm() {
       <ListButton>
         <BlueButton onClick={toggleModal}>Modificar Cena</BlueButton>
         <BlueButton onClick={toggleUploadModal}>Upload de Imagem</BlueButton>
+        <BlueButton onClick={goToUpdateTable}>Editar Mesa</BlueButton>
       </ListButton>
 
       {modal && (
@@ -255,6 +260,7 @@ export default function ScenePageGm() {
                 <BlueButton onClick={() => handleAddToScene(img)}>
                   Adicionar à Cena
                 </BlueButton>
+                
               </ImageItem>
             ))}
           </ImageList>

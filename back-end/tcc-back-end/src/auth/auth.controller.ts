@@ -33,6 +33,7 @@ export class AuthController {
   ) {
     return await this.authService.getProfile(user.sub, +tableId);
   }
+  @UseGuards(CustomJwtGuard)
   @Post('logout')
   async logout(@Res() res:Response){
     res.cookie('jwt','',{

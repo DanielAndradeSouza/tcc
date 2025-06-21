@@ -84,6 +84,15 @@ export default function TableIdPage() {
         {players?.map((player) => (
           <PlayerName key={`player-${player.id}`}>{player.name}</PlayerName>
         ))}
+        <div
+          style={{ marginTop: "1rem", color: "#007bff", textDecoration: "underline", cursor: "pointer" }}
+          onClick={() => {
+            navigator.clipboard.writeText(`${window.location.origin}/tables/join/${table.id}`);
+            alert("Link copiado para a área de transferência!");
+          }}
+        >
+          Convidar Jogador
+        </div>
       </PlayersSidebar>
     </Container>
   );
