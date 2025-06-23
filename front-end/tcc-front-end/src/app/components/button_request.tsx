@@ -1,8 +1,8 @@
-// components/ButtonRequest.tsx
 'use client';
 
-import { useState } from "react";
-import { fetchData } from "../services/api";
+import { useState } from 'react';
+import { fetchData } from '../services/api';
+import styled from 'styled-components';
 
 type ButtonRequestProps = {
   show_text: string;
@@ -12,28 +12,55 @@ type ButtonRequestProps = {
   onError?: (error: any) => void;
 };
 
-export default function ButtonRequest({ show_text, url, header, onSuccess, onError }: ButtonRequestProps) {
+export default function ButtonRequest({
+  show_text,
+  url,
+  header,
+  onSuccess,
+  onError,
+}: ButtonRequestProps) {
+  const [loading, setLoading] = useState(false);
+
   const handleClick = async () => {
+    setLoading(true);
     try {
       const data = await fetchData(url, header);
-
-      // Supondo que o backend retorna { success: true } ou o objeto criado
       if (data && !data.error) {
         onSuccess?.(data);
       } else {
-        onError?.(data?.error || "Dados Incorretos");
+        onError?.(data?.error || 'Dados Incorretos');
       }
     } catch (err: any) {
-      onError?.(err.message || "Erro na requisição");
+      onError?.(err.message || 'Erro na requisição');
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
-    <button
-      onClick={handleClick}
-      className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 cursor-pointer"
-    >
-      {show_text}
-    </button>
+    <StyledButton onClick={handleClick} disabled={loading}>
+      {loading ? 'Carregando...' : show_text}
+    </StyledButton>
   );
 }
+
+// Styled-components
+const StyledButton = styled.button`
+  padding: 0.75rem 1.5rem;
+  font-size: 1rem;
+  border: none;
+  border-radius: 0.75rem;
+  cursor: pointer;
+  background-color: #3b82f6;
+  color: white;
+  transition: background-color 0.3s ease;
+
+  &:hover:not(:disabled) {
+    background-color: #2563eb;
+  }
+
+  &:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+`;

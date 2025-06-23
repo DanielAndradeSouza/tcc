@@ -1,27 +1,29 @@
 import { BlueButton, GrayButton, ListButton, RedButton } from "@/app/styles/buttons.style";
 import { ModalButton, ModalContent, ModalOverlay } from "@/app/styles/modal.style";
 
-export default function ConfirmationModal(modalInfo: ConfirmationModalInfo) {
-  if (!modalInfo.isOpen) return null;
+export default function ConfirmationModal({
+  isOpen,
+  onClose,
+  onConfirm,
+  title = "Confirmar ação",
+  message = "Tem certeza que deseja continuar?",
+}: ConfirmationModalInfo) {
+  if (!isOpen) return null;
 
   return (
     <ModalOverlay>
       <ModalContent>
-        <ModalButton onClick={modalInfo.onClose}>✖</ModalButton>
+        <ModalButton onClick={onClose}>✖</ModalButton>
 
-        <h2>{modalInfo.title || "Confirmar ação"}</h2>
-        <p>{modalInfo.message || "Tem certeza que deseja continuar?"}</p>
+        <h2>{title}</h2>
+        <p>{message}</p>
 
         <ListButton>
-          <GrayButton
-            onClick={modalInfo.onClose}
-          >
-            Cancelar
-          </GrayButton>
+          <GrayButton onClick={onClose}>Cancelar</GrayButton>
           <RedButton
             onClick={() => {
-              modalInfo.onConfirm();
-              modalInfo.onClose();
+              onConfirm();
+              onClose();
             }}
           >
             Confirmar

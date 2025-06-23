@@ -1,51 +1,92 @@
 import styled from "styled-components";
 
-export const Container = styled.div`
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
+export const Container = styled.main`
+  min-height: 100vh;
+  background: linear-gradient(135deg, #1e3a8a, #111827);
+  color: white;
   padding: 2rem;
-  gap: 2rem;
-  max-width: 1200px;
-  margin: auto;
-`;
-
-export const InfoSection = styled.div`
-  flex: 1;
   display: flex;
-  flex-direction: column;
-  gap: 1rem;
+  gap: 2rem;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+
+  @media (max-width: 768px) {
+    flex-direction: column;
+  }
 `;
 
-export const PlayersSidebar = styled.aside`
-  width: 250px;
-  padding: 1rem;
-  border-left: 2px solid rgba(204, 204, 204, 0.5);
-  background-color: #f9f9f9;
-`;
+export const InfoSection = styled.section`
+  flex: 2;
+  background: rgba(255, 255, 255, 0.05);
+  padding: 2rem;
+  border-radius: 1.5rem;
+  backdrop-filter: blur(10px);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
 
-export const PlayerName = styled.p`
-  margin: 0.5rem 0;
-  text-align: center;
-  font-weight: 500;
-  color: #333;
+  h1 {
+    margin-top: 0;
+    font-size: 2rem;
+    margin-bottom: 1rem;
+  }
+
+  p {
+    font-size: 1.1rem;
+    margin-bottom: 2rem;
+    color: #d1d5db;
+  }
 `;
 
 export const Button = styled.button`
-  padding: 10px;
-  font-size: 1rem;
-  border: none;
-  background-color: #007bff;
+  background-color: #2563eb; /* azul vibrante */
   color: white;
+  border: none;
+  border-radius: 0.75rem;
+  padding: 0.75rem 1.75rem;
+  font-size: 1.1rem;
+  margin-right: 1rem;
+  margin-bottom: 1rem;
   cursor: pointer;
-  transition: background-color 0.3s;
+  box-shadow: 0 5px 15px rgba(37, 99, 235, 0.5);
+  transition: background-color 0.3s ease, box-shadow 0.3s ease;
 
   &:hover {
-    background-color: #0056b3;
+    background-color: #1e40af;
+    box-shadow: 0 7px 20px rgba(30, 64, 175, 0.7);
+  }
+`;
+
+export const PlayersSidebar = styled.aside`
+  flex: 1;
+  background: rgba(255, 255, 255, 0.05);
+  padding: 2rem;
+  border-radius: 1.5rem;
+  backdrop-filter: blur(10px);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+  height: fit-content;
+
+  h2 {
+    margin-top: 0;
+    margin-bottom: 1rem;
+    font-weight: 600;
   }
 
-  &:active {
-    background-color: #003f80;
+  p {
+    color: #9ca3af;
   }
+
+  div.invite-link {
+    margin-top: 1rem;
+    color: #3b82f6;
+    text-decoration: underline;
+    cursor: pointer;
+    user-select: none;
+    font-weight: 500;
+  }
+`;
+
+export const PlayerName = styled.p`
+  padding: 0.5rem 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  font-size: 1rem;
+  user-select: none;
 `;
 
