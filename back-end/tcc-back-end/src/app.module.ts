@@ -28,7 +28,7 @@ import { SceneStateModule } from './Entidades/scene/scene_state_module/scene.sta
       synchronize: true, 
       logging: true
   }),
-  CacheModule.register(),
+  CacheModule.register({max:10}),
   SceneStateModule,
   UserModule,
   TableModule,
