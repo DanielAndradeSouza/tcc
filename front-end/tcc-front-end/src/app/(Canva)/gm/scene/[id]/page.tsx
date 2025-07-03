@@ -14,7 +14,7 @@ import KonvaImageComponent from "@/app/components/konva_image";
 import useSceneSocketReceiver from "@/app/hooks/Canva/useSceneSocketReceiver";
 import { useSceneSocketSender } from "@/app/hooks/Canva/useSceneSocketSender";
 import { DropDownSceneList } from "@/app/components/dropdown/dropdown_scenes_list";
-import { deleteSceneImage } from "@/app/utls/socket";
+import socket, { deleteSceneImage } from "@/app/utls/socket";
 import { useRouter } from "next/navigation";
 
 export default function ScenePageGm() {
@@ -36,8 +36,28 @@ export default function ScenePageGm() {
 
   const sceneId = typeof window !== "undefined" ? localStorage.getItem("sceneId") : null;
   const { sendSceneState } = useSceneSocketSender(sceneId);
+
   const { placedImages, setPlacedImages } = useTableTopImagesGm(userImages, positionImages);
   const [manualPlacedImages, setManualPlacedImages] = useState<SceneImage[]>([]);
+
+  useEffect(() => {
+  const handleBeforeUnload = () => {
+    const tableId = localStorage.getItem("tableId");
+    if (sceneId && tableId && manualPlacedImages.length > 0) {
+      console.log("Requisitando um salvamento");
+      socket.emit("gm_disconnect", {
+        sceneId,
+        tableId,
+      });
+    }
+  };
+
+  window.addEventListener("beforeunload", handleBeforeUnload);
+  return () => {
+    window.removeEventListener("beforeunload", handleBeforeUnload);
+    handleBeforeUnload(); // chamada extra no unmount
+  };
+}, [sceneId, manualPlacedImages]);
 
   // Envia atualizações via socket sempre que as imagens manuais forem atualizadas
   useEffect(() => {

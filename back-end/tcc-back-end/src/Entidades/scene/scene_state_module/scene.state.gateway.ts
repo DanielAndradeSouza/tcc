@@ -47,4 +47,10 @@ export class SceneStateGateway{
     console.log("Requerindo Deleção da imagem com id: ", scene_imageId);
     await this.sceneStateService.deleteSceneState(data.sceneId,data.scene_imageId);
   }
+  @SubscribeMessage('gm_disconnect')
+  async handleGmDisconect(
+    @MessageBody() data: { sceneId: string; tableId: string },
+  ){
+    await this.sceneStateService.handleGmDisconnect(+data.sceneId, +data.tableId)
+  } 
 }

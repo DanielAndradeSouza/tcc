@@ -55,4 +55,14 @@ constructor(@Inject(CACHE_MANAGER) private cacheManager: Cache,private readonly 
     await this.cacheManager.set(sceneId, sceneState);
     return removed_image;
   }
+  async handleGmDisconnect(sceneId:number, tableId:number){
+    console.log("Salvando dados da cena no banco: tableId: ", tableId);
+    //O que precisa ser feito:
+    //Buscar dados na cache de acordo com o sceneId
+    //Buscar dados no banco de acordo com o sceneId
+    //Pior parte: 
+    //Comparar os resultados no banco com os que estão na cache, de acordo com os seguintes criteŕios:
+    /*1.Se for UUiD, salva no banco. 2.Se não for UUid atualiza o valor no banco 3.Se tiver a ausencia de alguma imagem(feita verificação pelo id
+    Deleta essa imagem no banco)*/
+  }
 }
