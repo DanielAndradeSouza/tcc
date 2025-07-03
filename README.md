@@ -41,4 +41,4 @@ O projeto tem como objetivo criar um sistema de mesa virtual para RPG (VTT - Vir
 1. Clone o repositório:
    ```bash
    git clone https://github.com/seu-usuario/seu-repositorio.git
-   cd seu-repositorio
+OBS: Devido a alguns conflitos é recomendado clonar o repositorio dev, ele está mais completo!
