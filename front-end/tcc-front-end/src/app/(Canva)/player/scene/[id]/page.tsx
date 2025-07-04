@@ -70,11 +70,11 @@ export default function ScenePagePlayer() {
         {/* Camada de imagens */}
         <Layer listening={false}>
           {positionImages
-            .filter((img) => typeof img.image_url === "string") // <- filtrando aqui
+            .filter((img) => typeof img.base64Content === "string") 
             .map((img) => (
               <KonvaImageComponent
                 key={img.id}
-                src={img.image_url!} // <- garantido pelo filter
+                src={img.base64Content!} 
                 x={img.x_pos * pixels}
                 y={img.y_pos * pixels}
                 width={img.width * pixels}
