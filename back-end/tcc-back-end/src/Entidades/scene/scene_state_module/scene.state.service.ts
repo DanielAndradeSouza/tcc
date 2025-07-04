@@ -15,6 +15,8 @@ constructor(@Inject(CACHE_MANAGER) private cacheManager: Cache,private readonly 
     //console.log("Estado da cena sendo salvo",state);
     await this.cacheManager.set(sceneId, state);
     const cachedState = await this.cacheManager.get(sceneId);
+    console.log(cachedState);
+    
   }
 
   async getSceneState(sceneId: string): Promise<any | undefined> {
